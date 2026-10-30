@@ -2,10 +2,13 @@
 import Layout from '@/layouts/Layout.astro';
 import HomeView from '@/views/HomeView.astro';
 import { useTranslations } from '@/i18n/utils';
+import { profilePageSchema } from '@/lib/seo';
 
 const t = useTranslations('en');
+const schema = profilePageSchema('en', Astro.site && new URL('/en/', Astro.site).href);
 ---
 
 <Layout description={t('meta.home')}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(schema)} />
   <HomeView lang="en" />
 </Layout>

@@ -14,6 +14,8 @@ export const profile = {
   } satisfies Localized,
   email: 'eduardotito.jose01@gmail.com',
   location: 'Arica, Chile',
+  // Para datos estructurados (ISO 3166-1 alfa-2).
+  address: { locality: 'Arica', countryCode: 'CL' },
   github: 'https://github.com/eduardoapatat/',
   linkedin: 'https://www.linkedin.com/in/eapatatito/',
   // PDF compilado desde cv/CV.tex; sin versión en inglés, ese idioma enlaza al PDF en español.

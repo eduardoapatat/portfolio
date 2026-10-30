@@ -19,7 +19,7 @@ export default defineConfig({
       provider: fontProviders.fontsource(),
       name: 'JetBrains Mono',
       cssVariable: '--font-jetbrains-mono',
-      weights: [400, 700],
+      weights: [400, 500, 700],
       styles: ['normal'],
       fallbacks: ['monospace']
     }

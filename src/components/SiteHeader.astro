@@ -1,0 +1,23 @@
+---
+import LanguagePicker from '@/components/LanguagePicker.astro';
+import { profile } from '@/data/profile';
+import { getLang, pathFor } from '@/i18n/utils';
+
+const lang = getLang(Astro.url);
+---
+
+<header
+  transition:name="header"
+  transition:animate="none"
+  class="relative flex items-center justify-between gap-4 px-4 pt-6 md:justify-center md:px-8 md:pt-8"
+>
+  <a
+    href={pathFor('home', lang)}
+    class="font-mono text-lg font-bold tracking-[0.08em] text-fg uppercase md:text-4xl"
+  >
+    {profile.name}
+  </a>
+  <div class="md:absolute md:top-8 md:right-8">
+    <LanguagePicker />
+  </div>
+</header>

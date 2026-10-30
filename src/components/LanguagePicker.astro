@@ -1,0 +1,32 @@
+---
+import { languages, type Lang } from '@/i18n/ui';
+import { alternatePath, getLang, useTranslations } from '@/i18n/utils';
+
+const lang = getLang(Astro.url);
+const t = useTranslations(lang);
+const entries = Object.entries(languages) as [Lang, string][];
+---
+
+<nav aria-label={t('lang.label')}>
+  <ul class="flex items-center gap-1">
+    {
+      entries.map(([code, label]) => (
+        <li>
+          <a
+            href={alternatePath(Astro.url, code)}
+            hreflang={code}
+            lang={code}
+            aria-current={code === lang ? 'true' : undefined}
+            class:list={[
+              'block rounded-md px-3 py-1.5 text-sm transition-colors',
+              code === lang ? 'bg-fg text-bg-top' : 'text-fg-muted hover:bg-white/10 hover:text-fg',
+            ]}
+          >
+            <span class="md:hidden">{code.toUpperCase()}</span>
+            <span class="hidden md:inline">{label}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>

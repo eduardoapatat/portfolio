@@ -1,25 +1,50 @@
 ---
 import '@/styles/global.css';
+import { Font } from 'astro:assets';
+import { ClientRouter } from 'astro:transitions';
+import Background from '@/components/Background.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import { profile } from '@/data/profile';
+import { languages, type Lang } from '@/i18n/ui';
+import { alternatePath, getLang, useTranslations } from '@/i18n/utils';
 
 type Props = {
-  title: string;
+  title?: string;
   description?: string;
 };
 
-const { title } = Astro.props;
+const lang = getLang(Astro.url);
+const t = useTranslations(lang);
+const { title, description = t('site.description') } = Astro.props;
+const pageTitle = title ? `${title} · ${profile.name}` : profile.name;
+const base = Astro.site ?? Astro.url;
+const alternates = (Object.keys(languages) as Lang[]).map((code) => ({
+  code,
+  href: new URL(alternatePath(Astro.url, code), base).href,
+}));
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-        <meta name="description" content={Astro.props.description || 'My portfolio website'} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    {alternates.map(({ code, href }) => <link rel="alternate" hreflang={code} href={href} />)}
+    <title>{pageTitle}</title>
+    <Font cssVariable="--font-jetbrains-mono" preload />
+    <ClientRouter />
+  </head>
+  <body class="flex h-dvh flex-col overflow-hidden font-mono">
+    <Background />
+    <SiteHeader />
+    <main class="flex min-h-0 flex-1 items-center justify-center px-4">
+      <slot />
+    </main>
+    <footer class="pb-3 text-center text-xs text-fg-subtle">
+      © {new Date().getFullYear()} {profile.name} · {t('footer.made')}
+    </footer>
+  </body>
 </html>

@@ -1,1 +1,40 @@
 @import "tailwindcss";
+
+/* Tokens de color y tipografía: la estética se cambia desde aquí. */
+@theme {
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --color-bg-top: #121212;
+  --color-bg-bottom: #232a34;
+  --color-fg: #f9fafb;
+  --color-fg-muted: #cbd5e1;
+  --color-fg-subtle: #94a3b8;
+  --color-surface: #0a0a0a;
+  --color-surface-raised: #171717;
+  --color-line: #262626;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    background-color: var(--color-bg-top);
+    color: var(--color-fg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-fg);
+    color: var(--color-bg-top);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-fg);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line) transparent;
+  }
+}

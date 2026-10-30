@@ -22,3 +22,11 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# impeccable: artefactos temporales (design.json y config.json sí se versionan)
+.impeccable/build/
+.impeccable/review/
+.impeccable/mocks/
+.impeccable/live/
+.impeccable/critique/
+.impeccable/config.local.json

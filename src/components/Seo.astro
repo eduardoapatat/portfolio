@@ -1,0 +1,79 @@
+---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { profile } from '@/data/profile';
+import { defaultLang, languages, type Lang } from '@/i18n/ui';
+import { alternatePath, getLang } from '@/i18n/utils';
+
+type Props = {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  type?: 'website' | 'profile';
+};
+
+const { title, description, noindex = false, type = 'website' } = Astro.props;
+const lang = getLang(Astro.url);
+const site = Astro.site;
+
+// Sin `site` (aún sin dominio) se omite todo lo que exige URL absoluta.
+const absolute = (path: string) => (site ? new URL(path, site).href : undefined);
+const canonical = absolute(Astro.url.pathname);
+
+const alternates = (Object.keys(languages) as Lang[]).map((code) => {
+  const path = alternatePath(Astro.url, code);
+  return { code, href: absolute(path) ?? path };
+});
+const xDefault = alternates.find(({ code }) => code === defaultLang)!;
+
+const ogLocale: Record<Lang, string> = { es: 'es_CL', en: 'en_US' };
+
+// Imagen OG estática: public/og/og-<idioma>.png; si falta la del idioma, se usa la del idioma por defecto.
+const ogFile = (code: Lang) => `/og/og-${code}.png`;
+const hasOg = (code: Lang) => existsSync(join(process.cwd(), 'public', ogFile(code)));
+const ogPath = hasOg(lang) ? ogFile(lang) : hasOg(defaultLang) ? ogFile(defaultLang) : undefined;
+const ogImage = ogPath && absolute(ogPath);
+const ogAlt = `${profile.name} · ${profile.role[lang]}`;
+
+const siteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex" />}
+{
+  !noindex && (
+    <>
+      {canonical && <link rel="canonical" href={canonical} />}
+      {alternates.map(({ code, href }) => (
+        <link rel="alternate" hreflang={code} href={href} />
+      ))}
+      <link rel="alternate" hreflang="x-default" href={xDefault.href} />
+    </>
+  )
+}
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={profile.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:locale" content={ogLocale[lang]} />
+{
+  (Object.keys(languages) as Lang[])
+    .filter((code) => code !== lang)
+    .map((code) => <meta property="og:locale:alternate" content={ogLocale[code]} />)
+}
+{canonical && <meta property="og:url" content={canonical} />}
+{
+  ogImage && (
+    <>
+      <meta property="og:image" content={ogImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content={ogAlt} />
+      <meta name="twitter:image" content={ogImage} />
+    </>
+  )
+}
+<meta name="twitter:card" content="summary_large_image" />
+{siteVerification && <meta name="google-site-verification" content={siteVerification} />}

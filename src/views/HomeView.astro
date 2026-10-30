@@ -36,18 +36,18 @@ const t = useTranslations(lang);
       {t('home.cta.projects')}
       <Icon name="tabler:arrow-right" class="hero-button__arrow" aria-hidden="true" />
     </a>
-    <a href={pathFor('cv', lang)} class="hero-button hero-button--secondary">{t('home.cta.cv')}</a>
+    <a href={pathFor('cv', lang)} class="hero-button hero-button--secondary">
+      {t('home.cta.cv')}
+    </a>
   </div>
 
   <ul class="mt-10 flex flex-wrap justify-center gap-5" aria-label={t('home.stack')}>
-    {
-      profile.stack.map((tech) => (
-        <li title={tech.name}>
-          <Icon name={tech.icon} class="size-6 text-fg" aria-hidden="true" />
-          <span class="sr-only">{tech.name}</span>
-        </li>
-      ))
-    }
+    {profile.stack.map((tech) => (
+      <li title={tech.name}>
+        <Icon name={tech.icon} class="size-6 text-fg" aria-hidden="true" />
+        <span class="sr-only">{tech.name}</span>
+      </li>
+    ))}
   </ul>
 </section>
 

@@ -37,15 +37,15 @@ const contacts = [
 
 <ContentPanel>
   <header class="mb-8 flex flex-wrap items-center justify-between gap-4">
-    <h1 id="page-title" class="text-3xl font-bold md:text-4xl">{t('cv.title')}</h1>
-    {
-      pdf && (
-        <a href={pdf} download class="cv-download">
-          <Icon name="tabler:download" class="size-4" aria-hidden="true" />
-          {ownPdf ? t('cv.download') : t('cv.downloadFallback')}
-        </a>
-      )
-    }
+    <h1 id="page-title" class="text-3xl font-bold md:text-4xl">
+      {t('cv.title')}
+    </h1>
+    {pdf && (
+      <a href={pdf} download class="cv-download">
+        <Icon name="tabler:download" class="size-4" aria-hidden="true" />
+        {ownPdf ? t('cv.download') : t('cv.downloadFallback')}
+      </a>
+    )}
   </header>
 
   <article class="cv-sheet grid overflow-hidden rounded-xl md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
@@ -59,20 +59,22 @@ const contacts = [
       <section>
         <h3 class="cv-heading">{t('cv.contact')}</h3>
         <ul class="flex flex-col gap-2.5 text-sm">
-          {
-            contacts.map(({ icon, label, href }) => (
-              <li class="flex items-center gap-3">
-                <Icon name={icon} class="cv-muted size-4 shrink-0" aria-hidden="true" />
-                {href ? (
-                  <a href={href} class="cv-link break-all" {...(href.startsWith('http') && { target: '_blank', rel: 'noopener noreferrer' })}>
-                    {label}
-                  </a>
-                ) : (
-                  <span>{label}</span>
-                )}
-              </li>
-            ))
-          }
+          {contacts.map(({ icon, label, href }) => (
+            <li class="flex items-center gap-3">
+              <Icon name={icon} class="cv-muted size-4 shrink-0" aria-hidden="true" />
+              {href ? (
+                <a
+                  href={href}
+                  class="cv-link break-all"
+                  {...(href.startsWith('http') && { target: '_blank', rel: 'noopener noreferrer' })}
+                >
+                  {label}
+                </a>
+              ) : (
+                <span>{label}</span>
+              )}
+            </li>
+          ))}
         </ul>
       </section>
 
@@ -80,94 +82,87 @@ const contacts = [
         <h3 class="cv-heading">{t('cv.summary')}</h3>
         <p class="text-sm leading-relaxed">{cv.summary[lang]}</p>
       </section>
-
     </div>
 
     <div class="flex flex-col gap-10 p-6 md:p-8">
       <section>
         <h3 class="cv-heading">{t('cv.experience')}</h3>
         <ol class="cv-timeline flex flex-col gap-7">
-          {
-            experience.map(({ company, role, location, start, end, Content }) => (
-              <li class="relative pl-6">
-                <p class="cv-accent text-sm font-bold">{company}</p>
-                <p class="mt-0.5 font-bold">{role}</p>
-                <p class="cv-muted mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs">
-                  {location && (
-                    <span class="inline-flex items-center gap-1.5">
-                      <Icon name="tabler:map-pin" class="size-3.5" aria-hidden="true" />
-                      {location}
-                    </span>
-                  )}
+          {experience.map(({ company, role, location, start, end, Content }) => (
+            <li class="relative pl-6">
+              <p class="cv-accent text-sm font-bold">{company}</p>
+              <p class="mt-0.5 font-bold">{role}</p>
+              <p class="cv-muted mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                {location && (
                   <span class="inline-flex items-center gap-1.5">
-                    <Icon name="tabler:calendar" class="size-3.5" aria-hidden="true" />
-                    {formatPeriod(lang, start, end)}
+                    <Icon name="tabler:map-pin" class="size-3.5" aria-hidden="true" />
+                    {location}
                   </span>
-                </p>
-                <div class="cv-body mt-3 text-sm leading-relaxed">
-                  <Content />
-                </div>
-              </li>
-            ))
-          }
+                )}
+                <span class="inline-flex items-center gap-1.5">
+                  <Icon name="tabler:calendar" class="size-3.5" aria-hidden="true" />
+                  {formatPeriod(lang, start, end)}
+                </span>
+              </p>
+              <div class="cv-body mt-3 text-sm leading-relaxed">
+                <Content />
+              </div>
+            </li>
+          ))}
         </ol>
       </section>
 
       <section>
         <h3 class="cv-heading">{t('cv.education')}</h3>
         <ul class="flex flex-col gap-4 text-sm">
-          {
-            cv.education.map(({ institution, degree, location, start, end }) => (
-              <li>
-                <p class="cv-accent font-bold">{institution[lang]}</p>
-                <p class="mt-0.5 font-bold">{degree[lang]}</p>
-                <p class="cv-muted mt-1 text-xs">
-                  {location} · {formatPeriod(lang, start, end)}
-                </p>
-              </li>
-            ))
-          }
+          {cv.education.map(({ institution, degree, location, start, end }) => (
+            <li>
+              <p class="cv-accent font-bold">{institution[lang]}</p>
+              <p class="mt-0.5 font-bold">{degree[lang]}</p>
+              <p class="cv-muted mt-1 text-xs">
+                {location} · {formatPeriod(lang, start, end)}
+              </p>
+            </li>
+          ))}
         </ul>
       </section>
 
       <section>
         <h3 class="cv-heading">{t('cv.certifications')}</h3>
         <ul class="flex flex-col gap-3 text-sm">
-          {
-            cv.certifications.map(({ name, issuer, date }) => (
-              <li>
-                <p class="font-bold">{name}</p>
-                <p class="cv-muted mt-0.5 text-xs">
-                  {issuer} · {formatMonth(lang, date)}
-                </p>
-              </li>
-            ))
-          }
+          {cv.certifications.map(({ name, issuer, date }) => (
+            <li>
+              <p class="font-bold">{name}</p>
+              <p class="cv-muted mt-0.5 text-xs">
+                {issuer} · {formatMonth(lang, date)}
+              </p>
+            </li>
+          ))}
         </ul>
       </section>
 
       <section>
         <h3 class="cv-heading">{t('cv.skills')}</h3>
         <ul class="cv-list flex flex-col gap-1.5 text-sm leading-relaxed">
-          {cv.skills[lang].map((skill) => <li>{skill}</li>)}
+          {cv.skills[lang].map((skill) => (
+            <li>{skill}</li>
+          ))}
         </ul>
       </section>
 
       <section>
         <h3 class="cv-heading">{t('cv.technologies')}</h3>
         <dl class="flex flex-col gap-3 text-sm">
-          {
-            cv.technologies.map(({ category, items }) => (
-              <div>
-                <dt class="font-bold">{category[lang]}</dt>
-                <dd class="mt-1.5 flex flex-wrap gap-1.5">
-                  {(Array.isArray(items) ? items : items[lang]).map((item) => (
-                    <span class="cv-chip">{item}</span>
-                  ))}
-                </dd>
-              </div>
-            ))
-          }
+          {cv.technologies.map(({ category, items }) => (
+            <div>
+              <dt class="font-bold">{category[lang]}</dt>
+              <dd class="mt-1.5 flex flex-wrap gap-1.5">
+                {(Array.isArray(items) ? items : items[lang]).map((item) => (
+                  <span class="cv-chip">{item}</span>
+                ))}
+              </dd>
+            </div>
+          ))}
         </dl>
       </section>
     </div>

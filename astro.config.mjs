@@ -39,8 +39,8 @@ export default defineConfig({
     locales: ['es', 'en'],
     defaultLocale: 'es',
     routing: {
-      prefixDefaultLocale: false
-    }
+      prefixDefaultLocale: false,
+    },
   },
   fonts: [
     {
@@ -49,10 +49,10 @@ export default defineConfig({
       cssVariable: '--font-jetbrains-mono',
       weights: [400, 500, 700],
       styles: ['normal'],
-      fallbacks: ['monospace']
-    }
+      fallbacks: ['monospace'],
+    },
   ],
   vite: {
-    plugins: [tailwindcss()]
-  }
+    plugins: [tailwindcss()],
+  },
 });

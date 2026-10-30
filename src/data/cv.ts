@@ -45,7 +45,17 @@ export const cv = {
   technologies: [
     {
       category: { es: 'Desarrollo web', en: 'Web development' },
-      items: ['HTML', 'CSS', 'JavaScript', 'TypeScript', 'Astro', 'Tailwind CSS', 'PHP', 'Laravel', 'API REST'],
+      items: [
+        'HTML',
+        'CSS',
+        'JavaScript',
+        'TypeScript',
+        'Astro',
+        'Tailwind CSS',
+        'PHP',
+        'Laravel',
+        'API REST',
+      ],
     },
     {
       category: { es: 'Datos y BI', en: 'Data & BI' },

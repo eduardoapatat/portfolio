@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Tokens de color y tipografía: la estética se cambia desde aquí. */
 @theme {

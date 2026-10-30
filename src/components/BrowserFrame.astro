@@ -25,22 +25,20 @@ const host = url ? new URL(url).host : 'localhost';
       {host}
     </span>
   </div>
-  {
-    image ? (
-      <Image
-        src={image}
-        alt={alt}
-        widths={[640, 960, 1280]}
-        sizes="(min-width: 768px) 40vw, 90vw"
-        class="aspect-video w-full object-cover object-top"
-      />
-    ) : (
-      <div class="grid aspect-video place-items-center text-fg-subtle">
-        <span class="flex flex-col items-center gap-2 text-xs">
-          <Icon name="tabler:photo" class="size-7" aria-hidden="true" />
-          {emptyLabel}
-        </span>
-      </div>
-    )
-  }
+  {image ? (
+    <Image
+      src={image}
+      alt={alt}
+      widths={[640, 960, 1280]}
+      sizes="(min-width: 768px) 40vw, 90vw"
+      class="aspect-video w-full object-cover object-top"
+    />
+  ) : (
+    <div class="grid aspect-video place-items-center text-fg-subtle">
+      <span class="flex flex-col items-center gap-2 text-xs">
+        <Icon name="tabler:photo" class="size-7" aria-hidden="true" />
+        {emptyLabel}
+      </span>
+    </div>
+  )}
 </figure>

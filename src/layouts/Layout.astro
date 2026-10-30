@@ -3,6 +3,7 @@ import '@/styles/global.css';
 import { Font } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import Background from '@/components/Background.astro';
+import Dock from '@/components/Dock.astro';
 import SiteHeader from '@/components/SiteHeader.astro';
 import { profile } from '@/data/profile';
 import { languages, type Lang } from '@/i18n/ui';
@@ -43,6 +44,7 @@ const alternates = (Object.keys(languages) as Lang[]).map((code) => ({
     <main class="flex min-h-0 flex-1 items-center justify-center px-4">
       <slot />
     </main>
+    <Dock />
     <footer class="pb-3 text-center text-xs text-fg-subtle">
       © {new Date().getFullYear()} {profile.name} · {t('footer.made')}
     </footer>

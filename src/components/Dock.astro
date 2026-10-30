@@ -1,0 +1,135 @@
+---
+// Diseño provisional: el funcionamiento imita la referencia y el aspecto se rediseña después.
+import { Icon } from 'astro-icon/components';
+import { profile } from '@/data/profile';
+import type { RouteKey } from '@/i18n/routes';
+import type { UiKey } from '@/i18n/ui';
+import { getLang, getRouteKey, pathFor, useTranslations } from '@/i18n/utils';
+
+type DockItem = { label: UiKey; icon: string } & ({ route: RouteKey } | { href: string });
+
+const items: DockItem[] = [
+  { route: 'home', label: 'nav.home', icon: 'tabler:home' },
+  { route: 'projects', label: 'nav.projects', icon: 'tabler:briefcase' },
+  { route: 'experience', label: 'nav.experience', icon: 'tabler:timeline' },
+  { route: 'cv', label: 'nav.cv', icon: 'tabler:file-cv' },
+  { href: profile.github, label: 'nav.github', icon: 'tabler:brand-github' },
+  { href: profile.linkedin, label: 'nav.linkedin', icon: 'tabler:brand-linkedin' },
+];
+
+const lang = getLang(Astro.url);
+const t = useTranslations(lang);
+const currentRoute = getRouteKey(Astro.url);
+---
+
+<nav
+  aria-label={t('nav.label')}
+  transition:name="dock"
+  transition:animate="none"
+  class="flex justify-center px-4 pt-6 pb-2"
+>
+  <ul data-dock class="dock flex h-16 items-end gap-2 rounded-2xl px-3 pb-3 md:gap-3 md:px-4">
+    {
+      items.map((item) => {
+        const isExternal = 'href' in item;
+        const isActive = !isExternal && item.route === currentRoute;
+        return (
+          <li class="flex items-end">
+            <a
+              data-dock-item
+              href={isExternal ? item.href : pathFor(item.route, lang)}
+              aria-label={t(item.label)}
+              aria-current={isActive ? 'page' : undefined}
+              target={isExternal ? '_blank' : undefined}
+              rel={isExternal ? 'noopener noreferrer' : undefined}
+              class="dock-item group relative grid place-items-center rounded-full"
+            >
+              <Icon name={item.icon} aria-hidden="true" class="dock-icon" />
+              <span aria-hidden="true" class="dock-tip">
+                {t(item.label)}
+              </span>
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+</nav>
+
+<style>
+  .dock {
+    background-color: var(--color-dock);
+  }
+
+  .dock-item {
+    width: var(--dock-size, 40px);
+    height: var(--dock-size, 40px);
+    color: var(--color-fg);
+    background-color: var(--color-dock-item);
+    transition:
+      width 150ms ease-out,
+      height 150ms ease-out,
+      background-color 150ms ease-out;
+  }
+
+  .dock-item[aria-current='page'] {
+    background-color: var(--color-dock-item-active);
+  }
+
+  .dock-item:focus-visible {
+    --dock-size: 52px;
+    border-radius: 9999px;
+  }
+
+  .dock-icon {
+    width: 50%;
+    height: 50%;
+  }
+
+  .dock-tip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    translate: -50% 4px;
+    white-space: nowrap;
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+    background-color: var(--color-dock);
+    padding: 2px 8px;
+    font-size: 12px;
+    color: var(--color-fg);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 150ms ease-out,
+      translate 150ms ease-out;
+  }
+
+  .dock-item:focus-visible .dock-tip {
+    opacity: 1;
+    translate: -50% 0;
+  }
+
+  /* En pantallas táctiles el :hover queda pegado tras tocar; solo con puntero real. */
+  @media (hover: hover) {
+    .dock-item:hover {
+      background-color: var(--color-dock-item-active);
+    }
+
+    .dock-item:hover .dock-tip {
+      opacity: 1;
+      translate: -50% 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dock-item,
+    .dock-tip {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import '@/scripts/dock';
+</script>

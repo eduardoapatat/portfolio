@@ -1,0 +1,39 @@
+---
+// En una 404 no se puede deducir el idioma desde la URL: el mensaje va en ambos idiomas.
+import Layout from '@/layouts/Layout.astro';
+import { pathFor, useTranslations } from '@/i18n/utils';
+import { contentTransition } from '@/lib/transitions';
+
+const es = useTranslations('es');
+const en = useTranslations('en');
+---
+
+<Layout title="404" description={es('notFound.message')} noindex>
+  <section
+    transition:name="hero"
+    transition:animate={contentTransition}
+    class="flex flex-col items-center text-center"
+  >
+    <h1 class="text-7xl font-bold tracking-tight md:text-8xl">404</h1>
+    <p class="mt-6 text-fg-muted md:text-lg">{es('notFound.message')}</p>
+    <p lang="en" class="mt-1 text-fg-subtle md:text-lg">{en('notFound.message')}</p>
+
+    <div class="mt-9 flex flex-wrap justify-center gap-3">
+      <a
+        href={pathFor('home', 'es')}
+        hreflang="es"
+        class="rounded-lg bg-fg px-5 py-2.5 text-sm font-medium text-bg-top transition-colors hover:bg-fg-muted"
+      >
+        {es('notFound.back')}
+      </a>
+      <a
+        href={pathFor('home', 'en')}
+        hreflang="en"
+        lang="en"
+        class="rounded-lg border border-button-line px-5 py-2.5 text-sm font-medium transition-colors hover:border-fg-subtle hover:bg-white/5"
+      >
+        {en('notFound.back')}
+      </a>
+    </div>
+  </section>
+</Layout>

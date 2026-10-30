@@ -54,6 +54,8 @@ export const ui = {
     'cv.skills': 'Habilidades',
     'cv.technologies': 'Tecnologías',
     'footer.made': 'Hecho con Astro.',
+    'notFound.message': 'Esta página no existe o cambió de dirección.',
+    'notFound.back': 'Volver al inicio',
   },
   en: {
     'site.description': 'Portfolio of Eduardo Apata Tito, Fullstack Developer.',
@@ -101,6 +103,8 @@ export const ui = {
     'cv.skills': 'Skills',
     'cv.technologies': 'Technologies',
     'footer.made': 'Built with Astro.',
+    'notFound.message': "This page doesn't exist or has moved.",
+    'notFound.back': 'Back to home',
   },
 } as const satisfies Record<Lang, Record<string, string>>;
 

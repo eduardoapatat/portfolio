@@ -7,6 +7,13 @@ import icon from 'astro-icon';
 // https://astro.build/config
 export default defineConfig({
   integrations: [icon()],
+  i18n: {
+    locales: ['es', 'en'],
+    defaultLocale: 'es',
+    routing: {
+      prefixDefaultLocale: false
+    }
+  },
   fonts: [
     {
       provider: fontProviders.fontsource(),

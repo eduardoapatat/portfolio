@@ -1,0 +1,73 @@
+export const languages = {
+  es: 'Español',
+  en: 'English',
+} as const;
+
+export type Lang = keyof typeof languages;
+
+export const defaultLang: Lang = 'es';
+
+export const ui = {
+  es: {
+    'site.description': 'Portfolio de Eduardo Apata Tito, Desarrollador Fullstack.',
+    'nav.label': 'Navegación principal',
+    'nav.home': 'Inicio',
+    'nav.projects': 'Proyectos',
+    'nav.experience': 'Experiencia',
+    'nav.cv': 'CV',
+    'nav.github': 'GitHub',
+    'nav.linkedin': 'LinkedIn',
+    'lang.label': 'Idioma',
+    'home.greeting': 'Hola, soy',
+    'home.cta.projects': 'Ver proyectos',
+    'home.cta.cv': 'Ver CV',
+    'projects.title': 'Proyectos',
+    'projects.note': 'Una selección de proyectos en los que he trabajado.',
+    'projects.empty': 'Pronto habrá proyectos aquí.',
+    'projects.demo': 'Ver sitio',
+    'projects.repo': 'Código',
+    'projects.status.desarrollo': 'En desarrollo',
+    'projects.status.produccion': 'En producción',
+    'experience.title': 'Experiencia',
+    'experience.note': 'Mi recorrido profesional, año a año.',
+    'experience.present': 'Actualidad',
+    'cv.title': 'CV',
+    'cv.download': 'Descargar PDF',
+    'cv.summary': 'Resumen profesional',
+    'cv.experience': 'Experiencia laboral',
+    'cv.skills': 'Tecnologías',
+    'footer.made': 'Hecho con Astro.',
+  },
+  en: {
+    'site.description': 'Portfolio of Eduardo Apata Tito, Fullstack Developer.',
+    'nav.label': 'Main navigation',
+    'nav.home': 'Home',
+    'nav.projects': 'Projects',
+    'nav.experience': 'Experience',
+    'nav.cv': 'Resume',
+    'nav.github': 'GitHub',
+    'nav.linkedin': 'LinkedIn',
+    'lang.label': 'Language',
+    'home.greeting': "Hi, I'm",
+    'home.cta.projects': 'View projects',
+    'home.cta.cv': 'View resume',
+    'projects.title': 'Projects',
+    'projects.note': "A selection of projects I've worked on.",
+    'projects.empty': 'Projects coming soon.',
+    'projects.demo': 'Live site',
+    'projects.repo': 'Code',
+    'projects.status.desarrollo': 'In development',
+    'projects.status.produccion': 'In production',
+    'experience.title': 'Experience',
+    'experience.note': 'My professional journey, year by year.',
+    'experience.present': 'Present',
+    'cv.title': 'Resume',
+    'cv.download': 'Download PDF',
+    'cv.summary': 'Professional summary',
+    'cv.experience': 'Work experience',
+    'cv.skills': 'Technologies',
+    'footer.made': 'Built with Astro.',
+  },
+} as const satisfies Record<Lang, Record<string, string>>;
+
+export type UiKey = keyof (typeof ui)['es'];

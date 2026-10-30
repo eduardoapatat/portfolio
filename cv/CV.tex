@@ -1,0 +1,178 @@
+% ============================================================================
+% CV de Eduardo Apata Tito
+% Compilar: latexmk -pdf CV.tex   (o guardar en VSCode con LaTeX Workshop)
+%
+% Reglas:
+%  - Una página. Sin foto ni datos personales como edad, RUT o estado civil.
+%  - Orden cronológico inverso: lo más reciente primero en cada sección.
+%  - Cada viñeta empieza con un verbo de acción, sin pronombres.
+%  - Cuantifica cuando puedas: cifras, porcentajes, usuarios, tiempos.
+% ============================================================================
+
+\documentclass[letterpaper,12pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{stix2}                       % STIX Two (antes: \usepackage{newtxtext}, Times New Roman)
+\usepackage[margin=0.5in]{geometry}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+% PDF legible por sistemas ATS (copiar/pegar y lectura automática)
+\input{glyphtounicode}
+\pdfgentounicode=1    % caracteres con su equivalente Unicode (tildes, ñ)
+\pdfinterwordspaceon  % espacios reales entre palabras, no solo separación visual
+\hypersetup{
+  pdftitle    = {CV - Eduardo Apata Tito},
+  pdfauthor   = {Eduardo Apata Tito},
+  pdfsubject  = {Ingeniero Civil en Computación e Informática},
+  pdfkeywords = {Desarrollo web, Redes, Ciberseguridad, Laravel, PHP, Business Intelligence},
+  pdflang     = {es-CL}
+}
+
+% Sin palabras cortadas con guion al final de línea
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\raggedbottom
+\linespread{1.12}
+
+% ----------------------------------------------------------------------------
+% Espaciado: todas las distancias verticales del documento salen de aquí
+% ----------------------------------------------------------------------------
+\newlength{\espacioBajoNombre}    \setlength{\espacioBajoNombre}{2pt}
+\newlength{\espacioBajoTitular}   \setlength{\espacioBajoTitular}{2pt}
+\newlength{\espacioBajoContactos} \setlength{\espacioBajoContactos}{6pt}
+\newlength{\espacioSobreSeccion}  \setlength{\espacioSobreSeccion}{12pt} % antes de cada título
+\newlength{\espacioBajoLinea}     \setlength{\espacioBajoLinea}{6pt}     % entre la línea y el contenido
+\newlength{\espacioEntreEntradas} \setlength{\espacioEntreEntradas}{6pt}
+\newlength{\espacioSobreLogros}   \setlength{\espacioSobreLogros}{1pt}   % entre el cargo y sus viñetas
+\newlength{\espacioEntreLogros}   \setlength{\espacioEntreLogros}{1pt}
+\newlength{\grosorLinea}          \setlength{\grosorLinea}{0.3pt}
+
+% ----------------------------------------------------------------------------
+% Comandos
+% ----------------------------------------------------------------------------
+
+% Separador de los datos de contacto
+\newcommand{\separador}{\unskip\hspace{0.6em}·\hspace{0.6em}\ignorespaces}
+
+% Línea horizontal de ancho completo. Tras ella, el siguiente renglón se
+% separa igual que cualquier par de renglones.
+\newcommand{\linea}{\nobreak\hrule height \grosorLinea\relax\prevdepth=0pt}
+
+% \seccion{Título}: mayúsculas, negrita y línea debajo
+\newcommand{\seccion}[1]{%
+  \par\addvspace{\espacioSobreSeccion}%
+  {\bfseries\MakeUppercase{#1}\par}%
+  \nobreak\vskip 2pt\linea
+  \nobreak\vskip\espacioBajoLinea} % \vskip: se combina con el espacio de lo que sigue
+
+% Renglón con texto a la izquierda y a la derecha
+\newcommand{\dosColumnas}[2]{%
+  {\rightskip=0pt \parfillskip=0pt \noindent #1\hfill #2\par}}
+
+% \entrada{Organización}{Ciudad, País}{Cargo o título}{Fechas}
+\newcommand{\entrada}[4]{%
+  \par\addvspace{\espacioEntreEntradas}%
+  \dosColumnas{\textbf{#1}}{\textbf{#2}}%
+  \dosColumnas{\small #3}{\small\itshape #4}}
+
+% \entradaSimple{Texto}{Fecha}: entrada de un solo renglón
+\newcommand{\entradaSimple}[2]{%
+  \par\addvspace{\espacioEntreEntradas}%
+  \dosColumnas{\small #1}{\small\itshape #2}}
+
+% \categoria{Nombre}{Elementos}: renglón con etiqueta en negrita
+\newcommand{\categoria}[2]{{\small\textbf{#1:} #2\par}}
+
+% Viñetas de logros o habilidades
+\newenvironment{logros}
+  {\begin{itemize}[leftmargin=0.35in, label=\textbullet, before=\small\raggedright,
+                   topsep=\espacioSobreLogros, partopsep=0pt,
+                   itemsep=\espacioEntreLogros, parsep=0pt]}
+  {\end{itemize}}
+
+% ============================================================================
+\begin{document}
+
+% ---------------------------------------------------------------- Encabezado
+{\centering
+{\fontfamily{stix2}\fontsize{28}{32}\selectfont\bfseries\scshape Eduardo Apata Tito\par}
+\vspace{\espacioBajoNombre}
+{\itshape Ingeniero Civil en Computación e Informática \hspace{0.5em}|\hspace{0.5em} Redes y Ciberseguridad\par}
+\vspace{\espacioBajoTitular}
+{\small
+  Arica, Chile \separador
+  \href{mailto:eduardotito.jose01@gmail.com}{eduardotito.jose01@gmail.com} \separador
+  \href{https://linkedin.com/in/eapatatito}{linkedin.com/in/eapatatito}\par}
+}
+\vspace{\espacioBajoContactos}
+\linea
+\vspace{\espacioSobreSeccion}
+
+% ------------------------------------------------------------------- Resumen
+{\small\itshape\raggedright
+  Ingeniero Civil en Computación e Informática con experiencia en desarrollo web,
+  análisis de sistemas y arquitectura de la información. Interés principal en redes
+  y ciberseguridad, con formación Cisco CCNA. Lidero proyectos de principio a fin y
+  comunico soluciones técnicas a usuarios no técnicos.\par}
+
+% --------------------------------------------------------------- Experiencia
+\seccion{Experiencia profesional}
+
+\entrada{Municipalidad de Arica}{Arica, Chile}
+{Arquitecto de la Información (práctica profesional)}{Ene 2026 -- Mar 2026}
+\begin{logros}
+  \item Reorganicé la jerarquía de la información de varios sitios web municipales, incluido el del instituto municipal.
+  \item Eliminé contenido duplicado y desactualizado y simplifiqué los menús para llegar a los servicios en menos pasos.
+  \item Elaboré una propuesta de reestructuración del sitio web del Parque Centenario, actualmente en evaluación.
+  \item Recomendé al equipo web optimizar imágenes, mejorar la accesibilidad y mantener los contenidos al día.
+\end{logros}
+
+\entrada{Universidad de Tarapacá}{Arica, Chile}
+{Ayudante de Business Intelligence}{Ago 2025 -- Dic 2025}
+\begin{logros}
+  \item Guié a estudiantes de Inteligencia de Negocios en el ciclo completo de un proyecto de BI.
+  \item Orienté el modelado dimensional de data marts y data warehouses, los procesos ETL y los dashboards.
+\end{logros}
+
+\entrada{Corporación Nacional de Desarrollo Indígena (CONADI)}{Arica, Chile}
+{Analista de Sistemas (práctica)}{Ene 2025 -- Feb 2025}
+\begin{logros}
+  \item Levanté requerimientos y diseñé un prototipo de sistema de gestión documental adaptado al flujo de trabajo del usuario.
+  \item Presenté la propuesta en lenguaje no técnico; fue bien recibida y el usuario validó que respondía a su necesidad.
+\end{logros}
+
+% ----------------------------------------------------------------- Educación
+\seccion{Educación}
+
+\entrada{Universidad de Tarapacá}{Arica, Chile}
+{Ingeniería Civil en Computación e Informática}{Mar 2020 -- Jul 2026}
+
+% ----------------------------------------------------------- Certificaciones
+\seccion{Certificaciones}
+
+\entradaSimple{\textbf{CCNA: Introduction to Networks} | Cisco}{Jul 2023}
+
+% --------------------------------------------------------------- Habilidades
+\seccion{Habilidades}
+
+\begin{logros}
+  \item Liderazgo de proyectos, desde la necesidad del usuario hasta la entrega.
+  \item Levantamiento de requerimientos, análisis de sistemas y comunicación con usuarios no técnicos.
+  \item Arquitectura de la información, accesibilidad web y gestión de contenidos.
+  \item Español nativo.
+\end{logros}
+
+% --------------------------------------------------------------- Tecnologías
+\seccion{Tecnologías}
+
+\categoria{Desarrollo web}{HTML, CSS, JavaScript, Astro, PHP, Laravel, JavaScript, API REST}
+\categoria{Datos y BI}{Modelado dimensional, data warehouses, ETL, dashboards}
+\categoria{Redes}{Cisco CCNA}
+
+\end{document}

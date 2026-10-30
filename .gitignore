@@ -30,3 +30,11 @@ pnpm-debug.log*
 .impeccable/live/
 .impeccable/critique/
 .impeccable/config.local.json
+
+# LaTeX: artefactos de compilación del CV
+cv/*.aux
+cv/*.fdb_latexmk
+cv/*.fls
+cv/*.log
+cv/*.out
+cv/*.synctex.gz

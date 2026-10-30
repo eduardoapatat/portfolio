@@ -4,6 +4,7 @@ import ContentPanel from '@/components/ContentPanel.astro';
 import type { Lang } from '@/i18n/ui';
 import { useTranslations } from '@/i18n/utils';
 import { getExperience } from '@/lib/content';
+import { formatPeriod } from '@/lib/format';
 
 type Props = {
   lang: Lang;
@@ -12,11 +13,7 @@ type Props = {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const experience = await getExperience(lang);
-
-// Las fechas del frontmatter son medianoche UTC: formatear en UTC evita que salgan un mes antes.
-const monthYear = new Intl.DateTimeFormat(lang, { month: 'short', year: 'numeric', timeZone: 'UTC' });
-const period = (start: Date, end?: Date) =>
-  `${monthYear.format(start)} – ${end ? monthYear.format(end) : t('experience.present')}`;
+const period = (start: Date, end?: Date) => formatPeriod(lang, start, end);
 
 // Agrupa por año de inicio; getExperience ya viene ordenado de más reciente a más antiguo.
 const groups = Map.groupBy(experience, (entry) => entry.data.start.getUTCFullYear());

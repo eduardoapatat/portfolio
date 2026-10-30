@@ -14,6 +14,13 @@
   --color-line: #262626;
   --color-button-line: #475569;
 
+  --color-cv-paper: #ffffff;
+  --color-cv-aside: #f8fafc;
+  --color-cv-ink: #0f172a;
+  --color-cv-muted: #475569;
+  --color-cv-line: #e2e8f0;
+  --color-cv-accent: #1d4ed8;
+
   --color-dock: #171717;
   --color-dock-item: #262626;
   --color-dock-item-active: #404040;

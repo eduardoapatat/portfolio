@@ -1,0 +1,27 @@
+---
+import { contentTransition } from '@/lib/transitions';
+
+type Props = {
+  class?: string;
+};
+
+const { class: className } = Astro.props;
+---
+
+<section
+  transition:name="content"
+  transition:animate={contentTransition}
+  class:list={[
+    'content-panel h-full w-[92vw] max-w-7xl overflow-y-auto overscroll-contain bg-surface px-5 py-10 md:w-[80vw] md:px-10',
+    className,
+  ]}
+>
+  <slot />
+</section>
+
+<style>
+  /* Bordes superior e inferior desvanecidos mientras el contenido se desplaza. */
+  .content-panel {
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 5%, #000 95%, transparent 100%);
+  }
+</style>

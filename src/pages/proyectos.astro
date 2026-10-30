@@ -1,0 +1,11 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import SectionStub from '@/views/SectionStub.astro';
+import { useTranslations } from '@/i18n/utils';
+
+const t = useTranslations('es');
+---
+
+<Layout title={t('projects.title')}>
+  <SectionStub title={t('projects.title')} />
+</Layout>

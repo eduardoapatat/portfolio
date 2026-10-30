@@ -1,7 +1,10 @@
 ---
 import Layout from '@/layouts/Layout.astro';
+import { contentTransition } from '@/lib/transitions';
 ---
 
 <Layout>
-  <p class="text-fg-subtle">Inicio (se arma en el paso 6)</p>
+  <p transition:name="hero" transition:animate={contentTransition} class="text-fg-subtle">
+    Inicio (se arma en el paso 6)
+  </p>
 </Layout>

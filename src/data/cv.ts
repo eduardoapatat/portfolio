@@ -20,6 +20,7 @@ export const cv = {
         es: 'Ingeniería Civil en Computación e Informática',
         en: 'Civil Engineering in Computer Science and Informatics',
       },
+      status: { es: 'Titulado', en: 'Graduated' },
       location: 'Arica, Chile',
       start: new Date('2020-03-01'),
       end: new Date('2026-07-01'),

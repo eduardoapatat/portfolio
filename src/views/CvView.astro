@@ -115,10 +115,10 @@ const contacts = [
       <section>
         <h3 class="cv-heading">{t('cv.education')}</h3>
         <ul class="flex flex-col gap-4 text-sm">
-          {cv.education.map(({ institution, degree, location, start, end }) => (
+          {cv.education.map(({ institution, degree, status, location, start, end }) => (
             <li>
               <p class="cv-accent font-bold">{institution[lang]}</p>
-              <p class="mt-0.5 font-bold">{degree[lang]}</p>
+              <p class="mt-0.5 font-bold">{`${degree[lang]} · ${status[lang]}`}</p>
               <p class="cv-muted mt-1 text-xs">
                 {location} · {formatPeriod(lang, start, end)}
               </p>

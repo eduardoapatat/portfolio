@@ -1,0 +1,117 @@
+---
+import { render } from 'astro:content';
+import ContentPanel from '@/components/ContentPanel.astro';
+import type { Lang } from '@/i18n/ui';
+import { useTranslations } from '@/i18n/utils';
+import { getExperience } from '@/lib/content';
+
+type Props = {
+  lang: Lang;
+};
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const experience = await getExperience(lang);
+
+// Las fechas del frontmatter son medianoche UTC: formatear en UTC evita que salgan un mes antes.
+const monthYear = new Intl.DateTimeFormat(lang, { month: 'short', year: 'numeric', timeZone: 'UTC' });
+const period = (start: Date, end?: Date) =>
+  `${monthYear.format(start)} – ${end ? monthYear.format(end) : t('experience.present')}`;
+
+// Agrupa por año de inicio; getExperience ya viene ordenado de más reciente a más antiguo.
+const groups = Map.groupBy(experience, (entry) => entry.data.start.getUTCFullYear());
+const timeline = await Promise.all(
+  [...groups].map(async ([year, entries]) => ({
+    year,
+    entries: await Promise.all(
+      entries.map(async (entry) => ({ ...entry.data, Content: (await render(entry)).Content })),
+    ),
+  })),
+);
+---
+
+<ContentPanel>
+  <header class="mb-12 max-w-[65ch]">
+    <h1 class="text-3xl font-bold md:text-4xl">{t('experience.title')}</h1>
+    <p class="mt-3 text-fg-subtle">{t('experience.note')}</p>
+  </header>
+
+  <ol class="timeline relative">
+    {
+      timeline.map(({ year, entries }) => (
+        <li class="relative grid gap-6 pb-14 last:pb-0 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] md:gap-10">
+          <div class="flex items-center gap-5 self-start bg-surface py-1 md:sticky md:top-8">
+            <span class="timeline-dot" aria-hidden="true" />
+            <h2 class="text-4xl font-bold text-fg-subtle md:text-5xl">{year}</h2>
+          </div>
+
+          <ul class="flex flex-col gap-10 pl-15 md:pl-0">
+            {entries.map(({ role, company, location, start, end, Content }) => (
+              <li>
+                <h3 class="text-lg font-bold">{role}</h3>
+                <p class="mt-1 text-sm text-fg-muted">
+                  {company}
+                  {location && <span class="text-fg-subtle"> · {location}</span>}
+                </p>
+                <p class="mt-1 text-xs text-fg-subtle">{period(start, end)}</p>
+                <div class="experience-body mt-4 text-sm leading-relaxed text-fg-muted">
+                  <Content />
+                </div>
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))
+    }
+  </ol>
+</ContentPanel>
+
+<style>
+  /* Línea vertical que une los marcadores de cada año. */
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: 19px;
+    width: 1px;
+    background-color: var(--color-line);
+  }
+
+  .timeline-dot {
+    position: relative;
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--color-line);
+    border-radius: 9999px;
+    background-color: var(--color-surface-raised);
+  }
+
+  .timeline-dot::after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    border-radius: 9999px;
+    background-color: var(--color-fg-subtle);
+  }
+
+  .experience-body :global(ul) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    padding-left: 1.25em;
+    list-style: disc;
+  }
+
+  .experience-body :global(li::marker) {
+    color: var(--color-fg-subtle);
+  }
+
+  .experience-body :global(strong) {
+    color: var(--color-fg);
+    font-weight: 700;
+  }
+</style>

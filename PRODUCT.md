@@ -20,7 +20,6 @@ Portfolio personal de Eduardo Apata Tito, Desarrollador Fullstack. Reúne en un 
 ## Positioning
 
 - **Experiencia en sector público:** sistemas para instituciones y municipios, con usuarios reales, trámites y exigencias de accesibilidad.
-- **Desarrollo con IA y agentes:** integra IA en su flujo de trabajo y en los productos que construye.
 - **Stack Laravel + JS moderno:** backend PHP/Laravel sólido combinado con frontend moderno (Astro y otros).
 - **Interés secundario en redes y ciberseguridad:** en formación (Cisco CCNA: Introduction to Networks). Se presenta como interés y aprendizaje, nunca como rol principal: primero es desarrollador.
 
@@ -52,7 +51,7 @@ Portfolio personal de Eduardo Apata Tito, Desarrollador Fullstack. Reúne en un 
 - Experiencia laboral, educación, certificaciones y habilidades: `cv/CV.tex` (experiencia en `src/content/experience`, el resto en `src/data/cv.ts`).
 - CV en PDF (español): `public/cv/eduardo-apata-tito-cv-es.pdf`.
 - Perfiles: GitHub `eduardoapatat`, LinkedIn `eapatatito` (en `src/data/profile.ts`).
-- Foto: pendiente.
+- Foto: el PDF del CV no lleva foto. Mejora futura: foto en la página del CV (no en el PDF).
 - No inventar proyectos, empresas, métricas, testimonios ni logros que no estén en el material entregado.
 
 ## Product Principles

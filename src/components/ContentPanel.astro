@@ -11,7 +11,8 @@ const { class: className, labelledby = 'page-title' } = Astro.props;
 ---
 
 <!-- tabindex: el panel tiene scroll propio y debe poder desplazarse con teclado aunque no tenga enlaces. -->
-<section
+<div
+  role="region"
   tabindex="0"
   aria-labelledby={labelledby}
   transition:name="content"
@@ -23,7 +24,7 @@ const { class: className, labelledby = 'page-title' } = Astro.props;
   ]}
 >
   <slot />
-</section>
+</div>
 
 <style>
   /* Bordes superior e inferior desvanecidos mientras el contenido se desplaza. */

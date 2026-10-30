@@ -18,7 +18,8 @@ type Props = {
 const lang = getLang(Astro.url);
 const t = useTranslations(lang);
 const { title, description = t('site.description'), noindex } = Astro.props;
-const pageTitle = title ? `${title} · ${profile.name}` : profile.name;
+// Sin título (inicio): "Nombre · Rol", para que el nombre encabece el resultado de búsqueda.
+const pageTitle = title ? `${title} · ${profile.name}` : `${profile.name} · ${profile.role[lang]}`;
 ---
 
 <html lang={lang} transition:name="root" transition:animate="none">

@@ -10,6 +10,14 @@ export const defaultLang: Lang = 'es';
 export const ui = {
   es: {
     'site.description': 'Portfolio de Eduardo Apata Tito, Desarrollador Fullstack.',
+    'meta.home':
+      'Eduardo Apata Tito, desarrollador fullstack en Arica, Chile. Sistemas web con Laravel y JavaScript para el sector público y formación en redes y ciberseguridad.',
+    'meta.projects':
+      'Proyectos de Eduardo Apata Tito, desarrollador fullstack: qué problema resuelve cada uno, tecnologías usadas y enlaces para verlos en vivo o revisar el código.',
+    'meta.experience':
+      'Experiencia de Eduardo Apata Tito en la Municipalidad de Arica, la Universidad de Tarapacá y CONADI: arquitectura de la información, BI y análisis de sistemas.',
+    'meta.cv':
+      'CV de Eduardo Apata Tito, Ingeniero Civil en Computación e Informática y desarrollador fullstack: experiencia, educación, certificación CCNA y tecnologías.',
     'nav.label': 'Navegación principal',
     'a11y.skip': 'Saltar al contenido',
     'nav.home': 'Inicio',
@@ -49,6 +57,14 @@ export const ui = {
   },
   en: {
     'site.description': 'Portfolio of Eduardo Apata Tito, Fullstack Developer.',
+    'meta.home':
+      'Eduardo Apata Tito, fullstack developer in Arica, Chile. Laravel and JavaScript web systems for the public sector, plus networking and cybersecurity training.',
+    'meta.projects':
+      'Projects by Eduardo Apata Tito, fullstack developer: the problem each one solves, the technologies behind it, and links to see it live or browse the code.',
+    'meta.experience':
+      'Experience of Eduardo Apata Tito at the Municipality of Arica, the University of Tarapacá and CONADI: information architecture, BI and systems analysis.',
+    'meta.cv':
+      'Resume of Eduardo Apata Tito, Computer and Informatics Engineer and fullstack developer: experience, education, Cisco CCNA certification and technologies.',
     'nav.label': 'Main navigation',
     'a11y.skip': 'Skip to content',
     'nav.home': 'Home',

@@ -1,8 +1,10 @@
 # Eduardo Apata Tito · Portfolio
 
-![Portada del portfolio: el nombre Eduardo Apata Tito, el rol Desarrollador Fullstack, los botones Ver proyectos y Ver CV y el dock de navegación](public/og/og-es.png)
+[![Portada del portfolio: el nombre Eduardo Apata Tito, el rol Desarrollador Fullstack, los botones Ver proyectos y Ver CV y el dock de navegación](public/og/og-es.png)](https://portfolio.eduardotito-jose01.workers.dev)
 
 Portfolio personal de Eduardo Apata Tito, desarrollador fullstack. Reúne proyectos, experiencia y CV, en español e inglés.
+
+**Sitio:** [portfolio.eduardotito-jose01.workers.dev](https://portfolio.eduardotito-jose01.workers.dev)
 
 Es un sitio estático hecho con Astro: cada sección tiene su propia URL, el encabezado y el dock se quedan fijos y solo cambia el contenido, con una transición corta.
 

@@ -1,0 +1,5 @@
+# Estadísticas de lenguajes de GitHub (linguist): solo el código del sitio.
+# Skill de terceros (Impeccable): sus scripts no son código de este proyecto.
+.claude/** linguist-vendored
+# Fuente LaTeX del CV: documento, no código del sitio.
+cv/** linguist-documentation

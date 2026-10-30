@@ -3,12 +3,17 @@ import { contentTransition } from '@/lib/transitions';
 
 type Props = {
   class?: string;
+  /** id del título de la página: da nombre a la región para lectores de pantalla. */
+  labelledby?: string;
 };
 
-const { class: className } = Astro.props;
+const { class: className, labelledby = 'page-title' } = Astro.props;
 ---
 
+<!-- tabindex: el panel tiene scroll propio y debe poder desplazarse con teclado aunque no tenga enlaces. -->
 <section
+  tabindex="0"
+  aria-labelledby={labelledby}
   transition:name="content"
   transition:animate={contentTransition}
   class:list={[
@@ -23,5 +28,11 @@ const { class: className } = Astro.props;
   /* Bordes superior e inferior desvanecidos mientras el contenido se desplaza. */
   .content-panel {
     mask-image: linear-gradient(to bottom, transparent 0%, #000 5%, #000 95%, transparent 100%);
+  }
+
+  /* El contorno exterior lo recortaría la máscara: se dibuja hacia dentro. */
+  .content-panel:focus-visible {
+    outline-offset: -2px;
+    border-radius: 0;
   }
 </style>

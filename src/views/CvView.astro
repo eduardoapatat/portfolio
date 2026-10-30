@@ -37,7 +37,7 @@ const contacts = [
 
 <ContentPanel>
   <header class="mb-8 flex flex-wrap items-center justify-between gap-4">
-    <h1 class="text-3xl font-bold md:text-4xl">{t('cv.title')}</h1>
+    <h1 id="page-title" class="text-3xl font-bold md:text-4xl">{t('cv.title')}</h1>
     {
       pdf && (
         <a href={pdf} download class="cv-download">
@@ -49,7 +49,7 @@ const contacts = [
   </header>
 
   <article class="cv-sheet grid overflow-hidden rounded-xl md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
-    <aside class="cv-aside flex flex-col gap-8 p-6 md:p-8">
+    <div class="cv-aside flex flex-col gap-8 p-6 md:p-8">
       <div>
         <h2 class="text-2xl leading-tight font-bold text-pretty">{profile.name}</h2>
         <p class="cv-accent mt-2 font-medium">{profile.role[lang]}</p>
@@ -81,7 +81,7 @@ const contacts = [
         <p class="text-sm leading-relaxed">{cv.summary[lang]}</p>
       </section>
 
-    </aside>
+    </div>
 
     <div class="flex flex-col gap-10 p-6 md:p-8">
       <section>

@@ -1,0 +1,12 @@
+// Despliegue en Cloudflare Workers como sitio estático (sin código de servidor).
+// https://docs.astro.build/en/guides/deploy/cloudflare/
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "portfolio",
+  "compatibility_date": "2026-10-30",
+  "assets": {
+    "directory": "./dist",
+    // Las URLs que no existen muestran dist/404.html con estado 404.
+    "not_found_handling": "404-page",
+  },
+}

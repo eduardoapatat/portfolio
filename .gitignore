@@ -41,3 +41,6 @@ cv/*.synctex.gz
 
 # Configuración local de Claude Code (personal, no se versiona)
 .claude/settings.local.json
+
+# Estado local de wrangler (wrangler dev)
+.wrangler/

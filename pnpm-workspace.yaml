@@ -1,3 +1,10 @@
+# Scripts de instalación de dependencias: pnpm los bloquea si no están revisados.
+# esbuild y workerd (vienen con wrangler) no los necesitan para desplegar archivos
+# estáticos: sus binarios llegan como paquetes opcionales por plataforma.
+allowBuilds:
+  esbuild: false
+  workerd: false
+
 minimumReleaseAgeExclude:
   - '@astrojs/markdown-satteri@0.4.6'
   - '@astrojs/prism@4.1.2'

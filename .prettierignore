@@ -10,3 +10,4 @@ cv/
 # Skills de terceros y archivos de trabajo de Impeccable
 .claude/
 .impeccable/
+.wrangler/

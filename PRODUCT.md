@@ -22,6 +22,7 @@ Portfolio personal de Eduardo Apata Tito, Desarrollador Fullstack. Reúne en un 
 - **Experiencia en sector público:** sistemas para instituciones y municipios, con usuarios reales, trámites y exigencias de accesibilidad.
 - **Desarrollo con IA y agentes:** integra IA en su flujo de trabajo y en los productos que construye.
 - **Stack Laravel + JS moderno:** backend PHP/Laravel sólido combinado con frontend moderno (Astro y otros).
+- **Interés secundario en redes y ciberseguridad:** en formación (Cisco CCNA: Introduction to Networks). Se presenta como interés y aprendizaje, nunca como rol principal: primero es desarrollador.
 
 ## Operating Context
 
@@ -33,9 +34,9 @@ Portfolio personal de Eduardo Apata Tito, Desarrollador Fullstack. Reúne en un 
 
 - Stack: Astro 7 con Tailwind CSS 4 (ya configurado en el repositorio).
 - Contenido de proyectos y experiencia mantenible sin tocar componentes (content collections).
-- CV en PDF disponible para ver o descargar.
+- CV como página HTML (mismo contenido y orden que `cv/CV.tex`) con descarga del PDF compilado. Sin teléfono en la web.
 - **Abierto:** hosting (no será Vercel; opciones: Netlify, Cloudflare Pages, GitHub Pages u otro).
-- **Abierto:** formato del CV en el sitio (solo PDF, o también versión HTML).
+- **Abierto:** versión en inglés del PDF del CV.
 
 ## Brand Commitments
 
@@ -48,9 +49,10 @@ Portfolio personal de Eduardo Apata Tito, Desarrollador Fullstack. Reúne en un 
 ## Evidence on Hand
 
 - Proyectos con enlace o capturas: existen, pendientes de entregar (rutas por definir).
-- Experiencia laboral: existe, pendiente de entregar.
-- CV en PDF: existe, pendiente de entregar.
-- Perfiles de GitHub y LinkedIn activos: URLs pendientes.
+- Experiencia laboral, educación, certificaciones y habilidades: `cv/CV.tex` (experiencia en `src/content/experience`, el resto en `src/data/cv.ts`).
+- CV en PDF (español): `public/cv/eduardo-apata-tito-cv-es.pdf`.
+- Perfiles: GitHub `eduardoapatat`, LinkedIn `eapatatito` (en `src/data/profile.ts`).
+- Foto: pendiente.
 - No inventar proyectos, empresas, métricas, testimonios ni logros que no estén en el material entregado.
 
 ## Product Principles

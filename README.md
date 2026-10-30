@@ -1,43 +1,131 @@
-# Astro Starter Kit: Minimal
+# Eduardo Apata Tito · Portfolio
+
+![Portada del portfolio: el nombre Eduardo Apata Tito, el rol Desarrollador Fullstack, los botones Ver proyectos y Ver CV y el dock de navegación](public/og/og-es.png)
+
+Portfolio personal de Eduardo Apata Tito, desarrollador fullstack. Reúne proyectos, experiencia y CV, en español e inglés.
+
+Es un sitio estático hecho con Astro: cada sección tiene su propia URL, el encabezado y el dock se quedan fijos y solo cambia el contenido, con una transición corta.
+
+## Qué tiene el sitio
+
+| Ruta (ES / EN)                      | Contenido                                                                         |
+| ----------------------------------- | --------------------------------------------------------------------------------- |
+| `/` · `/en/`                        | Presentación: nombre, rol, bajada, botones a proyectos y CV, y stack              |
+| `/proyectos/` · `/en/projects/`     | Tarjetas con descripción, tecnologías, enlaces y captura en un marco de navegador |
+| `/experiencia/` · `/en/experience/` | Línea de tiempo agrupada por año                                                  |
+| `/cv/` · `/en/resume/`              | CV como hoja, con descarga del PDF                                                |
+
+- **Dock** con magnificación según la cercanía del cursor, tooltip y estado activo, escrito en JS sin dependencias (`src/scripts/dock.ts`).
+- **Transiciones** entre secciones con View Transitions (`<ClientRouter />`).
+- **Accesible:** navegación por teclado, enlace para saltar al contenido, `prefers-reduced-motion` respetado y revisado con axe-core (WCAG 2.2 AA).
+- **SEO:** título y descripción únicos por página e idioma, Open Graph, datos estructurados (`ProfilePage`), sitemap con pares de idioma, `robots.txt` y página 404.
+
+## Tecnologías
+
+| Tecnología                                                                         | Para qué se usa                                                         |
+| ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| [Astro 7](https://astro.build)                                                     | Sitio estático, colecciones de contenido, i18n, transiciones e imágenes |
+| TypeScript                                                                         | Tipado estricto en componentes, contenido y scripts                     |
+| [Tailwind CSS 4](https://tailwindcss.com)                                          | Estilos, con los tokens de color en `@theme` (`src/styles/global.css`)  |
+| [JetBrains Mono](https://www.jetbrains.com/lp/mono/)                               | Tipografía única, cargada con la API de fuentes de Astro                |
+| [astro-icon](https://github.com/natemoo-re/astro-icon)                             | Íconos de Tabler y Simple Icons                                         |
+| [@astrojs/sitemap](https://docs.astro.build/en/guides/integrations-guide/sitemap/) | Sitemap con las versiones de cada idioma                                |
+| [ESLint](https://eslint.org) y [Prettier](https://prettier.io)                     | Revisión y formato del código, con los plugins de Astro                 |
+
+## Cómo correrlo
+
+Requiere Node 22.23 o superior y [pnpm](https://pnpm.io).
 
 ```sh
-pnpm create astro@latest -- --template minimal
+pnpm install
+pnpm dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+El sitio queda en `http://localhost:4321`.
 
-## 🚀 Project Structure
+| Comando             | Qué hace                                        |
+| :------------------ | :---------------------------------------------- |
+| `pnpm dev`          | Servidor de desarrollo                          |
+| `pnpm build`        | Genera el sitio estático en `dist/`             |
+| `pnpm preview`      | Sirve el build para revisarlo antes de publicar |
+| `pnpm check`        | Revisa los tipos de TypeScript y Astro          |
+| `pnpm lint`         | Revisa el código con ESLint                     |
+| `pnpm format`       | Aplica el formato de Prettier                   |
+| `pnpm format:check` | Revisa el formato sin modificar archivos        |
 
-Inside of your Astro project, you'll see the following folders and files:
+## Estructura
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+cv/CV.tex            Fuente LaTeX del CV (versión sin teléfono)
+public/
+├── cv/              PDF del CV que se descarga desde la web
+└── og/              Imágenes para compartir en redes (1200 × 630)
+src/
+├── assets/projects/ Capturas de los proyectos (Astro las optimiza)
+├── components/      Encabezado, dock, panel, tarjetas, SEO y fondo
+├── content/         Proyectos y experiencia, en carpetas es/ y en/
+├── data/            Perfil (profile.ts) y secciones del CV (cv.ts)
+├── i18n/            Textos de la interfaz y rutas de cada idioma
+├── layouts/         Layout base
+├── lib/             Consultas de contenido, formato de fechas, SEO y transiciones
+├── pages/           Rutas en español; en/ para inglés
+├── scripts/dock.ts  Magnificación del dock
+├── styles/          Estilos globales y tokens
+└── views/           Contenido de cada página, compartido entre idiomas
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Cómo actualizar el contenido
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+### Agregar un proyecto
 
-Any static assets, like images, can be placed in the `public/` directory.
+Crea un archivo por idioma en `src/content/projects/es/` y `src/content/projects/en/`, con el mismo nombre. La captura va en `src/assets/projects/`.
 
-## 🧞 Commands
+```md
+---
+title: Mi proyecto
+year: 2026
+category: Sitio web
+status: produccion # desarrollo | prototipo | produccion (opcional)
+tech: [Astro, TypeScript]
+url: https://mi-proyecto.vercel.app # opcional
+repo: https://github.com/eduardoapatat/mi-proyecto # opcional
+order: 3 # menor número = aparece antes
+image: ../../../assets/projects/mi-proyecto.webp # opcional
+imageAlt: Descripción de la captura
+---
 
-All commands are run from the root of the project, from a terminal:
+Descripción del proyecto en Markdown. Las **negritas** se destacan en la tarjeta.
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+### Agregar experiencia
 
-## 👀 Want to learn more?
+Igual que los proyectos, en `src/content/experience/es/` y `en/`. Sin `end`, el trabajo se muestra como actual.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```md
+---
+company: Empresa
+role: Cargo
+location: Arica, Chile
+start: 2026-01-01
+end: 2026-03-01
+---
+
+- Logro concreto, empezando con un verbo.
+```
+
+### Actualizar el CV
+
+1. Edita el `.tex` y compílalo (el original vive fuera del repo; `cv/CV.tex` es la copia sin teléfono).
+2. Reemplaza `public/cv/eduardo-apata-tito-cv-es.pdf` con el PDF nuevo.
+3. Refleja los cambios en la web: resumen, educación, certificaciones, habilidades y tecnologías en `src/data/cv.ts`, y la experiencia en `src/content/experience/`.
+
+## Publicación
+
+El sitio es estático y sirve en cualquier hosting. Define estas variables de entorno en el panel del hosting:
+
+| Variable                          | Para qué                                                                                                                                  |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `SITE_URL`                        | URL pública (ej. `https://mi-dominio.dev`). Activa canónicas, `hreflang`, Open Graph absoluto y sitemap. Sin ella el sitio compila igual. |
+| `PUBLIC_GOOGLE_SITE_VERIFICATION` | Opcional: código para verificar el sitio en Google Search Console                                                                         |
+
+Después de publicar, envía `https://mi-dominio.dev/sitemap-index.xml` en Google Search Console.

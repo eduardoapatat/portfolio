@@ -10,8 +10,8 @@ export const cv = {
     en: 'Computer and Informatics Engineer · Interested in networking and cybersecurity',
   } satisfies Localized,
   summary: {
-    es: 'Ingeniero Civil en Computación e Informática con experiencia en desarrollo web, análisis de sistemas y arquitectura de la información. Interés principal en redes y ciberseguridad, con formación Cisco CCNA. Lidero proyectos de principio a fin y comunico soluciones técnicas a usuarios no técnicos.',
-    en: 'Computer and Informatics Engineer with experience in web development, systems analysis and information architecture. Main interest in networking and cybersecurity, with Cisco CCNA training. I lead projects end to end and communicate technical solutions to non-technical users.',
+    es: 'Desarrollador fullstack e Ingeniero Civil en Computación e Informática. Construyo sistemas web con Laravel y JavaScript, con experiencia en el sector público. En formación en redes y ciberseguridad (Cisco CCNA).',
+    en: 'Fullstack developer and Computer and Informatics Engineer. I build web systems with Laravel and JavaScript, with public-sector experience. Training in networking and cybersecurity (Cisco CCNA).',
   } satisfies Localized,
   education: [
     {
@@ -45,7 +45,7 @@ export const cv = {
   technologies: [
     {
       category: { es: 'Desarrollo web', en: 'Web development' },
-      items: ['HTML', 'CSS', 'JavaScript', 'Astro', 'PHP', 'Laravel', 'API REST'],
+      items: ['HTML', 'CSS', 'JavaScript', 'TypeScript', 'Astro', 'Tailwind CSS', 'PHP', 'Laravel', 'API REST'],
     },
     {
       category: { es: 'Datos y BI', en: 'Data & BI' },

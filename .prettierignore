@@ -1,0 +1,12 @@
+# Generados
+dist/
+.astro/
+pnpm-lock.yaml
+
+# Binarios y fuentes que no son código
+public/
+cv/
+
+# Skills de terceros y archivos de trabajo de Impeccable
+.claude/
+.impeccable/

@@ -1,0 +1,118 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import BrowserFrame from '@/components/BrowserFrame.astro';
+import type { Lang } from '@/i18n/ui';
+import { useTranslations } from '@/i18n/utils';
+
+type Props = {
+  project: CollectionEntry<'projects'>;
+  lang: Lang;
+};
+
+const { project, lang } = Astro.props;
+const t = useTranslations(lang);
+const { title, year, category, status, tech, url, repo, image, imageAlt } = project.data;
+const { Content } = await render(project);
+---
+
+<article class="grid overflow-hidden rounded-2xl border border-line md:grid-cols-2">
+  <div class="flex flex-col gap-5 p-6 md:p-8">
+    <div class="flex flex-wrap items-center gap-2 text-xs">
+      <span class="text-fg-subtle">{year}</span>
+      <span class="rounded-full border border-line bg-surface-raised px-2.5 py-0.5 font-medium tracking-wide uppercase">
+        {category}
+      </span>
+      {
+        status && (
+          <span class:list={['rounded-full border px-2.5 py-0.5', `status-${status}`]}>
+            {t(`projects.status.${status}`)}
+          </span>
+        )
+      }
+    </div>
+
+    <h2 class="text-2xl font-bold text-balance">{title}</h2>
+
+    <div class="project-description text-sm leading-relaxed text-fg-muted">
+      <Content />
+    </div>
+
+    <div class="mt-auto flex flex-col gap-4">
+      {
+        tech.length > 0 && (
+          <ul class="flex flex-wrap gap-1.5" aria-label={t('projects.tech')}>
+            {tech.map((name) => (
+              <li class="rounded border border-line bg-surface-raised px-2 py-0.5 text-[11px] text-fg-subtle">
+                {name}
+              </li>
+            ))}
+          </ul>
+        )
+      }
+      {
+        (url || repo) && (
+          <div class="flex flex-wrap gap-4 text-sm">
+            {url && (
+              <a href={url} target="_blank" rel="noopener noreferrer" class="project-link">
+                <Icon name="tabler:external-link" class="size-4" aria-hidden="true" />
+                {t('projects.demo')}
+              </a>
+            )}
+            {repo && (
+              <a href={repo} target="_blank" rel="noopener noreferrer" class="project-link">
+                <Icon name="tabler:brand-github" class="size-4" aria-hidden="true" />
+                {t('projects.repo')}
+              </a>
+            )}
+          </div>
+        )
+      }
+    </div>
+  </div>
+
+  <div class="border-t border-line bg-surface-raised/40 p-4 md:border-t-0 md:border-l md:p-6">
+    <BrowserFrame image={image} alt={imageAlt ?? title} url={url} emptyLabel={t('projects.noImage')} />
+  </div>
+</article>
+
+<style>
+  .project-description :global(strong) {
+    color: var(--color-fg);
+    font-weight: 700;
+  }
+
+  .project-description :global(p + p) {
+    margin-top: 0.75em;
+  }
+
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-fg);
+    text-decoration: underline;
+    text-decoration-color: var(--color-button-line);
+    text-underline-offset: 4px;
+    transition: text-decoration-color 150ms ease-out;
+  }
+
+  @media (hover: hover) {
+    .project-link:hover {
+      text-decoration-color: var(--color-fg);
+    }
+  }
+
+  .status-desarrollo {
+    border-color: rgb(251 191 36 / 0.3);
+    background-color: rgb(251 191 36 / 0.08);
+    color: #fcd34d;
+  }
+
+  .status-produccion {
+    border-color: rgb(52 211 153 / 0.3);
+    background-color: rgb(52 211 153 / 0.08);
+    color: #6ee7b7;
+  }
+</style>

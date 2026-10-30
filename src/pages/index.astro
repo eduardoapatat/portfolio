@@ -1,10 +1,8 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import { contentTransition } from '@/lib/transitions';
+import HomeView from '@/views/HomeView.astro';
 ---
 
 <Layout>
-  <p transition:name="hero" transition:animate={contentTransition} class="text-fg-subtle">
-    Inicio (se arma en el paso 6)
-  </p>
+  <HomeView lang="es" />
 </Layout>

@@ -1,0 +1,67 @@
+---
+import { Icon } from 'astro-icon/components';
+import { profile } from '@/data/profile';
+import type { Lang } from '@/i18n/ui';
+import { pathFor, useTranslations } from '@/i18n/utils';
+import { contentTransition } from '@/lib/transitions';
+
+type Props = {
+  lang: Lang;
+};
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section
+  transition:name="hero"
+  transition:animate={contentTransition}
+  class="flex max-w-4xl flex-col items-center text-center"
+>
+  <h1 class="text-balance">
+    <span class="mb-3 block text-xl font-medium text-fg-muted md:text-3xl">
+      {`${t('home.greeting')} ${profile.name}`}
+    </span>
+    <span class="block text-4xl leading-none font-bold tracking-tight sm:text-5xl md:text-6xl">
+      {profile.role[lang]}
+    </span>
+  </h1>
+
+  <p class="mt-6 max-w-[60ch] text-base text-pretty text-fg-subtle md:text-lg">
+    {profile.tagline[lang]}
+  </p>
+
+  <div class="mt-9 flex flex-wrap justify-center gap-3">
+    <a href={pathFor('projects', lang)} class="hero-button">{t('home.cta.projects')}</a>
+    <a href={pathFor('cv', lang)} class="hero-button">{t('home.cta.cv')}</a>
+  </div>
+
+  <ul class="mt-10 flex flex-wrap justify-center gap-5" aria-label={t('home.stack')}>
+    {
+      profile.stack.map((tech) => (
+        <li title={tech.name}>
+          <Icon name={tech.icon} class="size-6 text-fg" aria-hidden="true" />
+          <span class="sr-only">{tech.name}</span>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .hero-button {
+    border-radius: 8px;
+    background-color: var(--color-surface);
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-fg);
+    transition: background-color 150ms ease-out;
+  }
+
+  @media (hover: hover) {
+    .hero-button:hover {
+      background-color: var(--color-surface-raised);
+    }
+  }
+</style>

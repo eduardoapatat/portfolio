@@ -4,6 +4,8 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "portfolio",
   "compatibility_date": "2026-10-30",
+  // Sin URLs de vista previa por versión: serían copias públicas del sitio.
+  "preview_urls": false,
   "assets": {
     "directory": "./dist",
     // Las URLs que no existen muestran dist/404.html con estado 404.

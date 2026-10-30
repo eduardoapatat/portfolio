@@ -20,11 +20,14 @@ const site = Astro.site;
 const absolute = (path: string) => (site ? new URL(path, site).href : undefined);
 const canonical = absolute(Astro.url.pathname);
 
-const alternates = (Object.keys(languages) as Lang[]).map((code) => {
-  const path = alternatePath(Astro.url, code);
-  return { code, href: absolute(path) ?? path };
-});
-const xDefault = alternates.find(({ code }) => code === defaultLang)!;
+// hreflang exige URL absoluta: una relativa es inválida (Lighthouse la marca), así que sin `site` no se emite.
+const alternates = site
+  ? (Object.keys(languages) as Lang[]).map((code) => ({
+      code,
+      href: new URL(alternatePath(Astro.url, code), site).href,
+    }))
+  : [];
+const xDefault = alternates.find(({ code }) => code === defaultLang);
 
 const ogLocale: Record<Lang, string> = { es: 'es_CL', en: 'en_US' };
 
@@ -48,7 +51,7 @@ const siteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
       {alternates.map(({ code, href }) => (
         <link rel="alternate" hreflang={code} href={href} />
       ))}
-      <link rel="alternate" hreflang="x-default" href={xDefault.href} />
+      {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault.href} />}
     </>
   )
 }

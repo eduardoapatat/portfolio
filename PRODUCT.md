@@ -39,9 +39,9 @@ Portfolio personal de Eduardo Apata Tito, Desarrollador Fullstack. Reúne en un 
 
 ## Brand Commitments
 
-- **JetBrains Mono** es la tipografía de todo el sitio, incluido el nombre del encabezado (decisión definitiva del usuario).
+- **JetBrains Mono** es la tipografía de todo el sitio, incluido el nombre del encabezado.
 - Sin cursor personalizado (descartado por el usuario).
-- **Diseño definitivo:** el dock, el encabezado, el panel, las tarjetas, la línea de tiempo y la hoja del CV quedan como están (decisión del usuario). No se rediseñan sin que lo pida.
+- **Diseño vigente:** el dock, el encabezado, el panel, las tarjetas, la línea de tiempo y la hoja del CV quedan como están por ahora. El usuario cambiará algunas cosas más adelante; no se rediseña nada sin que lo pida.
 - **Pendiente:** el fondo. Hoy es un degradado provisional, aislado en `src/components/Background.astro` para reemplazarlo sin tocar el resto.
 - **Dirección visual fijada por el usuario: seguir de cerca tomasdinh.cz** (estructura, look y comportamiento: fondo oscuro degradado con estrellas, hero centrado, dock flotante con magnificación, panel central con scroll interno, tarjetas de proyecto con captura en marco de navegador, línea de tiempo por año, CV como hoja blanca). Se rechazaron direcciones alternativas generadas. Lo propio es el nombre/logotipo, el contenido y los textos; nunca se copian su logo, textos ni imágenes.
 

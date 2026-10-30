@@ -11,6 +11,7 @@ export const ui = {
   es: {
     'site.description': 'Portfolio de Eduardo Apata Tito, Desarrollador Fullstack.',
     'nav.label': 'Navegación principal',
+    'a11y.skip': 'Saltar al contenido',
     'nav.home': 'Inicio',
     'nav.projects': 'Proyectos',
     'nav.experience': 'Experiencia',
@@ -49,6 +50,7 @@ export const ui = {
   en: {
     'site.description': 'Portfolio of Eduardo Apata Tito, Fullstack Developer.',
     'nav.label': 'Main navigation',
+    'a11y.skip': 'Skip to content',
     'nav.home': 'Home',
     'nav.projects': 'Projects',
     'nav.experience': 'Experience',

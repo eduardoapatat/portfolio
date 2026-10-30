@@ -12,7 +12,7 @@ const projects = defineCollection({
       title: z.string(),
       year: z.number().int(),
       category: z.string(),
-      status: z.enum(['desarrollo', 'produccion']).optional(),
+      status: z.enum(['desarrollo', 'prototipo', 'produccion']).optional(),
       tech: z.array(z.string()).default([]),
       url: z.url().optional(),
       repo: z.url().optional(),

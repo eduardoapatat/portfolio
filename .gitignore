@@ -38,3 +38,6 @@ cv/*.fls
 cv/*.log
 cv/*.out
 cv/*.synctex.gz
+
+# Configuración local de Claude Code (personal, no se versiona)
+.claude/settings.local.json

@@ -121,7 +121,7 @@ end: 2026-03-01
 
 ## Publicación
 
-Se publica en **Cloudflare Workers** como sitio estático (`wrangler.jsonc`): cada push a `main` construye y despliega el sitio. En el proyecto de Cloudflare (Workers Builds):
+Se publica en **Cloudflare Workers** como sitio estático (`wrangler.jsonc`): cada push a `main` construye y despliega el sitio en [portfolio.eduardotito-jose01.workers.dev](https://portfolio.eduardotito-jose01.workers.dev). En el proyecto de Cloudflare (Workers Builds):
 
 - **Build command:** `pnpm build`
 - **Deploy command:** `npx wrangler deploy`
@@ -130,10 +130,11 @@ Variables de build:
 
 | Variable                          | Para qué                                                                                                                                  |
 | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `PNPM_VERSION`                    | Versión de pnpm del build (ej. `12.15.0`). Sin ella, Cloudflare usa una versión antigua.                                                  |
 | `SITE_URL`                        | URL pública (ej. `https://mi-dominio.dev`). Activa canónicas, `hreflang`, Open Graph absoluto y sitemap. Sin ella el sitio compila igual. |
 | `PUBLIC_GOOGLE_SITE_VERIFICATION` | Opcional: código para verificar el sitio en Google Search Console                                                                         |
 
-La versión de Node sale de `.node-version`. Para probar el sitio en el runtime de Cloudflare: `pnpm build && pnpm exec wrangler dev`.
+La versión de Node sale de `.node-version` y la de pnpm, de `packageManager` en `package.json`. pnpm también la registra en `pnpm-lock.yaml`, y Cloudflare instala con el lockfile congelado: al actualizar pnpm (`pnpm self-update`), corre `pnpm install` y sube **ambos** archivos en el mismo commit, o el build falla.
+
+Para probar el sitio en el runtime de Cloudflare: `pnpm build && pnpm exec wrangler dev`.
 
 Después de publicar, envía `https://mi-dominio.dev/sitemap-index.xml` en Google Search Console.

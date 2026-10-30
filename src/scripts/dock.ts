@@ -25,15 +25,19 @@ function setupDock() {
 
   const render = () => {
     frame = 0;
-    for (const item of items) {
-      if (pointerX === null) {
-        item.style.removeProperty('--dock-size');
-        continue;
-      }
-      const rect = item.getBoundingClientRect();
-      const distance = Math.abs(pointerX - (rect.left + rect.width / 2));
-      item.style.setProperty('--dock-size', `${sizeFor(distance)}px`);
+    const x = pointerX;
+    if (x === null) {
+      for (const item of items) item.style.removeProperty('--dock-size');
+      return;
     }
+    // Primero todas las lecturas y después todas las escrituras: evita un reflow por ítem.
+    const centers = items.map((item) => {
+      const rect = item.getBoundingClientRect();
+      return rect.left + rect.width / 2;
+    });
+    items.forEach((item, i) => {
+      item.style.setProperty('--dock-size', `${sizeFor(Math.abs(x - centers[i]))}px`);
+    });
   };
 
   const schedule = () => {

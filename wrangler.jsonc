@@ -6,6 +6,8 @@
   "compatibility_date": "2026-10-30",
   // Sin URLs de vista previa por versión: serían copias públicas del sitio.
   "preview_urls": false,
+  // Dominio propio: Cloudflare crea el registro DNS y el certificado al desplegar.
+  "routes": [{ "pattern": "eduardoapata.cl", "custom_domain": true }],
   "assets": {
     "directory": "./dist",
     // Las URLs que no existen muestran dist/404.html con estado 404.

@@ -1,10 +1,10 @@
 # Eduardo Apata Tito · Portfolio
 
-[![Portada del portfolio: el nombre Eduardo Apata Tito, el rol Desarrollador Fullstack, los botones Ver proyectos y Ver CV y el dock de navegación](public/og/og-es.png)](https://portfolio.eduardotito-jose01.workers.dev)
+[![Portada del portfolio: el nombre Eduardo Apata Tito, el rol Desarrollador Fullstack, los botones Ver proyectos y Ver CV y el dock de navegación](public/og/og-es.png)](https://eduardoapata.cl)
 
 Portfolio personal de Eduardo Apata Tito, desarrollador fullstack. Reúne proyectos, experiencia y CV, en español e inglés.
 
-**Sitio:** [portfolio.eduardotito-jose01.workers.dev](https://portfolio.eduardotito-jose01.workers.dev)
+**Sitio:** [eduardoapata.cl](https://eduardoapata.cl)
 
 Es un sitio estático hecho con Astro: cada sección tiene su propia URL, el encabezado y el dock se quedan fijos y solo cambia el contenido, con una transición corta.
 
@@ -123,20 +123,20 @@ end: 2026-03-01
 
 ## Publicación
 
-Se publica en **Cloudflare Workers** como sitio estático (`wrangler.jsonc`): cada push a `main` construye y despliega el sitio en [portfolio.eduardotito-jose01.workers.dev](https://portfolio.eduardotito-jose01.workers.dev). En el proyecto de Cloudflare (Workers Builds):
+Se publica en **Cloudflare Workers** como sitio estático (`wrangler.jsonc`): cada push a `main` construye y despliega el sitio en [eduardoapata.cl](https://eduardoapata.cl). En el proyecto de Cloudflare (Workers Builds):
 
 - **Build command:** `pnpm build`
 - **Deploy command:** `npx wrangler deploy`
 
 Variables de build:
 
-| Variable                          | Para qué                                                                                                                                  |
-| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `SITE_URL`                        | URL pública (ej. `https://mi-dominio.dev`). Activa canónicas, `hreflang`, Open Graph absoluto y sitemap. Sin ella el sitio compila igual. |
-| `PUBLIC_GOOGLE_SITE_VERIFICATION` | Opcional: código para verificar el sitio en Google Search Console                                                                         |
+| Variable                          | Para qué                                                                                                                                   |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `SITE_URL`                        | URL pública (ej. `https://eduardoapata.cl`). Activa canónicas, `hreflang`, Open Graph absoluto y sitemap. Sin ella el sitio compila igual. |
+| `PUBLIC_GOOGLE_SITE_VERIFICATION` | Opcional: código para verificar el sitio en Google Search Console                                                                          |
 
 La versión de Node sale de `.node-version` y la de pnpm, de `packageManager` en `package.json`. pnpm también la registra en `pnpm-lock.yaml`, y Cloudflare instala con el lockfile congelado: al actualizar pnpm (`pnpm self-update`), corre `pnpm install` y sube **ambos** archivos en el mismo commit, o el build falla.
 
 Para probar el sitio en el runtime de Cloudflare: `pnpm build && pnpm exec wrangler dev`.
 
-Después de publicar, envía `https://mi-dominio.dev/sitemap-index.xml` en Google Search Console.
+Después de publicar, envía `https://eduardoapata.cl/sitemap-index.xml` en Google Search Console.

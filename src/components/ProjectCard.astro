@@ -18,28 +18,42 @@ const { project, lang } = Astro.props;
 const t = useTranslations(lang);
 const { title, year, category, status, tech, url, repo, image, imageAlt } = project.data;
 const { Content } = await render(project);
+// GitHub abre el README con el ancla #readme.
+const readme = repo && `${repo.replace(/\/$/, '')}#readme`;
 ---
 
-<article class="grid grid-cols-[minmax(0,1fr)] overflow-hidden rounded-2xl border border-line lg:grid-cols-2">
-  <div class="flex flex-col gap-5 p-6 md:p-8">
-    <div class="flex flex-wrap items-center gap-2 text-xs">
-      <span class="text-fg-subtle">{year}</span>
-      <span class="rounded-full border border-line bg-surface-raised px-2.5 py-0.5 font-medium tracking-wide uppercase">
-        {category}
-      </span>
-      {status && <Badge tone={projectStatusTone[status]}>{t(`projects.status.${status}`)}</Badge>}
-    </div>
+<!-- En pantallas grandes la captura (16:9) fija el alto de la tarjeta: el texto se ajusta a ese
+     alto y, si la descripción no cabe, se desvanece; "Ver más" lleva al README del repositorio. -->
+<article class="grid grid-cols-[minmax(0,1fr)] overflow-hidden rounded-2xl border border-line lg:min-h-[22rem] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+  <div class="relative">
+    <div class="flex flex-col gap-3.5 p-6 lg:absolute lg:inset-0">
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <span class="text-fg-subtle">{year}</span>
+        <span class="rounded-full border border-line bg-surface-raised px-2.5 py-0.5 font-medium tracking-wide uppercase">
+          {category}
+        </span>
+        {status && <Badge tone={projectStatusTone[status]}>{t(`projects.status.${status}`)}</Badge>}
+      </div>
 
-    <h2 class="text-2xl font-bold text-balance">{title}</h2>
+      <h2 class="text-xl font-bold text-balance md:text-2xl">{title}</h2>
 
-    <div class="project-description text-sm leading-relaxed text-fg-muted">
-      <Content />
-    </div>
+      <div
+        data-project-description
+        class="project-description min-h-0 text-sm leading-relaxed text-fg-muted lg:overflow-hidden"
+      >
+        <Content />
+      </div>
 
-    <div class="mt-auto flex flex-col gap-4">
-      {tech.length > 0 && <TechChips items={tech} label={t('projects.tech')} />}
+      {tech.length > 0 && <TechChips items={tech} label={t('projects.tech')} class="shrink-0" />}
+
       {(url || repo) && (
-        <div class="flex flex-wrap gap-4 text-sm">
+        <div class="mt-auto flex shrink-0 flex-wrap gap-x-4 gap-y-2 pt-2 text-sm">
+          {readme && (
+            <a href={readme} target="_blank" rel="noopener noreferrer" class="project-link">
+              <Icon name="lucide:book-open" class="size-4" aria-hidden="true" />
+              {t('projects.readMore')}
+            </a>
+          )}
           {url && (
             <a href={url} target="_blank" rel="noopener noreferrer" class="project-link">
               <Icon name="lucide:external-link" class="size-4" aria-hidden="true" />
@@ -57,9 +71,9 @@ const { Content } = await render(project);
     </div>
   </div>
 
-  <div class="flex flex-col border-t border-line bg-surface-raised/40 p-4 md:p-6 lg:border-t-0 lg:border-l">
+  <div class="border-t border-line bg-surface-raised p-4 md:p-6 lg:flex lg:items-center lg:border-t-0 lg:border-l">
     <BrowserFrame
-      class="fill flex-1"
+      class="w-full"
       image={image}
       alt={imageAlt ?? title}
       url={url}
@@ -78,6 +92,8 @@ const { Content } = await render(project);
     margin-top: 0.75em;
   }
 
+  /* Si la descripción no cabe en el alto de la captura, sus últimas líneas se desvanecen
+     (data-clipped lo pone el script de abajo solo cuando el texto de verdad se corta). */
   .project-link {
     display: inline-flex;
     align-items: center;
@@ -94,4 +110,22 @@ const { Content } = await render(project);
       text-decoration-color: var(--color-fg);
     }
   }
+
+  .project-description[data-clipped] {
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 2.5em), transparent);
+  }
 </style>
+
+<script>
+  // Marca las descripciones recortadas; se vuelve a medir cuando cambia el tamaño de cada una.
+  const clipped = new ResizeObserver((entries) => {
+    for (const { target } of entries) {
+      target.toggleAttribute('data-clipped', target.scrollHeight > target.clientHeight + 1);
+    }
+  });
+
+  document.addEventListener('astro:page-load', () => {
+    clipped.disconnect();
+    document.querySelectorAll('[data-project-description]').forEach((el) => clipped.observe(el));
+  });
+</script>

@@ -36,11 +36,11 @@ const host = url ? new URL(url).host : 'localhost';
       src={image}
       alt={alt}
       widths={[640, 960, 1280]}
-      sizes="(min-width: 768px) 40vw, 90vw"
-      class="frame-media aspect-video w-full object-cover object-top"
+      sizes="(min-width: 1024px) 35vw, 90vw"
+      class="aspect-video w-full object-cover object-top"
     />
   ) : (
-    <div class="frame-media grid aspect-video place-items-center text-fg-subtle">
+    <div class="grid aspect-video place-items-center text-fg-subtle">
       <span class="flex flex-col items-center gap-2 text-xs">
         <Icon name="lucide:image" class="size-7" aria-hidden="true" />
         {emptyLabel}
@@ -48,15 +48,3 @@ const host = url ? new URL(url).host : 'localhost';
     </div>
   )}
 </figure>
-
-<style>
-  /* Con la clase "fill" en pantallas grandes, la captura llena el alto disponible
-     (recortada desde arriba) en vez de dejar espacio vacío bajo ella. */
-  @media (width >= 64rem) {
-    .fill .frame-media {
-      flex: 1 1 0;
-      min-height: 240px;
-      aspect-ratio: auto;
-    }
-  }
-</style>

@@ -1,8 +1,9 @@
 // Magnificación del dock: cada ítem crece según la cercanía horizontal del cursor.
 // Solo escribe la variable --dock-size; el aspecto vive en Dock.astro.
 
-const BASE_SIZE = 40;
-const MAX_SIZE = 80;
+// BASE_SIZE coincide con --dock-base de escritorio (Dock.astro): solo se magnifica con puntero fino.
+const BASE_SIZE = 48;
+const MAX_SIZE = 84;
 const RANGE = 150;
 
 const canMagnify = () =>

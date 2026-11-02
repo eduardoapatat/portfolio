@@ -1,11 +1,10 @@
 ---
 import { render } from 'astro:content';
-import Badge from '@/components/Badge.astro';
 import ContentPanel from '@/components/ContentPanel.astro';
+import ExperienceCard from '@/components/ExperienceCard.astro';
 import type { Lang } from '@/i18n/ui';
 import { useTranslations } from '@/i18n/utils';
 import { getExperience } from '@/lib/content';
-import { formatPeriod } from '@/lib/format';
 
 type Props = {
   lang: Lang;
@@ -14,7 +13,6 @@ type Props = {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const experience = await getExperience(lang);
-const period = (start: Date, end?: Date) => formatPeriod(lang, start, end);
 
 // Agrupa por año de inicio; getExperience ya viene ordenado de más reciente a más antiguo.
 const groups = Map.groupBy(experience, (entry) => entry.data.start.getUTCFullYear());
@@ -22,7 +20,7 @@ const timeline = await Promise.all(
   [...groups].map(async ([year, entries]) => ({
     year,
     entries: await Promise.all(
-      entries.map(async (entry) => ({ ...entry.data, Content: (await render(entry)).Content })),
+      entries.map(async (entry) => ({ data: entry.data, Content: (await render(entry)).Content })),
     ),
   })),
 );
@@ -44,21 +42,10 @@ const timeline = await Promise.all(
           <h2 class="text-4xl font-bold text-fg-subtle md:text-5xl">{year}</h2>
         </div>
 
-        <ul class="flex flex-col gap-10 pl-15 md:pl-0">
-          {entries.map(({ role, type, company, location, start, end, Content }) => (
+        <ul class="flex flex-col gap-5 pl-15 md:pl-0">
+          {entries.map(({ data, Content }) => (
             <li>
-              <h3 class="flex flex-wrap items-center gap-x-3 gap-y-1 text-lg font-bold">
-                {role}
-                {type && <Badge tone="accent">{t(`experience.type.${type}`)}</Badge>}
-              </h3>
-              <p class="mt-1 text-sm text-fg-muted">
-                {company}
-                {location && <span class="text-fg-subtle"> · {location}</span>}
-              </p>
-              <p class="mt-1 text-xs text-fg-subtle">{period(start, end)}</p>
-              <div class="experience-body mt-4 text-sm leading-relaxed text-fg-muted">
-                <Content />
-              </div>
+              <ExperienceCard entry={data} lang={lang} Content={Content} />
             </li>
           ))}
         </ul>
@@ -97,22 +84,5 @@ const timeline = await Promise.all(
     height: 12px;
     border-radius: 9999px;
     background-color: var(--color-fg-subtle);
-  }
-
-  .experience-body :global(ul) {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
-    padding-left: 1.25em;
-    list-style: disc;
-  }
-
-  .experience-body :global(li::marker) {
-    color: var(--color-fg-subtle);
-  }
-
-  .experience-body :global(strong) {
-    color: var(--color-fg);
-    font-weight: 700;
   }
 </style>

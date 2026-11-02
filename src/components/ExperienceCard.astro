@@ -1,0 +1,60 @@
+---
+// Un puesto como tarjeta: empresa y tipo, cargo, período y lugar. Sin `Content`, solo la cabecera.
+import type { CollectionEntry } from 'astro:content';
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+import Badge from '@/components/Badge.astro';
+import type { Lang } from '@/i18n/ui';
+import { useTranslations } from '@/i18n/utils';
+import { formatPeriod } from '@/lib/format';
+
+type Props = {
+  entry: CollectionEntry<'experience'>['data'];
+  lang: Lang;
+  Content?: AstroComponentFactory;
+};
+
+const { entry, lang, Content } = Astro.props;
+const t = useTranslations(lang);
+const { company, role, type, location, start, end } = entry;
+---
+
+<article class="rounded-2xl border border-line bg-surface-raised p-5 md:p-6">
+  <div class="flex flex-col gap-3 sm:flex-row sm:justify-between sm:gap-6">
+    <div class="min-w-0">
+      <h3 class="flex flex-wrap items-center gap-x-3 gap-y-1.5 font-bold text-fg">
+        {company}
+        {type && <Badge tone="accent">{t(`experience.type.${type}`)}</Badge>}
+      </h3>
+      <p class="mt-1.5 text-sm text-fg-muted">{role}</p>
+    </div>
+    <p class="shrink-0 text-xs leading-relaxed text-fg-subtle sm:text-right">
+      <span class="block">{formatPeriod(lang, start, end)}</span>
+      {location && <span class="block">{location}</span>}
+    </p>
+  </div>
+
+  {Content && (
+    <div class="experience-body mt-4 border-t border-line pt-4 text-sm leading-relaxed text-fg-muted">
+      <Content />
+    </div>
+  )}
+</article>
+
+<style>
+  .experience-body :global(ul) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    padding-left: 1.25em;
+    list-style: disc;
+  }
+
+  .experience-body :global(li::marker) {
+    color: var(--color-fg-subtle);
+  }
+
+  .experience-body :global(strong) {
+    color: var(--color-fg);
+    font-weight: 700;
+  }
+</style>

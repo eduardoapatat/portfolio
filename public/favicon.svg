@@ -1,1 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0b0b0b"/><path fill="#ffffff" d="M11.92 46.08V17.92H28.82V22.16H16.67V29.49H27.47V33.58H16.67V41.84H28.82V46.08ZM31.63 46.08 38.73 17.92H44.94L52.08 46.08H47.14L45.6 39.25H38.11L36.57 46.08ZM39 35.32H44.71L43.01 27.76Q42.59 25.87 42.28 24.34Q41.97 22.82 41.86 22.12Q41.74 22.82 41.43 24.34Q41.12 25.87 40.7 27.72Z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Logo EA (public/logo.svg) en blanco sobre tecla negra; trazo más grueso para que se lea a 16 px. -->
+  <rect width="64" height="64" rx="14" fill="#0b0b0b"/>
+  <svg x="3" y="3" width="58" height="58" viewBox="-11.4 -3 70 70" fill="none" stroke="#fff" stroke-width="5.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2">
+    <path d="M14 12H3L0 15V28L-5 32 0 36V49L3 52H14"/>
+    <path d="M-2 32H10"/>
+    <path d="M24.42 52 31.42 12"/>
+    <path d="M39.77 12 46.77 52M34.23 39H43.49"/>
+  </svg>
+</svg>

@@ -1,5 +1,5 @@
 ---
-// Tarjeta de perfil del inicio: identidad, contacto, hora local y acceso al menú de comandos.
+// Tarjeta de perfil con forma de celular: identidad, contacto, hora local y acceso al menú de comandos.
 import { Icon } from 'astro-icon/components';
 import { profile } from '@/data/profile';
 import type { Lang } from '@/i18n/ui';
@@ -21,16 +21,13 @@ const socials = [
 ];
 ---
 
-<!-- Marco doble: borde exterior tenue y tarjeta interior negra; en escritorio ocupa el alto de la columna. -->
-<div class="h-full rounded-[2rem] border border-button-line bg-surface p-1.5">
-  <div class="flex h-full flex-col rounded-[1.625rem] border border-line bg-bg p-5 md:p-6">
-    <div class="flex items-center justify-between gap-3 text-xs text-fg-subtle">
-      <span class="inline-flex items-center gap-1.5">
-        <Icon name="lucide:map-pin" class="size-3.5" aria-hidden="true" />
-        {profile.location}
-      </span>
-      <!-- Hora de Arica, la escribe el script; sin JavaScript solo queda la ciudad. -->
-      <span class="inline-flex min-w-[8ch] items-center justify-end gap-1.5">
+<!-- Estilo celular: marco del teléfono, barra de estado arriba y barra de direcciones de Safari abajo.
+     En escritorio ocupa el alto de la columna. -->
+<div class="h-full rounded-[2.75rem] border border-button-line bg-surface p-2">
+  <div class="flex h-full flex-col overflow-hidden rounded-[2.25rem] border border-line bg-bg">
+    <!-- Barra de estado: la hora de Arica la escribe el script; isla e íconos son decorativos. -->
+    <div class="relative flex h-12 shrink-0 items-center justify-between px-7 text-[13px] font-bold text-fg">
+      <span class="min-w-[6ch]">
         <span class="sr-only">{t('profile.localTime')}</span>
         <time
           data-clock
@@ -38,9 +35,18 @@ const socials = [
           class="tabular-nums"
         ></time>
       </span>
+      <span
+        aria-hidden="true"
+        class="absolute top-3 left-1/2 h-6 w-22 -translate-x-1/2 rounded-full bg-line"
+      ></span>
+      <span aria-hidden="true" class="flex items-center gap-1.5">
+        <Icon name="lucide:signal-high" class="size-3.5" />
+        <Icon name="lucide:wifi" class="size-3.5" />
+        <Icon name="lucide:battery-full" class="size-5" />
+      </span>
     </div>
 
-    <div class="mt-4 flex flex-1 flex-col justify-center border-t border-line py-6 text-center">
+    <div class="flex flex-1 flex-col justify-center px-6 py-6 text-center">
       <img
         src="/favicon.svg"
         alt=""
@@ -63,13 +69,18 @@ const socials = [
           data-copy-email={profile.email}
           data-copied-label={t('profile.copied')}
           aria-label={t('profile.copy')}
-          class="copy-button grid size-7 shrink-0 place-items-center rounded-full text-fg-subtle transition-colors hover:bg-surface-hover hover:text-fg"
+          class="copy-button grid size-7 shrink-0 place-items-center rounded-full text-fg-subtle transition-colors hover:bg-line hover:text-fg"
         >
           <Icon name="lucide:copy" class="copy-icon size-3.5" aria-hidden="true" />
           <Icon name="lucide:check" class="check-icon size-3.5 text-success" aria-hidden="true" />
         </button>
       </div>
       <p data-copy-status role="status" class="sr-only"></p>
+
+      <p class="mt-3 inline-flex items-center justify-center gap-1.5 text-xs text-fg-subtle">
+        <Icon name="lucide:map-pin" class="size-3.5" aria-hidden="true" />
+        {profile.location}
+      </p>
 
       <ul class="mt-5 flex justify-center gap-2">
         {socials.map(({ href, label, icon }) => (
@@ -88,22 +99,33 @@ const socials = [
       </ul>
     </div>
 
-    <div class="border-t border-line pt-4">
+    <!-- Barra de direcciones de Safari: abre el menú de comandos. -->
+    <div class="px-4 pb-2.5">
       <button
         type="button"
         data-command-menu-open
         aria-keyshortcuts="Control+K Meta+K"
-        class="flex h-12 w-full items-center gap-2.5 rounded-full border border-line bg-surface px-4 text-left text-sm text-fg-subtle transition-colors hover:border-button-line hover:text-fg"
+        class="flex h-12 w-full items-center gap-2.5 rounded-full border border-line bg-surface-hover pr-1.5 pl-4 text-left text-sm text-fg-subtle transition-colors hover:border-button-line hover:text-fg"
       >
-        <Icon name="lucide:search" class="size-4" aria-hidden="true" />
-        <span class="flex-1">{t('cmd.title')}</span>
+        <Icon name="lucide:search" class="size-4 shrink-0" aria-hidden="true" />
+        <span class="min-w-0 flex-1 truncate">{t('cmd.title')}</span>
         <kbd
           data-command-shortcut
           class="hidden rounded border border-line px-1.5 text-[11px] lg:inline"
         >
           Ctrl K
         </kbd>
+        <span
+          aria-hidden="true"
+          class="grid size-9 shrink-0 place-items-center rounded-full bg-fg text-bg"
+        >
+          <Icon name="lucide:arrow-up-right" class="size-4" />
+        </span>
       </button>
+      <span
+        aria-hidden="true"
+        class="mx-auto mt-3 block h-1 w-28 rounded-full bg-button-line"
+      ></span>
     </div>
   </div>
 </div>

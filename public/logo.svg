@@ -1,9 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-14.60 -3.00 70.0 70.0" fill="none" stroke="#000" stroke-width="4.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" role="img" aria-label="EA">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-11.40 -3.00 70 70" fill="none" stroke="#000" stroke-width="4.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" role="img" aria-label="EA">
   <!-- E formada por una { completa (llave recta, con chaflanes) -->
   <path d="M14 12H3L0 15V28L-5 32 0 36V49L3 52H14"/>
   <path d="M-2 32H10"/>
   <!-- A en dos piezas: un / y, aparte, la pierna derecha con el travesaño.
-       El lienzo se centra en el ancho real, punta de la { incluida. -->
+       El lienzo se centra en el cuerpo de las letras (columna de la E a base de la A):
+       la punta de la { sobresale como detalle y no corre el logo a la derecha. -->
   <path d="M24.42 52 31.42 12"/>
   <path d="M39.77 12 46.77 52M34.23 39H43.49"/>
 </svg>

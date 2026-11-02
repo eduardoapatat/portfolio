@@ -1,7 +1,8 @@
 ---
 // Monograma EA lineal (mismo dibujo que public/logo.svg) con el color del texto.
 // La E es una { completa y la A va en dos piezas: un / y, aparte, la pierna derecha con el travesaño.
-// E y A tienen un ancho parecido y el lienzo se centra en el ancho real (punta de la { incluida).
+// E y A tienen un ancho parecido. El lienzo se centra en el cuerpo de las letras: la punta de la {
+// sobresale como detalle óptico, si se contara empujaría el logo a la derecha.
 type Props = {
   class?: string;
 };
@@ -11,7 +12,7 @@ const { class: className } = Astro.props;
 
 <svg
   xmlns="http://www.w3.org/2000/svg"
-  viewBox="-14.6 -3 70 70"
+  viewBox="-11.4 -3 70 70"
   fill="none"
   stroke="currentColor"
   stroke-width="4.5"

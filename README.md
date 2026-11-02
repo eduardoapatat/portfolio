@@ -30,7 +30,7 @@ Es un sitio estático hecho con Astro: cada sección tiene su propia URL, el enc
 | TypeScript                                                                         | Tipado estricto en componentes, contenido y scripts                     |
 | [Tailwind CSS 4](https://tailwindcss.com)                                          | Estilos, con los tokens de color en `@theme` (`src/styles/global.css`)  |
 | [JetBrains Mono](https://www.jetbrains.com/lp/mono/)                               | Tipografía única, cargada con la API de fuentes de Astro                |
-| [astro-icon](https://github.com/natemoo-re/astro-icon)                             | Íconos de Tabler y Simple Icons                                         |
+| [astro-icon](https://github.com/natemoo-re/astro-icon)                             | Íconos de Lucide y Simple Icons                                         |
 | [@astrojs/sitemap](https://docs.astro.build/en/guides/integrations-guide/sitemap/) | Sitemap con las versiones de cada idioma                                |
 | [ESLint](https://eslint.org) y [Prettier](https://prettier.io)                     | Revisión y formato del código, con los plugins de Astro                 |
 

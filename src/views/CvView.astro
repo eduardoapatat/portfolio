@@ -28,10 +28,10 @@ const experience = await Promise.all(
 
 const displayUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 const contacts = [
-  { icon: 'tabler:map-pin', label: profile.location },
-  { icon: 'tabler:mail', label: profile.email, href: `mailto:${profile.email}` },
-  { icon: 'tabler:brand-linkedin', label: displayUrl(profile.linkedin), href: profile.linkedin },
-  { icon: 'tabler:brand-github', label: displayUrl(profile.github), href: profile.github },
+  { icon: 'lucide:map-pin', label: profile.location },
+  { icon: 'lucide:mail', label: profile.email, href: `mailto:${profile.email}` },
+  { icon: 'lucide:linkedin', label: displayUrl(profile.linkedin), href: profile.linkedin },
+  { icon: 'lucide:github', label: displayUrl(profile.github), href: profile.github },
 ];
 ---
 
@@ -42,7 +42,7 @@ const contacts = [
     </h1>
     {pdf && (
       <a href={pdf} download class="cv-download">
-        <Icon name="tabler:download" class="size-4" aria-hidden="true" />
+        <Icon name="lucide:download" class="size-4" aria-hidden="true" />
         {ownPdf ? t('cv.download') : t('cv.downloadFallback')}
       </a>
     )}
@@ -95,12 +95,12 @@ const contacts = [
               <p class="cv-muted mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs">
                 {location && (
                   <span class="inline-flex items-center gap-1.5">
-                    <Icon name="tabler:map-pin" class="size-3.5" aria-hidden="true" />
+                    <Icon name="lucide:map-pin" class="size-3.5" aria-hidden="true" />
                     {location}
                   </span>
                 )}
                 <span class="inline-flex items-center gap-1.5">
-                  <Icon name="tabler:calendar" class="size-3.5" aria-hidden="true" />
+                  <Icon name="lucide:calendar" class="size-3.5" aria-hidden="true" />
                   {formatPeriod(lang, start, end)}
                 </span>
               </p>

@@ -20,7 +20,6 @@
     "@astrojs/sitemap": "^3.7.4",
     "@iconify-json/lucide": "^1.2.150",
     "@iconify-json/simple-icons": "^1.2.101",
-    "@iconify-json/tabler": "^1.2.43",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.4.3",
     "astro-icon": "^1.2.0",

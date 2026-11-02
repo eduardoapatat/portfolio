@@ -1,0 +1,141 @@
+---
+// Tarjeta de perfil del inicio: identidad, contacto, hora local y acceso al menú de comandos.
+import { Icon } from 'astro-icon/components';
+import { profile } from '@/data/profile';
+import type { Lang } from '@/i18n/ui';
+import { useTranslations } from '@/i18n/utils';
+
+type Props = {
+  lang: Lang;
+};
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const socials = [
+  { href: profile.github, label: t('nav.github'), icon: 'lucide:github' },
+  { href: profile.linkedin, label: t('nav.linkedin'), icon: 'lucide:linkedin' },
+  { href: `mailto:${profile.email}`, label: profile.email, icon: 'lucide:mail' },
+];
+---
+
+<div class="flex flex-col rounded-2xl border border-line bg-surface-raised p-5 md:p-6">
+  <div class="flex items-center justify-between gap-3 text-xs text-fg-subtle">
+    <span class="inline-flex items-center gap-1.5">
+      <Icon name="lucide:map-pin" class="size-3.5" aria-hidden="true" />
+      {profile.location}
+    </span>
+    <!-- Hora de Arica, la escribe el script; sin JavaScript solo queda la ciudad. -->
+    <span class="inline-flex min-w-[8ch] items-center justify-end gap-1.5">
+      <span class="sr-only">{t('profile.localTime')}</span>
+      <time data-clock data-locale={lang === 'es' ? 'es-CL' : 'en-US'} class="tabular-nums"></time>
+    </span>
+  </div>
+
+  <div class="mt-4 border-t border-line pt-6 text-center">
+    <img src="/favicon.svg" alt="" width="104" height="104" class="mx-auto size-26 rounded-[28%]" />
+    <h1 id="page-title" class="mt-5 text-xl font-bold text-balance text-fg">
+      {profile.name}
+    </h1>
+    <p class="mt-1 text-sm text-accent">{profile.role[lang]}</p>
+
+    <div class="mx-auto mt-5 flex max-w-full items-center gap-1 rounded-full border border-line bg-surface py-1 pr-1 pl-3.5 text-xs text-fg-muted">
+      <span class="min-w-0 flex-1 truncate">{profile.email}</span>
+      <button
+        type="button"
+        data-copy-email={profile.email}
+        data-copied-label={t('profile.copied')}
+        aria-label={t('profile.copy')}
+        class="copy-button grid size-7 shrink-0 place-items-center rounded-full text-fg-subtle transition-colors hover:bg-surface-hover hover:text-fg"
+      >
+        <Icon name="lucide:copy" class="copy-icon size-3.5" aria-hidden="true" />
+        <Icon name="lucide:check" class="check-icon size-3.5 text-success" aria-hidden="true" />
+      </button>
+    </div>
+    <p data-copy-status role="status" class="sr-only"></p>
+
+    <ul class="mt-5 flex justify-center gap-2">
+      {socials.map(({ href, label, icon }) => (
+        <li>
+          <a
+            href={href}
+            aria-label={label}
+            target={href.startsWith('http') ? '_blank' : undefined}
+            rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+            class="grid size-9 place-items-center rounded-[10px] text-fg-muted transition-colors hover:bg-surface-hover hover:text-fg"
+          >
+            <Icon name={icon} class="size-4.5" aria-hidden="true" />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <button
+    type="button"
+    data-command-menu-open
+    aria-keyshortcuts="Control+K Meta+K"
+    class="mt-5 flex h-11 items-center gap-2.5 rounded-xl border border-line bg-surface px-3.5 text-left text-sm text-fg-subtle transition-colors hover:border-button-line hover:text-fg"
+  >
+    <Icon name="lucide:search" class="size-4" aria-hidden="true" />
+    <span class="flex-1">{t('cmd.title')}</span>
+    <kbd
+      data-command-shortcut
+      class="hidden rounded border border-line px-1.5 text-[11px] md:inline"
+    >
+      Ctrl K
+    </kbd>
+  </button>
+</div>
+
+<style>
+  .check-icon,
+  .copy-button[data-copied] .copy-icon {
+    display: none;
+  }
+
+  .copy-button[data-copied] .check-icon {
+    display: block;
+  }
+</style>
+
+<script>
+  import { copyText } from '@/scripts/clipboard';
+
+  let clock: number | undefined;
+
+  function setupProfileCard() {
+    const time = document.querySelector<HTMLTimeElement>('[data-clock]');
+    if (time) {
+      const format = new Intl.DateTimeFormat(time.dataset.locale, {
+        hour: '2-digit',
+        minute: '2-digit',
+        // En Chile la hora se escribe en formato de 24 horas; en inglés, con AM/PM.
+        hourCycle: time.dataset.locale === 'es-CL' ? 'h23' : 'h12',
+        timeZone: 'America/Santiago',
+      });
+      const tick = () => {
+        const now = new Date();
+        time.textContent = format.format(now);
+        time.dateTime = now.toISOString();
+      };
+      tick();
+      clock = window.setInterval(tick, 30_000);
+    }
+
+    const button = document.querySelector<HTMLButtonElement>('[data-copy-email]');
+    const status = document.querySelector<HTMLElement>('[data-copy-status]');
+    button?.addEventListener('click', async () => {
+      if (!(await copyText(button.dataset.copyEmail ?? ''))) return;
+      button.dataset.copied = '';
+      if (status) status.textContent = button.dataset.copiedLabel ?? '';
+      setTimeout(() => {
+        delete button.dataset.copied;
+        if (status) status.textContent = '';
+      }, 2000);
+    });
+  }
+
+  document.addEventListener('astro:page-load', setupProfileCard);
+  document.addEventListener('astro:before-swap', () => clearInterval(clock));
+</script>

@@ -2,6 +2,7 @@
 title: AUSTRAL
 year: 2026
 category: Landing e-commerce
+summary: 'Prototipo de landing para una marca inventada de ropa de abrigo, con filtro por categoría y bolsa.'
 status: prototipo
 tech: [Astro, TypeScript, Tailwind CSS, Lenis, Vercel]
 url: https://austral-landing-six.vercel.app

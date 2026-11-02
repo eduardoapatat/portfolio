@@ -1,0 +1,73 @@
+---
+// Versión compacta de un proyecto para el inicio: lo esencial y los enlaces.
+import type { CollectionEntry } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import Badge from '@/components/Badge.astro';
+import TechChips from '@/components/TechChips.astro';
+import type { Lang } from '@/i18n/ui';
+import { useTranslations } from '@/i18n/utils';
+import { projectStatusTone } from '@/lib/tones';
+
+type Props = {
+  project: CollectionEntry<'projects'>['data'];
+  lang: Lang;
+};
+
+const { project, lang } = Astro.props;
+const t = useTranslations(lang);
+const { title, year, category, status, summary, tech, url, repo } = project;
+---
+
+<article class="flex flex-col gap-4 rounded-2xl border border-line bg-surface-raised p-5 md:p-6">
+  <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+    <h3 class="flex flex-wrap items-center gap-x-3 gap-y-1.5 font-bold text-fg">
+      {title}
+      {status && <Badge tone={projectStatusTone[status]}>{t(`projects.status.${status}`)}</Badge>}
+    </h3>
+    <p class="shrink-0 text-xs text-fg-subtle">
+      {year} · {category}
+    </p>
+  </div>
+
+  {summary && <p class="text-sm leading-relaxed text-fg-muted">{summary}</p>}
+
+  <div class="flex flex-wrap items-center justify-between gap-4">
+    {tech.length > 0 && <TechChips items={tech} label={t('projects.tech')} />}
+    <div class="flex gap-4 text-xs">
+      {url && (
+        <a href={url} target="_blank" rel="noopener noreferrer" class="summary-link">
+          <Icon name="lucide:external-link" class="size-3.5" aria-hidden="true" />
+          {t('projects.demo')}
+        </a>
+      )}
+      {repo && (
+        <a href={repo} target="_blank" rel="noopener noreferrer" class="summary-link">
+          <Icon name="lucide:github" class="size-3.5" aria-hidden="true" />
+          {t('projects.repo')}
+        </a>
+      )}
+    </div>
+  </div>
+</article>
+
+<style>
+  .summary-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-fg-muted);
+    text-decoration: underline;
+    text-decoration-color: var(--color-button-line);
+    text-underline-offset: 4px;
+    transition:
+      color 150ms ease-out,
+      text-decoration-color 150ms ease-out;
+  }
+
+  @media (hover: hover) {
+    .summary-link:hover {
+      color: var(--color-fg);
+      text-decoration-color: var(--color-fg);
+    }
+  }
+</style>

@@ -1,10 +1,19 @@
 ---
+// Inicio en dos columnas: tarjeta de perfil fija y un resumen de cada sección con enlace a ella.
 import { Icon } from 'astro-icon/components';
+import ContentPanel from '@/components/ContentPanel.astro';
+import CredentialCard from '@/components/CredentialCard.astro';
+import ExperienceCard from '@/components/ExperienceCard.astro';
+import ProfileCard from '@/components/ProfileCard.astro';
+import ProjectSummaryCard from '@/components/ProjectSummaryCard.astro';
 import TechChips from '@/components/TechChips.astro';
+import { cv } from '@/data/cv';
 import { profile } from '@/data/profile';
-import type { Lang } from '@/i18n/ui';
+import type { RouteKey } from '@/i18n/routes';
+import type { Lang, UiKey } from '@/i18n/ui';
 import { pathFor, useTranslations } from '@/i18n/utils';
-import { contentTransition } from '@/lib/transitions';
+import { getExperience, getProjects } from '@/lib/content';
+import { formatMonth } from '@/lib/format';
 
 type Props = {
   lang: Lang;
@@ -12,89 +21,136 @@ type Props = {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+
+const experience = (await getExperience(lang)).slice(0, 2);
+const projects = await getProjects(lang);
+const credentials = [
+  ...cv.education.map(({ degree, status, institution, end }) => ({
+    title: degree[lang],
+    badge: status[lang],
+    tone: 'success' as const,
+    detail: `${institution[lang]} · ${end.getUTCFullYear()}`,
+  })),
+  ...cv.certifications.map(({ name, issuer, date }) => ({
+    title: name,
+    badge: t('credential.certified'),
+    tone: 'accent' as const,
+    detail: `${issuer} · ${formatMonth(lang, date)}`,
+  })),
+];
+
+const sections: { id: string; title: UiKey; link?: { route: RouteKey; label: UiKey } }[] = [
+  { id: 'about', title: 'home.section.about' },
+  {
+    id: 'experience',
+    title: 'home.section.experience',
+    link: { route: 'experience', label: 'home.seeAll.experience' },
+  },
+  {
+    id: 'projects',
+    title: 'home.section.projects',
+    link: { route: 'projects', label: 'home.seeAll.projects' },
+  },
+  {
+    id: 'credentials',
+    title: 'home.section.credentials',
+    link: { route: 'cv', label: 'home.seeAll.cv' },
+  },
+];
 ---
 
-<section
-  transition:name="hero"
-  transition:animate={contentTransition}
-  class="flex max-w-4xl flex-col items-center text-center"
->
-  <h1 class="text-balance">
-    <span class="mb-3 block text-xl font-medium text-fg-muted md:text-3xl">
-      {`${t('home.greeting')} ${profile.name}`}
-    </span>
-    <span class="block text-4xl leading-none font-bold tracking-tight sm:text-5xl md:text-6xl">
-      {profile.role[lang]}
-    </span>
-  </h1>
+<ContentPanel>
+  <div class="grid gap-10 md:grid-cols-[minmax(0,300px)_minmax(0,1fr)] md:gap-12 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)]">
+    <!-- Fija solo si cabe entera en el panel; en pantallas bajas se desplaza con el resto. -->
+    <div class="md:self-start md:[@media(min-height:800px)]:sticky md:[@media(min-height:800px)]:top-0">
+      <ProfileCard lang={lang} />
+    </div>
 
-  <p class="mt-6 max-w-[60ch] text-base text-pretty text-fg-subtle md:text-lg">
-    {profile.tagline[lang]}
-  </p>
+    <div class="flex min-w-0 flex-col gap-12">
+      {sections.map(({ id, title, link }) => (
+        <section aria-labelledby={`home-${id}`}>
+          <div class="mb-5 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+            <h2 id={`home-${id}`} class="text-lg font-bold text-fg">
+              {t(title)}
+            </h2>
+            {link && (
+              <a href={pathFor(link.route, lang)} class="see-all">
+                {t(link.label)}
+                <Icon name="lucide:arrow-right" class="size-3.5" aria-hidden="true" />
+              </a>
+            )}
+          </div>
 
-  <div class="mt-9 flex flex-wrap justify-center gap-3">
-    <a href={pathFor('projects', lang)} class="hero-button hero-button--primary">
-      {t('home.cta.projects')}
-      <Icon name="lucide:arrow-right" class="hero-button__arrow" aria-hidden="true" />
-    </a>
-    <a href={pathFor('cv', lang)} class="hero-button hero-button--secondary">
-      {t('home.cta.cv')}
-    </a>
+          {id === 'about' && (
+            <>
+              <p class="max-w-[65ch] text-sm leading-relaxed text-pretty text-fg-muted md:text-base">
+                {profile.tagline[lang]}
+              </p>
+              <TechChips items={profile.stack} label={t('home.stack')} class="mt-5" />
+            </>
+          )}
+
+          {id === 'experience' && (
+            <ul class="flex flex-col gap-4">
+              {experience.map(({ data }) => (
+                <li>
+                  <ExperienceCard entry={data} lang={lang} />
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {id === 'projects' && (
+            <ul class="flex flex-col gap-4">
+              {projects.map(({ data }) => (
+                <li>
+                  <ProjectSummaryCard project={data} lang={lang} />
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {id === 'credentials' && (
+            <ul class="grid gap-4 sm:grid-cols-2">
+              {credentials.map((credential) => (
+                <li>
+                  <CredentialCard {...credential} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      ))}
+    </div>
   </div>
-
-  <TechChips items={profile.stack} label={t('home.stack')} class="mt-10 justify-center" />
-</section>
+</ContentPanel>
 
 <style>
-  .hero-button {
+  .see-all {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    padding: 10px 22px;
-    font-size: 14px;
-    font-weight: 500;
-    transition:
-      background-color 150ms ease-out,
-      border-color 150ms ease-out;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--color-fg-subtle);
+    transition: color 150ms ease-out;
   }
 
-  /* Acción principal: relleno de acento, la única pieza de color fuerte del inicio. */
-  .hero-button--primary {
-    background-color: var(--color-accent);
-    color: var(--color-bg);
-  }
-
-  /* Acción secundaria: solo contorno, presente pero sin competir. */
-  .hero-button--secondary {
-    border-color: var(--color-button-line);
-    color: var(--color-fg);
-  }
-
-  .hero-button__arrow {
-    width: 16px;
-    height: 16px;
+  .see-all :global(svg) {
     transition: translate 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   @media (hover: hover) {
-    .hero-button--primary:hover {
-      background-color: var(--color-accent-hover);
+    .see-all:hover {
+      color: var(--color-accent);
     }
 
-    .hero-button--primary:hover .hero-button__arrow {
+    .see-all:hover :global(svg) {
       translate: 3px 0;
-    }
-
-    .hero-button--secondary:hover {
-      border-color: var(--color-fg-subtle);
-      background-color: var(--color-surface-raised);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-button__arrow {
+    .see-all :global(svg) {
       transition: none;
     }
   }

@@ -21,13 +21,14 @@ const host = url ? new URL(url).host : 'localhost';
     className,
   ]}
 >
-  <div class="flex items-center gap-3 border-b border-line px-3 py-2" aria-hidden="true">
+  <!-- La URL se centra respecto de la barra completa, no del espacio que dejan los botones. -->
+  <div class="relative flex items-center border-b border-line px-3 py-2" aria-hidden="true">
     <span class="flex gap-1.5">
       <span class="size-2.5 rounded-full bg-[#ff5f57]"></span>
       <span class="size-2.5 rounded-full bg-[#febc2e]"></span>
       <span class="size-2.5 rounded-full bg-[#28c840]"></span>
     </span>
-    <span class="mx-auto max-w-[60%] truncate rounded-md bg-surface px-3 py-0.5 text-[11px] text-fg-subtle">
+    <span class="absolute left-1/2 max-w-[60%] -translate-x-1/2 truncate rounded-md bg-surface px-3 py-0.5 text-[11px] text-fg-subtle">
       {host}
     </span>
   </div>

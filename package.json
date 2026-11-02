@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
+    "@iconify-json/circle-flags": "^1.2.14",
     "@iconify-json/lucide": "^1.2.150",
     "@iconify-json/simple-icons": "^1.2.101",
     "@tailwindcss/vite": "^4.3.3",

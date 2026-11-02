@@ -1,30 +1,35 @@
 ---
+// Selector de idioma: código y bandera. Las banderas coinciden con las regiones del SEO (es_CL, en_US).
+import { Icon } from 'astro-icon/components';
 import { languages, type Lang } from '@/i18n/ui';
 import { alternatePath, getLang, useTranslations } from '@/i18n/utils';
 
 const lang = getLang(Astro.url);
 const t = useTranslations(lang);
 const entries = Object.entries(languages) as [Lang, string][];
+const flags: Record<Lang, string> = { es: 'circle-flags:cl', en: 'circle-flags:us' };
 ---
 
 <nav aria-label={t('lang.label')}>
   <ul class="flex items-center gap-1">
     {entries.map(([code, label]) => (
       <li>
+        {/* El nombre completo ("Español", "English") contiene el código visible: se lee bien con lector de pantalla. */}
         <a
           href={alternatePath(Astro.url, code)}
           hreflang={code}
           lang={code}
+          aria-label={label}
           aria-current={code === lang ? 'true' : undefined}
           class:list={[
-            'block rounded-md px-3 py-1.5 text-sm transition-colors',
+            'flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm transition-colors md:gap-2 md:px-2.5',
             code === lang
               ? 'bg-accent text-bg'
               : 'text-fg-muted hover:bg-surface-hover hover:text-fg',
           ]}
         >
-          <span class="md:hidden">{code.toUpperCase()}</span>
-          <span class="hidden md:inline">{label}</span>
+          <span aria-hidden="true">{code.toUpperCase()}</span>
+          <Icon name={flags[code]} class="size-4" aria-hidden="true" />
         </a>
       </li>
     ))}

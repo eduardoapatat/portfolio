@@ -34,7 +34,7 @@ export function profilePageSchema(lang: Lang, url?: string) {
         '@type': 'CollegeOrUniversity',
         name: institution[lang],
       })),
-      knowsAbout: [...profile.stack.map(({ name }) => name), ...interests[lang]],
+      knowsAbout: [...profile.stack, ...interests[lang]],
     },
   };
 }

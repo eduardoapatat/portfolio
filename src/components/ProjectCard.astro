@@ -4,6 +4,7 @@ import { render } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 import Badge from '@/components/Badge.astro';
 import BrowserFrame from '@/components/BrowserFrame.astro';
+import TechChips from '@/components/TechChips.astro';
 import type { Lang } from '@/i18n/ui';
 import { useTranslations } from '@/i18n/utils';
 import { projectStatusTone } from '@/lib/tones';
@@ -36,15 +37,7 @@ const { Content } = await render(project);
     </div>
 
     <div class="mt-auto flex flex-col gap-4">
-      {tech.length > 0 && (
-        <ul class="flex flex-wrap gap-1.5" aria-label={t('projects.tech')}>
-          {tech.map((name) => (
-            <li class="rounded border border-line bg-surface-raised px-2 py-0.5 text-[11px] text-fg-subtle">
-              {name}
-            </li>
-          ))}
-        </ul>
-      )}
+      {tech.length > 0 && <TechChips items={tech} label={t('projects.tech')} />}
       {(url || repo) && (
         <div class="flex flex-wrap gap-4 text-sm">
           {url && (

@@ -2,8 +2,6 @@ import type { Lang } from '@/i18n/ui';
 
 type Localized = Record<Lang, string>;
 
-export type StackItem = { name: string; icon: string };
-
 export const profile = {
   name: 'Eduardo Apata Tito',
   role: { es: 'Desarrollador Fullstack', en: 'Fullstack Developer' } satisfies Localized,
@@ -19,13 +17,6 @@ export const profile = {
   linkedin: 'https://www.linkedin.com/in/eapatatito/',
   // PDF compilado desde cv/CV.tex; sin versión en inglés, ese idioma enlaza al PDF en español.
   cvPdf: { es: '/cv/eduardo-apata-tito-cv-es.pdf' } as Partial<Localized>,
-  // Stack del CV (cv/CV.tex, sección Tecnologías) con iconos de simple-icons.
-  stack: [
-    { name: 'HTML', icon: 'simple-icons:html5' },
-    { name: 'CSS', icon: 'simple-icons:css' },
-    { name: 'JavaScript', icon: 'simple-icons:javascript' },
-    { name: 'Astro', icon: 'simple-icons:astro' },
-    { name: 'PHP', icon: 'simple-icons:php' },
-    { name: 'Laravel', icon: 'simple-icons:laravel' },
-  ] satisfies StackItem[],
+  // Stack del CV (cv/CV.tex, sección Tecnologías); los íconos salen de src/data/tech.ts.
+  stack: ['HTML', 'CSS', 'JavaScript', 'Astro', 'PHP', 'Laravel'],
 };

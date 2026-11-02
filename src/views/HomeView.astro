@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import TechChips from '@/components/TechChips.astro';
 import { profile } from '@/data/profile';
 import type { Lang } from '@/i18n/ui';
 import { pathFor, useTranslations } from '@/i18n/utils';
@@ -41,14 +42,7 @@ const t = useTranslations(lang);
     </a>
   </div>
 
-  <ul class="mt-10 flex flex-wrap justify-center gap-5" aria-label={t('home.stack')}>
-    {profile.stack.map((tech) => (
-      <li title={tech.name}>
-        <Icon name={tech.icon} class="size-6 text-fg" aria-hidden="true" />
-        <span class="sr-only">{tech.name}</span>
-      </li>
-    ))}
-  </ul>
+  <TechChips items={profile.stack} label={t('home.stack')} class="mt-10 justify-center" />
 </section>
 
 <style>

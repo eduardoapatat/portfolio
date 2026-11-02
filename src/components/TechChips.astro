@@ -1,0 +1,37 @@
+---
+// Tecnologías como teclas con su ícono de marca (mismo estilo que las teclas del dock).
+import { Icon } from 'astro-icon/components';
+import { techIcon } from '@/data/tech';
+
+type Props = {
+  items: string[];
+  label: string;
+  class?: string;
+};
+
+const { items, label, class: className } = Astro.props;
+---
+
+<ul class:list={['flex flex-wrap gap-2', className]} aria-label={label}>
+  {items.map((name) => {
+    const tech = techIcon(name);
+    return tech ? (
+      <li class="tech-chip size-9" title={name}>
+        <Icon name={tech.icon} class="size-4.5" style={`color: ${tech.color}`} aria-hidden="true" />
+        <span class="sr-only">{name}</span>
+      </li>
+    ) : (
+      <li class="tech-chip h-9 px-3 text-[11px] text-fg-muted">{name}</li>
+    );
+  })}
+</ul>
+
+<style>
+  .tech-chip {
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--color-dock-key-line);
+    border-radius: 10px;
+    background-color: var(--color-dock-key);
+  }
+</style>

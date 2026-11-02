@@ -29,7 +29,7 @@ const pageTitle = title ? `${title} · ${profile.name}` : `${profile.name} · ${
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#121212" />
+    <meta name="theme-color" content="#060a16" />
     <Seo title={pageTitle} description={description} noindex={noindex} />
     <slot name="head" />
     <Font cssVariable="--font-jetbrains-mono" preload />
@@ -38,7 +38,7 @@ const pageTitle = title ? `${title} · ${profile.name}` : `${profile.name} · ${
   <body class="flex h-dvh flex-col overflow-hidden font-mono">
     <a
       href="#main-content"
-      class="sr-only rounded-md bg-fg text-sm font-medium text-bg-top focus-visible:not-sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-50 focus-visible:px-4 focus-visible:py-2"
+      class="sr-only rounded-md bg-accent text-sm font-medium text-bg focus-visible:not-sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-50 focus-visible:px-4 focus-visible:py-2"
     >
       {t('a11y.skip')}
     </a>

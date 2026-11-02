@@ -4,15 +4,29 @@
 @theme {
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 
-  --color-bg-top: #121212;
-  --color-bg-bottom: #232a34;
-  --color-fg: #f9fafb;
-  --color-fg-muted: #cbd5e1;
-  --color-fg-subtle: #94a3b8;
-  --color-surface: #0a0a0a;
-  --color-surface-raised: #171717;
-  --color-line: #262626;
-  --color-button-line: #475569;
+  /* Escala azul marino, colores planos: cada tipo de elemento usa un solo tono. */
+  --color-bg: #060a16;
+  --color-surface: #0a1020;
+  --color-surface-raised: #0e1730;
+  --color-surface-hover: #14213f;
+  --color-line: #1d3354;
+  --color-button-line: #3a567a;
+  --color-fg: #dceaf6;
+  --color-fg-muted: #b4c8db;
+  --color-fg-subtle: #8aa6c0;
+
+  /* Acento: acciones principales, foco y estado activo. */
+  --color-accent: #43c9ff;
+  --color-accent-hover: #7fe0ff;
+  --color-accent-soft: #1b4863;
+  --color-warning: #ffb347;
+  --color-success: #6ee7b7;
+
+  /* Teclas del dock: tonos planos teñidos de cian (el acento mezclado con la superficie). */
+  --color-dock-key: #11263b;
+  --color-dock-key-line: #183e58;
+  --color-dock-key-hover: #15354d;
+  --color-dock-key-hover-line: #215a79;
 
   --color-cv-paper: #ffffff;
   --color-cv-aside: #f8fafc;
@@ -20,16 +34,12 @@
   --color-cv-muted: #475569;
   --color-cv-line: #e2e8f0;
   --color-cv-accent: #1d4ed8;
-
-  --color-dock: #171717;
-  --color-dock-item: #262626;
-  --color-dock-item-active: #404040;
 }
 
 @layer base {
   html {
     color-scheme: dark;
-    background-color: var(--color-bg-top);
+    background-color: var(--color-bg);
     color: var(--color-fg);
     -webkit-font-smoothing: antialiased;
   }
@@ -40,12 +50,12 @@
   }
 
   ::selection {
-    background-color: var(--color-fg);
-    color: var(--color-bg-top);
+    background-color: var(--color-accent);
+    color: var(--color-bg);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-fg);
+    outline: 2px solid var(--color-accent);
     outline-offset: 3px;
     border-radius: 4px;
   }

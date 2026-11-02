@@ -1,6 +1,7 @@
 ---
 company: University of Tarapacá
 role: Business Intelligence Teaching Assistant
+type: ayudantia
 location: Arica, Chile
 start: 2025-08-01
 end: 2025-12-01

@@ -28,6 +28,8 @@ const experience = defineCollection({
   schema: z.object({
     company: z.string(),
     role: z.string(),
+    // Tipo de puesto: se muestra como etiqueta junto a la empresa.
+    type: z.enum(['practica', 'ayudantia', 'empleo', 'freelance']).optional(),
     location: z.string().optional(),
     start: z.coerce.date(),
     // Sin fecha de término = trabajo actual.

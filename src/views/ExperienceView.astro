@@ -1,5 +1,6 @@
 ---
 import { render } from 'astro:content';
+import Badge from '@/components/Badge.astro';
 import ContentPanel from '@/components/ContentPanel.astro';
 import type { Lang } from '@/i18n/ui';
 import { useTranslations } from '@/i18n/utils';
@@ -44,9 +45,12 @@ const timeline = await Promise.all(
         </div>
 
         <ul class="flex flex-col gap-10 pl-15 md:pl-0">
-          {entries.map(({ role, company, location, start, end, Content }) => (
+          {entries.map(({ role, type, company, location, start, end, Content }) => (
             <li>
-              <h3 class="text-lg font-bold">{role}</h3>
+              <h3 class="flex flex-wrap items-center gap-x-3 gap-y-1 text-lg font-bold">
+                {role}
+                {type && <Badge tone="accent">{t(`experience.type.${type}`)}</Badge>}
+              </h3>
               <p class="mt-1 text-sm text-fg-muted">
                 {company}
                 {location && <span class="text-fg-subtle"> · {location}</span>}

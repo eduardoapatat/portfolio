@@ -1,6 +1,7 @@
 ---
 company: Municipality of Arica
-role: Information Architect (professional internship)
+role: Information Architect
+type: practica
 location: Arica, Chile
 start: 2026-01-01
 end: 2026-03-01

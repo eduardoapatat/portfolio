@@ -1,6 +1,7 @@
 ---
 company: Municipalidad de Arica
-role: Arquitecto de la Información (práctica profesional)
+role: Arquitecto de la Información
+type: practica
 location: Arica, Chile
 start: 2026-01-01
 end: 2026-03-01

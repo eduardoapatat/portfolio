@@ -1,6 +1,7 @@
 ---
 company: Corporación Nacional de Desarrollo Indígena (CONADI)
-role: Analista de Sistemas (práctica)
+role: Analista de Sistemas
+type: practica
 location: Arica, Chile
 start: 2025-01-01
 end: 2025-02-01

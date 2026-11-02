@@ -88,10 +88,13 @@ const contacts = [
       <section>
         <h3 class="cv-heading">{t('cv.experience')}</h3>
         <ol class="cv-timeline flex flex-col gap-7">
-          {experience.map(({ company, role, location, start, end, Content }) => (
+          {experience.map(({ company, role, type, location, start, end, Content }) => (
             <li class="relative pl-6">
               <p class="cv-accent text-sm font-bold">{company}</p>
-              <p class="mt-0.5 font-bold">{role}</p>
+              {/* En el CV la práctica se aclara junto al cargo; los demás tipos ya se leen en él. */}
+              <p class="mt-0.5 font-bold">
+                {type === 'practica' ? `${role} · ${t('experience.type.practica')}` : role}
+              </p>
               <p class="cv-muted mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs">
                 {location && (
                   <span class="inline-flex items-center gap-1.5">

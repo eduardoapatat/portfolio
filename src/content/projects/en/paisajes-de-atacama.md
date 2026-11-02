@@ -12,6 +12,4 @@ image: ../../../assets/projects/paisajes-de-atacama.webp
 imageAlt: 'Site cover: the title Paisajes de Atacama over the Valle de la Muerte at sunset'
 ---
 
-A journey through the landscapes of the **Atacama Desert** told as a story: the Valle de la Luna, the high-plateau lagoons, the El Tatio geysers and its night sky.
-
-Each chapter unfolds on scroll with **GSAP** animations, and every landscape has its own page generated from Astro **content collections**. All animations respect `prefers-reduced-motion`.
+The landscapes of the **Atacama Desert** told as a story, with chapters that unfold on scroll with **GSAP**.

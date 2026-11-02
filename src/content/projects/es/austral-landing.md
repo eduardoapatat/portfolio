@@ -12,6 +12,4 @@ image: ../../../assets/projects/austral-landing.webp
 imageAlt: 'Portada del sitio: el nombre AUSTRAL sobre los Cuernos del Paine y un lago turquesa'
 ---
 
-Prototipo de landing para **AUSTRAL**, una marca inventada de ropa de abrigo del sur de Chile. La página está ordenada como un recorrido, de la marca a la tienda, la pieza estrella y el proceso, para probar la idea de negocio y definir su identidad visual.
-
-Incluye un **filtro por categoría con URL compartible** y una bolsa guardada en el navegador. Todavía no tiene página de producto ni checkout.
+Landing para **AUSTRAL**, una marca inventada de ropa de abrigo, con **filtro por categoría** y bolsa en el navegador.

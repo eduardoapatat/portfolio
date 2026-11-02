@@ -12,6 +12,4 @@ image: ../../../assets/projects/austral-landing.webp
 imageAlt: 'Site cover: the name AUSTRAL over the Cuernos del Paine and a turquoise lake'
 ---
 
-Landing page prototype for **AUSTRAL**, a made-up brand of outdoor clothing from southern Chile. The page is laid out as a journey, from the brand to the shop, the signature piece and the process, to test the business idea and define its visual identity.
-
-It includes a **category filter with a shareable URL** and a bag saved in the browser. There is no product page or checkout yet.
+Landing page for **AUSTRAL**, a made-up outerwear brand, with a **category filter** and an in-browser bag.

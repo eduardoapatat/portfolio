@@ -4,7 +4,6 @@ import { Font } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import Background from '@/components/Background.astro';
 import CommandMenu from '@/components/CommandMenu.astro';
-import Dock from '@/components/Dock.astro';
 import Seo from '@/components/Seo.astro';
 import SiteHeader from '@/components/SiteHeader.astro';
 import { profile } from '@/data/profile';
@@ -45,10 +44,11 @@ const pageTitle = title ? `${title} · ${profile.name}` : `${profile.name} · ${
     </a>
     <Background />
     <SiteHeader />
-    <main id="main-content" class="flex min-h-0 flex-1 items-center justify-center px-4 pt-6">
+    <main id="main-content" class="flex min-h-0 flex-1 items-center justify-center px-4 pt-4 pb-4">
       <slot />
     </main>
-    <Dock />
+    <!-- La navegación vive en SiteHeader. El dock (src/components/Dock.astro) queda guardado:
+         para volver a usarlo, impórtalo y móntalo aquí. -->
     <CommandMenu />
     <footer class="pb-3 text-center text-xs text-fg-subtle">
       © {new Date().getFullYear()} {profile.name} · {t('footer.made')}

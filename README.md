@@ -10,14 +10,15 @@ Es un sitio estático hecho con Astro: cada sección tiene su propia URL, el enc
 
 ## Qué tiene el sitio
 
-| Ruta (ES / EN)                      | Contenido                                                                         |
-| ----------------------------------- | --------------------------------------------------------------------------------- |
-| `/` · `/en/`                        | Presentación: nombre, rol, bajada, botones a proyectos y CV, y stack              |
-| `/proyectos/` · `/en/projects/`     | Tarjetas con descripción, tecnologías, enlaces y captura en un marco de navegador |
-| `/experiencia/` · `/en/experience/` | Línea de tiempo agrupada por año                                                  |
-| `/cv/` · `/en/resume/`              | CV como hoja, con descarga del PDF                                                |
+| Ruta (ES / EN)                      | Contenido                                                                       |
+| ----------------------------------- | ------------------------------------------------------------------------------- |
+| `/` · `/en/`                        | Tarjeta de perfil (correo para copiar, hora de Arica) y resumen de cada sección |
+| `/proyectos/` · `/en/projects/`     | Tarjetas con estado, descripción, chips de tecnologías, enlaces y captura       |
+| `/experiencia/` · `/en/experience/` | Línea de tiempo por año, con una tarjeta por puesto                             |
+| `/cv/` · `/en/resume/`              | CV como hoja, con descarga del PDF                                              |
 
 - **Dock** con magnificación según la cercanía del cursor, tooltip y estado activo, escrito en JS sin dependencias (`src/scripts/dock.ts`).
+- **Menú de comandos** (Ctrl/⌘ + K) para navegar, copiar el correo, descargar el CV, abrir redes y cambiar de idioma, con `<dialog>` y JS sin dependencias (`src/scripts/command-menu.ts`).
 - **Transiciones** entre secciones con View Transitions (`<ClientRouter />`).
 - **Accesible:** navegación por teclado, enlace para saltar al contenido, `prefers-reduced-motion` respetado y revisado con axe-core (WCAG 2.2 AA).
 - **SEO:** título y descripción únicos por página e idioma, Open Graph, datos estructurados (`ProfilePage`), sitemap con pares de idioma, `robots.txt` y página 404.
@@ -64,14 +65,14 @@ public/
 └── og/              Imágenes para compartir en redes (1200 × 630)
 src/
 ├── assets/projects/ Capturas de los proyectos (Astro las optimiza)
-├── components/      Encabezado, dock, panel, tarjetas, SEO y fondo
+├── components/      Encabezado, dock, menú de comandos, panel, tarjetas, etiquetas, SEO y fondo
 ├── content/         Proyectos y experiencia, en carpetas es/ y en/
-├── data/            Perfil (profile.ts) y secciones del CV (cv.ts)
+├── data/            Perfil (profile.ts), secciones del CV (cv.ts) e íconos de tecnologías (tech.ts)
 ├── i18n/            Textos de la interfaz y rutas de cada idioma
 ├── layouts/         Layout base
 ├── lib/             Consultas de contenido, formato de fechas, SEO y transiciones
 ├── pages/           Rutas en español; en/ para inglés
-├── scripts/dock.ts  Magnificación del dock
+├── scripts/         Dock, menú de comandos y portapapeles
 ├── styles/          Estilos globales y tokens
 └── views/           Contenido de cada página, compartido entre idiomas
 ```
@@ -87,6 +88,7 @@ Crea un archivo por idioma en `src/content/projects/es/` y `src/content/projects
 title: Mi proyecto
 year: 2026
 category: Sitio web
+summary: Una línea para la tarjeta del inicio # opcional
 status: produccion # desarrollo | prototipo | produccion (opcional)
 tech: [Astro, TypeScript]
 url: https://mi-proyecto.vercel.app # opcional
@@ -99,6 +101,8 @@ imageAlt: Descripción de la captura
 Descripción del proyecto en Markdown. Las **negritas** se destacan en la tarjeta.
 ```
 
+Cada nombre de `tech` se muestra con su ícono si está en `src/data/tech.ts` (ícono de Simple Icons y color de marca); si no, como texto.
+
 ### Agregar experiencia
 
 Igual que los proyectos, en `src/content/experience/es/` y `en/`. Sin `end`, el trabajo se muestra como actual.
@@ -107,6 +111,7 @@ Igual que los proyectos, en `src/content/experience/es/` y `en/`. Sin `end`, el 
 ---
 company: Empresa
 role: Cargo
+type: practica # practica | ayudantia | empleo | freelance (opcional)
 location: Arica, Chile
 start: 2026-01-01
 end: 2026-03-01

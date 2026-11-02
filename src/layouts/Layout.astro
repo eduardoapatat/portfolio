@@ -32,7 +32,7 @@ const pageTitle = title ? `${title} · ${profile.name}` : `${profile.name} · ${
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#060a16" />
+    <meta name="theme-color" content="#000000" />
     <Seo title={pageTitle} description={description} noindex={noindex} />
     <slot name="head" />
     <Font cssVariable="--font-jetbrains-mono" preload />
@@ -55,7 +55,9 @@ const pageTitle = title ? `${title} · ${profile.name}` : `${profile.name} · ${
         transition:name="profile"
         transition:animate="none"
         class:list={[
-          'pt-2 md:col-start-1 md:row-span-3 md:row-start-1 md:block md:self-start md:py-6 md:[@media(min-height:560px)]:sticky md:[@media(min-height:560px)]:top-0',
+          // Escritorio: columna fija del alto de la ventana, con la tarjeta centrada (como la referencia).
+          // En pantallas bajas deja de ser fija y se desplaza con el resto.
+          'pt-2 md:col-start-1 md:row-span-3 md:row-start-1 md:flex md:flex-col md:self-start md:py-8 md:[@media(min-height:640px)]:sticky md:[@media(min-height:640px)]:top-0 md:[@media(min-height:640px)]:h-dvh md:[@media(min-height:640px)]:py-16',
           !isHome && 'hidden',
         ]}
       >

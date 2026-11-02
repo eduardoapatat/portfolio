@@ -2,9 +2,11 @@
 import type { CollectionEntry } from 'astro:content';
 import { render } from 'astro:content';
 import { Icon } from 'astro-icon/components';
+import Badge from '@/components/Badge.astro';
 import BrowserFrame from '@/components/BrowserFrame.astro';
 import type { Lang } from '@/i18n/ui';
 import { useTranslations } from '@/i18n/utils';
+import { projectStatusTone } from '@/lib/tones';
 
 type Props = {
   project: CollectionEntry<'projects'>;
@@ -24,11 +26,7 @@ const { Content } = await render(project);
       <span class="rounded-full border border-line bg-surface-raised px-2.5 py-0.5 font-medium tracking-wide uppercase">
         {category}
       </span>
-      {status && (
-        <span class:list={['rounded-full border px-2.5 py-0.5', `status-${status}`]}>
-          {t(`projects.status.${status}`)}
-        </span>
-      )}
+      {status && <Badge tone={projectStatusTone[status]}>{t(`projects.status.${status}`)}</Badge>}
     </div>
 
     <h2 class="text-2xl font-bold text-balance">{title}</h2>
@@ -101,20 +99,5 @@ const { Content } = await render(project);
     .project-link:hover {
       text-decoration-color: var(--color-fg);
     }
-  }
-
-  .status-desarrollo {
-    border-color: var(--color-warning);
-    color: var(--color-warning);
-  }
-
-  .status-prototipo {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-  }
-
-  .status-produccion {
-    border-color: var(--color-success);
-    color: var(--color-success);
   }
 </style>

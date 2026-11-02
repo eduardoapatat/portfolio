@@ -1,0 +1,31 @@
+---
+// Etiqueta con punto de color: el tono indica el tipo (estado de proyecto, tipo de experiencia…).
+type Props = {
+  tone?: 'success' | 'accent' | 'warning' | 'neutral';
+};
+
+const { tone = 'neutral' } = Astro.props;
+---
+
+<span class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface-raised px-2.5 py-0.5 text-[11px] leading-5 text-fg-muted">
+  <span aria-hidden="true" class:list={['badge-dot size-1.5 shrink-0 rounded-full', tone]}></span>
+  <slot />
+</span>
+
+<style>
+  .badge-dot.success {
+    background-color: var(--color-success);
+  }
+
+  .badge-dot.accent {
+    background-color: var(--color-accent);
+  }
+
+  .badge-dot.warning {
+    background-color: var(--color-warning);
+  }
+
+  .badge-dot.neutral {
+    background-color: var(--color-fg-subtle);
+  }
+</style>

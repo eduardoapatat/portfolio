@@ -4,17 +4,23 @@ import { Image } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
 
 type Props = {
+  class?: string;
   image?: ImageMetadata;
   alt?: string;
   url?: string;
   emptyLabel: string;
 };
 
-const { image, alt = '', url, emptyLabel } = Astro.props;
+const { class: className, image, alt = '', url, emptyLabel } = Astro.props;
 const host = url ? new URL(url).host : 'localhost';
 ---
 
-<figure class="overflow-hidden rounded-xl border border-line bg-surface-raised">
+<figure
+  class:list={[
+    'flex flex-col overflow-hidden rounded-xl border border-line bg-surface-raised',
+    className,
+  ]}
+>
   <div class="flex items-center gap-3 border-b border-line px-3 py-2" aria-hidden="true">
     <span class="flex gap-1.5">
       <span class="size-2.5 rounded-full bg-[#ff5f57]"></span>
@@ -31,10 +37,10 @@ const host = url ? new URL(url).host : 'localhost';
       alt={alt}
       widths={[640, 960, 1280]}
       sizes="(min-width: 768px) 40vw, 90vw"
-      class="aspect-video w-full object-cover object-top"
+      class="frame-media aspect-video w-full object-cover object-top"
     />
   ) : (
-    <div class="grid aspect-video place-items-center text-fg-subtle">
+    <div class="frame-media grid aspect-video place-items-center text-fg-subtle">
       <span class="flex flex-col items-center gap-2 text-xs">
         <Icon name="lucide:image" class="size-7" aria-hidden="true" />
         {emptyLabel}
@@ -42,3 +48,15 @@ const host = url ? new URL(url).host : 'localhost';
     </div>
   )}
 </figure>
+
+<style>
+  /* Con la clase "fill" en pantallas grandes, la captura llena el alto disponible
+     (recortada desde arriba) en vez de dejar espacio vacío bajo ella. */
+  @media (width >= 64rem) {
+    .fill .frame-media {
+      flex: 1 1 0;
+      min-height: 240px;
+      aspect-ratio: auto;
+    }
+  }
+</style>

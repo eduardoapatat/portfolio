@@ -57,8 +57,9 @@ const { Content } = await render(project);
     </div>
   </div>
 
-  <div class="border-t border-line bg-surface-raised/40 p-4 lg:border-t-0 lg:border-l md:p-6">
+  <div class="flex flex-col border-t border-line bg-surface-raised/40 p-4 md:p-6 lg:border-t-0 lg:border-l">
     <BrowserFrame
+      class="fill flex-1"
       image={image}
       alt={imageAlt ?? title}
       url={url}

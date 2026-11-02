@@ -1,7 +1,6 @@
 ---
 import { render } from 'astro:content';
 import { Icon } from 'astro-icon/components';
-import ContentPanel from '@/components/ContentPanel.astro';
 import { cv } from '@/data/cv';
 import { profile } from '@/data/profile';
 import { defaultLang, type Lang } from '@/i18n/ui';
@@ -35,7 +34,7 @@ const contacts = [
 ];
 ---
 
-<ContentPanel>
+<div class="py-6 md:py-10">
   <header class="mb-8 flex flex-wrap items-center justify-between gap-4">
     <h1 id="page-title" class="text-3xl font-bold md:text-4xl">
       {t('cv.title')}
@@ -48,7 +47,7 @@ const contacts = [
     )}
   </header>
 
-  <article class="cv-sheet grid overflow-hidden rounded-xl md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+  <article class="cv-sheet grid grid-cols-[minmax(0,1fr)] overflow-hidden rounded-xl lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
     <div class="cv-aside flex flex-col gap-8 p-6 md:p-8">
       <div>
         <h2 class="text-2xl leading-tight font-bold text-pretty">{profile.name}</h2>
@@ -170,7 +169,7 @@ const contacts = [
       </section>
     </div>
   </article>
-</ContentPanel>
+</div>
 
 <style>
   /* La hoja del CV es clara a propósito: se lee como un documento impreso. */
@@ -184,7 +183,8 @@ const contacts = [
     background-color: var(--color-cv-aside);
   }
 
-  @media (width >= 48rem) {
+  /* Igual que el breakpoint lg de la grilla: la hoja pasa a dos columnas. */
+  @media (width >= 64rem) {
     .cv-aside {
       border-right: 1px solid var(--color-cv-line);
       border-bottom: none;

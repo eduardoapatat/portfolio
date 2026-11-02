@@ -1,5 +1,4 @@
 ---
-import ContentPanel from '@/components/ContentPanel.astro';
 import ProjectCard from '@/components/ProjectCard.astro';
 import type { Lang } from '@/i18n/ui';
 import { useTranslations } from '@/i18n/utils';
@@ -14,7 +13,7 @@ const t = useTranslations(lang);
 const projects = await getProjects(lang);
 ---
 
-<ContentPanel>
+<div class="py-6 md:py-10">
   <header class="mb-10 max-w-[65ch]">
     <h1 id="page-title" class="text-3xl font-bold md:text-4xl">
       {t('projects.title')}
@@ -35,4 +34,4 @@ const projects = await getProjects(lang);
       {t('projects.empty')}
     </p>
   )}
-</ContentPanel>
+</div>

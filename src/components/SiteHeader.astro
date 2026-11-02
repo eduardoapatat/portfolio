@@ -1,6 +1,6 @@
 ---
 // Barra superior: marca, pestañas de sección, menú de comandos e idioma.
-// En celular las pestañas bajan a una segunda fila; el orden del DOM se mantiene para el teclado.
+// En celular las pestañas bajan a una segunda fila bajo la marca; en escritorio la barra va sobre la columna de contenido.
 import { Icon } from 'astro-icon/components';
 import LanguagePicker from '@/components/LanguagePicker.astro';
 import { profile } from '@/data/profile';
@@ -23,9 +23,10 @@ const tabs: { route: RouteKey; label: UiKey }[] = [
 <header
   transition:name="header"
   transition:animate="none"
-  class="mx-auto grid w-[92vw] max-w-7xl grid-cols-[1fr_auto] items-center gap-x-4 gap-y-4 pt-5 md:w-[80vw] md:grid-cols-[1fr_auto_1fr] md:pt-6"
+  class="sticky top-0 z-10 grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-3 bg-bg py-4 md:col-start-2 md:row-start-1 md:py-5"
 >
-  <a href={pathFor('home', lang)} class="flex items-center gap-3 justify-self-start">
+  <!-- En escritorio la tarjeta de perfil ya muestra el nombre: la marca solo aparece en celular. -->
+  <a href={pathFor('home', lang)} class="flex items-center gap-3 justify-self-start md:hidden">
     <img
       src="/favicon.svg"
       alt=""
@@ -40,9 +41,9 @@ const tabs: { route: RouteKey; label: UiKey }[] = [
 
   <nav
     aria-label={t('nav.label')}
-    class="col-span-2 row-start-2 md:col-span-1 md:col-start-2 md:row-start-1"
+    class="col-span-2 row-start-2 lg:col-span-1 lg:col-start-1 lg:row-start-1"
   >
-    <ul class="flex justify-between gap-1 md:justify-center">
+    <ul class="flex justify-between gap-1 md:justify-start md:gap-2">
       {tabs.map(({ route, label }) => (
         <li>
           <a
@@ -57,7 +58,7 @@ const tabs: { route: RouteKey; label: UiKey }[] = [
     </ul>
   </nav>
 
-  <div class="col-start-2 row-start-1 flex items-center gap-2 justify-self-end md:col-start-3">
+  <div class="col-start-2 row-start-1 flex items-center gap-2 justify-self-end">
     <!-- En celular el menú se abre desde la tarjeta de perfil del inicio: aquí no cabe. -->
     <button
       type="button"

@@ -1,10 +1,8 @@
 ---
-// Inicio en dos columnas: tarjeta de perfil fija y un resumen de cada sección con enlace a ella.
+// Inicio: resumen de cada sección con enlace a ella (la tarjeta de perfil vive en el layout).
 import { Icon } from 'astro-icon/components';
-import ContentPanel from '@/components/ContentPanel.astro';
 import CredentialCard from '@/components/CredentialCard.astro';
 import ExperienceCard from '@/components/ExperienceCard.astro';
-import ProfileCard from '@/components/ProfileCard.astro';
 import ProjectSummaryCard from '@/components/ProjectSummaryCard.astro';
 import TechChips from '@/components/TechChips.astro';
 import { cv } from '@/data/cv';
@@ -59,71 +57,62 @@ const sections: { id: string; title: UiKey; link?: { route: RouteKey; label: UiK
 ];
 ---
 
-<ContentPanel>
-  <div class="grid gap-10 md:grid-cols-[minmax(0,300px)_minmax(0,1fr)] md:gap-12 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)]">
-    <!-- Fija solo si cabe entera en el panel; en pantallas bajas se desplaza con el resto. -->
-    <div class="md:self-start md:[@media(min-height:680px)]:sticky md:[@media(min-height:680px)]:top-0">
-      <ProfileCard lang={lang} />
-    </div>
+<div class="flex flex-col gap-12 py-6 md:py-10">
+  {sections.map(({ id, title, link }) => (
+    <section aria-labelledby={`home-${id}`}>
+      <div class="mb-5 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+        <h2 id={`home-${id}`} class="text-lg font-bold text-fg">
+          {t(title)}
+        </h2>
+        {link && (
+          <a href={pathFor(link.route, lang)} class="see-all">
+            {t(link.label)}
+            <Icon name="lucide:arrow-right" class="size-3.5" aria-hidden="true" />
+          </a>
+        )}
+      </div>
 
-    <div class="flex min-w-0 flex-col gap-12">
-      {sections.map(({ id, title, link }) => (
-        <section aria-labelledby={`home-${id}`}>
-          <div class="mb-5 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
-            <h2 id={`home-${id}`} class="text-lg font-bold text-fg">
-              {t(title)}
-            </h2>
-            {link && (
-              <a href={pathFor(link.route, lang)} class="see-all">
-                {t(link.label)}
-                <Icon name="lucide:arrow-right" class="size-3.5" aria-hidden="true" />
-              </a>
-            )}
-          </div>
+      {id === 'about' && (
+        <>
+          <p class="max-w-[65ch] text-sm leading-relaxed text-pretty text-fg-muted md:text-base">
+            {profile.tagline[lang]}
+          </p>
+          <TechChips items={profile.stack} label={t('home.stack')} class="mt-5" />
+        </>
+      )}
 
-          {id === 'about' && (
-            <>
-              <p class="max-w-[65ch] text-sm leading-relaxed text-pretty text-fg-muted md:text-base">
-                {profile.tagline[lang]}
-              </p>
-              <TechChips items={profile.stack} label={t('home.stack')} class="mt-5" />
-            </>
-          )}
+      {id === 'experience' && (
+        <ul class="flex flex-col gap-4">
+          {experience.map(({ data }) => (
+            <li>
+              <ExperienceCard entry={data} lang={lang} />
+            </li>
+          ))}
+        </ul>
+      )}
 
-          {id === 'experience' && (
-            <ul class="flex flex-col gap-4">
-              {experience.map(({ data }) => (
-                <li>
-                  <ExperienceCard entry={data} lang={lang} />
-                </li>
-              ))}
-            </ul>
-          )}
+      {id === 'projects' && (
+        <ul class="flex flex-col gap-4">
+          {projects.map(({ data }) => (
+            <li>
+              <ProjectSummaryCard project={data} lang={lang} />
+            </li>
+          ))}
+        </ul>
+      )}
 
-          {id === 'projects' && (
-            <ul class="flex flex-col gap-4">
-              {projects.map(({ data }) => (
-                <li>
-                  <ProjectSummaryCard project={data} lang={lang} />
-                </li>
-              ))}
-            </ul>
-          )}
-
-          {id === 'credentials' && (
-            <ul class="grid gap-4 sm:grid-cols-2">
-              {credentials.map((credential) => (
-                <li>
-                  <CredentialCard {...credential} />
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-      ))}
-    </div>
-  </div>
-</ContentPanel>
+      {id === 'credentials' && (
+        <ul class="grid gap-4 sm:grid-cols-2">
+          {credentials.map((credential) => (
+            <li>
+              <CredentialCard {...credential} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  ))}
+</div>
 
 <style>
   .see-all {

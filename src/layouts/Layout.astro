@@ -4,10 +4,12 @@ import { Font } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import Background from '@/components/Background.astro';
 import CommandMenu from '@/components/CommandMenu.astro';
+import ProfileCard from '@/components/ProfileCard.astro';
 import Seo from '@/components/Seo.astro';
 import SiteHeader from '@/components/SiteHeader.astro';
 import { profile } from '@/data/profile';
-import { getLang, useTranslations } from '@/i18n/utils';
+import { getLang, getRouteKey, useTranslations } from '@/i18n/utils';
+import { contentTransition } from '@/lib/transitions';
 
 type Props = {
   title?: string;
@@ -19,6 +21,7 @@ const lang = getLang(Astro.url);
 const t = useTranslations(lang);
 const { title, description = t('site.description'), noindex } = Astro.props;
 // Sin título (inicio): "Nombre · Rol", para que el nombre encabece el resultado de búsqueda.
+const isHome = getRouteKey(Astro.url) === 'home';
 const pageTitle = title ? `${title} · ${profile.name}` : `${profile.name} · ${profile.role[lang]}`;
 ---
 
@@ -35,7 +38,7 @@ const pageTitle = title ? `${title} · ${profile.name}` : `${profile.name} · ${
     <Font cssVariable="--font-jetbrains-mono" preload />
     <ClientRouter />
   </head>
-  <body class="flex h-dvh flex-col overflow-hidden font-mono">
+  <body class="font-mono">
     <a
       href="#main-content"
       class="sr-only rounded-md bg-accent text-sm font-medium text-bg focus-visible:not-sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-50 focus-visible:px-4 focus-visible:py-2"
@@ -43,15 +46,37 @@ const pageTitle = title ? `${title} · ${profile.name}` : `${profile.name} · ${
       {t('a11y.skip')}
     </a>
     <Background />
-    <SiteHeader />
-    <main id="main-content" class="flex min-h-0 flex-1 items-center justify-center px-4 pt-4 pb-4">
-      <slot />
-    </main>
-    <!-- La navegación vive en SiteHeader. El dock (src/components/Dock.astro) queda guardado:
-         para volver a usarlo, impórtalo y móntalo aquí. -->
+    <!-- Escritorio: tarjeta de perfil a la izquierda en todas las filas; barra, contenido y pie a la derecha.
+         Celular: una columna (barra, tarjeta solo en el inicio, contenido y pie), en el orden del DOM. -->
+    <div class="mx-auto flex min-h-dvh w-full max-w-7xl flex-col px-4 md:grid md:grid-cols-[300px_minmax(0,1fr)] md:grid-rows-[auto_1fr_auto] md:gap-x-10 md:px-8 lg:grid-cols-[340px_minmax(0,1fr)] lg:gap-x-12">
+      <SiteHeader />
+
+      <aside
+        transition:name="profile"
+        transition:animate="none"
+        class:list={[
+          'pt-2 md:col-start-1 md:row-span-3 md:row-start-1 md:block md:self-start md:py-6 md:[@media(min-height:560px)]:sticky md:[@media(min-height:560px)]:top-0',
+          !isHome && 'hidden',
+        ]}
+      >
+        <ProfileCard lang={lang} />
+      </aside>
+
+      <main
+        id="main-content"
+        transition:name="content"
+        transition:animate={contentTransition}
+        class="min-w-0 flex-1 md:col-start-2 md:row-start-2"
+      >
+        <slot />
+      </main>
+
+      <!-- La navegación vive en SiteHeader. El dock (src/components/Dock.astro) queda guardado:
+           para volver a usarlo, impórtalo y móntalo aquí. -->
+      <footer class="border-t border-line py-6 text-center text-xs text-fg-subtle md:col-start-2 md:row-start-3">
+        © {new Date().getFullYear()} {profile.name} · {t('footer.made')}
+      </footer>
+    </div>
     <CommandMenu />
-    <footer class="pb-3 text-center text-xs text-fg-subtle">
-      © {new Date().getFullYear()} {profile.name} · {t('footer.made')}
-    </footer>
   </body>
 </html>

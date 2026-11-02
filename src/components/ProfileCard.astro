@@ -3,7 +3,7 @@
 import { Icon } from 'astro-icon/components';
 import { profile } from '@/data/profile';
 import type { Lang } from '@/i18n/ui';
-import { useTranslations } from '@/i18n/utils';
+import { getRouteKey, useTranslations } from '@/i18n/utils';
 
 type Props = {
   lang: Lang;
@@ -11,6 +11,8 @@ type Props = {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+// La tarjeta está en todas las páginas: el nombre es el <h1> solo en el inicio; en las demás lo es el título de la sección.
+const Name = getRouteKey(Astro.url) === 'home' ? 'h1' : 'p';
 
 const socials = [
   { href: profile.github, label: t('nav.github'), icon: 'lucide:github' },
@@ -34,9 +36,12 @@ const socials = [
 
   <div class="mt-4 border-t border-line pt-6 text-center">
     <img src="/favicon.svg" alt="" width="104" height="104" class="mx-auto size-26 rounded-[28%]" />
-    <h1 id="page-title" class="mt-5 text-xl font-bold text-balance text-fg">
+    <Name
+      id={Name === 'h1' ? 'page-title' : undefined}
+      class="mt-5 text-xl font-bold text-balance text-fg"
+    >
       {profile.name}
-    </h1>
+    </Name>
     <p class="mt-1 text-sm text-accent">{profile.role[lang]}</p>
 
     <div class="mx-auto mt-5 flex max-w-full items-center gap-1 rounded-full border border-line bg-surface py-1 pr-1 pl-3.5 text-xs text-fg-muted">
@@ -81,7 +86,7 @@ const socials = [
     <span class="flex-1">{t('cmd.title')}</span>
     <kbd
       data-command-shortcut
-      class="hidden rounded border border-line px-1.5 text-[11px] md:inline"
+      class="hidden rounded border border-line px-1.5 text-[11px] lg:inline"
     >
       Ctrl K
     </kbd>

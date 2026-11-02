@@ -25,7 +25,7 @@ Portfolio personal de Eduardo Apata Tito, Desarrollador Fullstack. Reúne en un 
 
 ## Operating Context
 
-- El visitante navega con pestañas en la barra superior (inicio, proyectos, experiencia y CV) o con el menú de comandos (Ctrl/⌘ + K). GitHub y LinkedIn están en la tarjeta de perfil del inicio y en el menú.
+- El visitante navega con pestañas en la barra superior (inicio, proyectos, experiencia y CV) o con el menú de comandos (Ctrl/⌘ + K). GitHub y LinkedIn están en la tarjeta de perfil y en el menú.
 - Contacto por enlaces directos (email y LinkedIn). No hay formulario.
 - Sitio bilingüe, español e inglés, con selector de idioma.
 
@@ -41,11 +41,11 @@ Portfolio personal de Eduardo Apata Tito, Desarrollador Fullstack. Reúne en un 
 
 - **JetBrains Mono** es la tipografía de todo el sitio, incluido el nombre del encabezado.
 - Sin cursor personalizado (descartado por el usuario).
-- **Diseño vigente:** barra superior con pestañas, inicio en dos columnas (tarjeta de perfil + resumen), tarjetas, línea de tiempo y hoja del CV. No se rediseña nada sin que el usuario lo pida.
+- **Diseño vigente:** tarjeta de perfil fija a la izquierda en todas las páginas (en celular solo en el inicio), barra superior con pestañas y la sección actual a la derecha, directo sobre el fondo y sin panel; inicio con resumen de cada sección, tarjetas, línea de tiempo y hoja del CV. No se rediseña nada sin que el usuario lo pida.
 - **Paleta:** azul marino con acento cian `#43c9ff`, en colores planos (un tono por tipo de elemento, sin degradados).
 - **Dock guardado:** `src/components/Dock.astro` y `src/scripts/dock.ts` siguen en el repo sin montarse; el usuario pidió conservarlos.
 - **Pendiente:** el fondo. Hoy es un color plano, aislado en `src/components/Background.astro` para reemplazarlo sin tocar el resto.
-- **Dirección visual fijada por el usuario:** la base vino de tomasdinh.cz (panel central con scroll interno, tarjetas de proyecto con captura en marco de navegador, línea de tiempo por año, CV como hoja blanca) y luego se combinó con santusht.online (barra de pestañas, tarjeta de perfil, etiquetas con punto, chips de tecnologías, menú de comandos). Se rechazaron direcciones alternativas generadas. Lo propio es el nombre/logotipo, el contenido y los textos; nunca se copian logos, textos ni imágenes de las referencias.
+- **Dirección visual fijada por el usuario:** la base vino de tomasdinh.cz (tarjetas de proyecto con captura en marco de navegador, línea de tiempo por año, CV como hoja blanca) y luego se combinó con santusht.online (tarjeta de perfil fija al lado del contenido, barra de pestañas, etiquetas con punto, chips de tecnologías, menú de comandos). Se rechazaron direcciones alternativas generadas. Lo propio es el nombre/logotipo, el contenido y los textos; nunca se copian logos, textos ni imágenes de las referencias.
 
 ## Evidence on Hand
 

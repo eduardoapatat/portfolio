@@ -1,0 +1,231 @@
+---
+// Menú de comandos (Ctrl/⌘ + K): navegar y acciones rápidas desde el teclado.
+// <dialog> nativo para el foco, Esc y el fondo; el comportamiento vive en src/scripts/command-menu.ts.
+import { Icon } from 'astro-icon/components';
+import { profile } from '@/data/profile';
+import type { RouteKey } from '@/i18n/routes';
+import type { UiKey } from '@/i18n/ui';
+import { alternatePath, getLang, pathFor, useTranslations } from '@/i18n/utils';
+
+type Command = {
+  label: string;
+  icon: string;
+  hint: UiKey;
+  action: 'navigate' | 'external' | 'download' | 'copy';
+  value: string;
+  keywords?: string;
+};
+
+const lang = getLang(Astro.url);
+const t = useTranslations(lang);
+const otherLang = lang === 'es' ? 'en' : 'es';
+
+const routes: { route: RouteKey; label: UiKey; icon: string }[] = [
+  { route: 'home', label: 'nav.home', icon: 'lucide:house' },
+  { route: 'projects', label: 'nav.projects', icon: 'lucide:folder-code' },
+  { route: 'experience', label: 'nav.experience', icon: 'lucide:briefcase-business' },
+  { route: 'cv', label: 'nav.cv', icon: 'lucide:file-user' },
+];
+
+const navigation: Command[] = routes.map(({ route, label, icon }) => ({
+  label: t(label),
+  icon,
+  hint: 'cmd.hint.go',
+  action: 'navigate',
+  value: pathFor(route, lang),
+}));
+
+const cvPdf = profile.cvPdf[lang];
+const actions: Command[] = [
+  {
+    label: t('cmd.copyEmail'),
+    icon: 'lucide:copy',
+    hint: 'cmd.hint.copy',
+    action: 'copy',
+    value: profile.email,
+    keywords: 'email mail correo',
+  },
+  {
+    label: `CV · ${cvPdf ? t('cv.download') : t('cv.downloadFallback')}`,
+    icon: 'lucide:download',
+    hint: 'cmd.hint.download',
+    action: 'download',
+    value: cvPdf ?? profile.cvPdf.es ?? '',
+    keywords: 'pdf resume',
+  },
+  {
+    label: t('cmd.github'),
+    icon: 'lucide:github',
+    hint: 'cmd.hint.open',
+    action: 'external',
+    value: profile.github,
+  },
+  {
+    label: t('cmd.linkedin'),
+    icon: 'lucide:linkedin',
+    hint: 'cmd.hint.open',
+    action: 'external',
+    value: profile.linkedin,
+  },
+  {
+    label: t('cmd.language'),
+    icon: 'lucide:languages',
+    hint: 'cmd.hint.go',
+    action: 'navigate',
+    value: alternatePath(Astro.url, otherLang),
+    keywords: 'idioma language english español',
+  },
+];
+
+const groups = [
+  { id: 'nav', label: t('cmd.group.nav'), commands: navigation },
+  { id: 'actions', label: t('cmd.group.actions'), commands: actions },
+];
+---
+
+<dialog
+  data-command-menu
+  aria-label={t('cmd.title')}
+  data-copied={t('cmd.copied')}
+  data-copy-failed={t('cmd.copyFailed')}
+  class="command-menu"
+>
+  <div class="flex items-center gap-3 border-b border-line px-4">
+    <Icon name="lucide:search" class="size-4 shrink-0 text-fg-subtle" aria-hidden="true" />
+    <input
+      type="text"
+      role="combobox"
+      aria-expanded="true"
+      aria-controls="command-list"
+      aria-autocomplete="list"
+      aria-label={t('cmd.title')}
+      placeholder={t('cmd.placeholder')}
+      autocomplete="off"
+      spellcheck="false"
+      class="h-13 min-w-0 flex-1 bg-transparent text-sm text-fg placeholder:text-fg-subtle focus:outline-none"
+    />
+    <kbd class="command-kbd">Esc</kbd>
+  </div>
+
+  <div
+    id="command-list"
+    role="listbox"
+    aria-label={t('cmd.title')}
+    class="max-h-[min(60vh,420px)] overflow-y-auto p-2"
+  >
+    {groups.map(({ id, label, commands }) => (
+      <div role="group" aria-labelledby={`command-group-${id}`} class="pb-1">
+        <div
+          id={`command-group-${id}`}
+          class="px-3 pt-2 pb-1.5 text-[11px] tracking-widest text-fg-subtle uppercase"
+        >
+          {label}
+        </div>
+        {commands.map(({ label, icon, hint, action, value, keywords }, i) => (
+          <div
+            id={`command-${id}-${i}`}
+            role="option"
+            aria-selected="false"
+            data-action={action}
+            data-value={value}
+            data-keywords={keywords}
+            class="command-option"
+          >
+            <Icon name={icon} class="size-4 shrink-0 text-fg-subtle" aria-hidden="true" />
+            <span class="min-w-0 flex-1 truncate">{label}</span>
+            <span class="text-[11px] text-fg-subtle">{t(hint)}</span>
+          </div>
+        ))}
+      </div>
+    ))}
+    <p data-command-empty hidden class="px-3 py-6 text-center text-sm text-fg-subtle">
+      {t('cmd.empty')}
+    </p>
+  </div>
+
+  <div class="flex items-center justify-between gap-4 border-t border-line px-4 py-2.5 text-[11px] text-fg-subtle">
+    <span>
+      <kbd class="command-kbd">↑↓</kbd> {t('cmd.keys.navigate')} · <kbd class="command-kbd">↵</kbd>{' '}
+      {t('cmd.keys.select')}
+    </span>
+    <span>
+      <kbd class="command-kbd">Esc</kbd> {t('cmd.keys.close')}
+    </span>
+  </div>
+  <p data-command-status role="status" class="sr-only"></p>
+</dialog>
+
+<style>
+  .command-menu {
+    position: fixed;
+    inset: 12vh auto auto 50%;
+    translate: -50% 0;
+    width: min(560px, calc(100vw - 32px));
+    max-height: none;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: 16px;
+    background-color: var(--color-surface);
+    color: var(--color-fg);
+    padding: 0;
+  }
+
+  .command-menu[open] {
+    animation: command-in 150ms ease-out;
+  }
+
+  .command-menu::backdrop {
+    background-color: rgb(6 10 22 / 0.75);
+  }
+
+  .command-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-radius: 10px;
+    padding: 9px 12px;
+    font-size: 14px;
+    color: var(--color-fg-muted);
+    cursor: pointer;
+  }
+
+  .command-option[hidden] {
+    display: none;
+  }
+
+  .command-option[aria-selected='true'] {
+    background-color: var(--color-dock-key);
+    color: var(--color-fg);
+  }
+
+  .command-option[aria-selected='true'] :global(svg:first-child) {
+    color: var(--color-accent);
+  }
+
+  .command-kbd {
+    border: 1px solid var(--color-line);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-family: inherit;
+    font-size: 11px;
+    color: var(--color-fg-subtle);
+  }
+
+  @keyframes command-in {
+    from {
+      opacity: 0;
+      scale: 0.97;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .command-menu[open] {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import '@/scripts/command-menu';
+</script>

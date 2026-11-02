@@ -3,6 +3,7 @@ import '@/styles/global.css';
 import { Font } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import Background from '@/components/Background.astro';
+import CommandMenu from '@/components/CommandMenu.astro';
 import Dock from '@/components/Dock.astro';
 import Seo from '@/components/Seo.astro';
 import SiteHeader from '@/components/SiteHeader.astro';
@@ -48,6 +49,7 @@ const pageTitle = title ? `${title} · ${profile.name}` : `${profile.name} · ${
       <slot />
     </main>
     <Dock />
+    <CommandMenu />
     <footer class="pb-3 text-center text-xs text-fg-subtle">
       © {new Date().getFullYear()} {profile.name} · {t('footer.made')}
     </footer>

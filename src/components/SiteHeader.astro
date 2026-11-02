@@ -1,9 +1,11 @@
 ---
+import { Icon } from 'astro-icon/components';
 import LanguagePicker from '@/components/LanguagePicker.astro';
 import { profile } from '@/data/profile';
-import { getLang, pathFor } from '@/i18n/utils';
+import { getLang, pathFor, useTranslations } from '@/i18n/utils';
 
 const lang = getLang(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <header
@@ -18,7 +20,20 @@ const lang = getLang(Astro.url);
   >
     {profile.name}
   </a>
-  <div class="md:absolute md:top-8 md:right-8">
+  <div class="flex items-center gap-2 md:absolute md:top-8 md:right-8">
+    <!-- En celular el menú se abre desde la tarjeta de perfil del inicio: aquí no cabe. -->
+    <button
+      type="button"
+      data-command-menu-open
+      aria-label={t('cmd.open')}
+      aria-keyshortcuts="Control+K Meta+K"
+      class="hidden h-8 items-center gap-2 rounded-md border border-line px-2.5 text-xs text-fg-subtle transition-colors hover:border-button-line hover:text-fg md:flex"
+    >
+      <Icon name="lucide:search" class="size-3.5" aria-hidden="true" />
+      <kbd data-command-shortcut class="font-mono">
+        Ctrl K
+      </kbd>
+    </button>
     <LanguagePicker />
   </div>
 </header>

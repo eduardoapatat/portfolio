@@ -4,29 +4,30 @@
 @theme {
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 
-  /* Escala azul marino, colores planos: cada tipo de elemento usa un solo tono. */
-  --color-bg: #060a16;
-  --color-surface: #0a1020;
-  --color-surface-raised: #0e1730;
-  --color-surface-hover: #14213f;
-  --color-line: #1d3354;
-  --color-button-line: #3a567a;
-  --color-fg: #dceaf6;
-  --color-fg-muted: #b4c8db;
-  --color-fg-subtle: #8aa6c0;
+  /* Negro neutro con blanco y gris, colores planos: cada tipo de elemento usa un solo tono.
+     Los tonos equivalen a blanco con poca opacidad sobre negro, pero sin transparencias. */
+  --color-bg: #000000;
+  --color-surface: #050505;
+  --color-surface-raised: #050505;
+  --color-surface-hover: #121212;
+  --color-line: #1a1a1a;
+  --color-button-line: #2c2c2d;
+  --color-fg: #ffffff;
+  --color-fg-muted: #c2c2c4;
+  --color-fg-subtle: #909092;
 
-  /* Acento: acciones principales, foco y estado activo. */
-  --color-accent: #43c9ff;
-  --color-accent-hover: #7fe0ff;
-  --color-accent-soft: #1b4863;
-  --color-warning: #ffb347;
-  --color-success: #6ee7b7;
+  /* Acento: acciones principales, foco y estado activo. Blanco: el color queda para los estados. */
+  --color-accent: #ffffff;
+  --color-accent-hover: #d4d4d6;
+  --color-accent-soft: #1a1a1a;
+  --color-warning: #fbbf24;
+  --color-success: #34d399;
 
-  /* Teclas del dock: tonos planos teñidos de cian (el acento mezclado con la superficie). */
-  --color-dock-key: #11263b;
-  --color-dock-key-line: #183e58;
-  --color-dock-key-hover: #15354d;
-  --color-dock-key-hover-line: #215a79;
+  /* Teclas (chips, pestaña activa, opción del menú): un gris un paso sobre el fondo. */
+  --color-dock-key: #0b0b0b;
+  --color-dock-key-line: #1f1f1f;
+  --color-dock-key-hover: #161616;
+  --color-dock-key-hover-line: #333334;
 
   --color-cv-paper: #ffffff;
   --color-cv-aside: #f8fafc;

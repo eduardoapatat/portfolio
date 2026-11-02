@@ -1,12 +1,12 @@
 # Eduardo Apata Tito · Portfolio
 
-[![Portada del portfolio: el nombre Eduardo Apata Tito, el rol Desarrollador Fullstack, los botones Ver proyectos y Ver CV y el dock de navegación](public/og/og-es.png)](https://eduardoapata.cl)
+[![Portada del portfolio: la barra de navegación, la tarjeta de perfil de Eduardo Apata Tito y el resumen de experiencia](public/og/og-es.png)](https://eduardoapata.cl)
 
 Portfolio personal de Eduardo Apata Tito, desarrollador fullstack. Reúne proyectos, experiencia y CV, en español e inglés.
 
 **Sitio:** [eduardoapata.cl](https://eduardoapata.cl)
 
-Es un sitio estático hecho con Astro: cada sección tiene su propia URL, el encabezado y el dock se quedan fijos y solo cambia el contenido, con una transición corta.
+Es un sitio estático hecho con Astro: cada sección tiene su propia URL, la barra de navegación se queda fija y solo cambia el contenido, con una transición corta.
 
 ## Qué tiene el sitio
 
@@ -17,7 +17,7 @@ Es un sitio estático hecho con Astro: cada sección tiene su propia URL, el enc
 | `/experiencia/` · `/en/experience/` | Línea de tiempo por año, con una tarjeta por puesto                             |
 | `/cv/` · `/en/resume/`              | CV como hoja, con descarga del PDF                                              |
 
-- **Dock** con magnificación según la cercanía del cursor, tooltip y estado activo, escrito en JS sin dependencias (`src/scripts/dock.ts`).
+- **Barra de navegación** con pestañas por sección; en celular bajan a una segunda fila (`src/components/SiteHeader.astro`). El dock con magnificación de la versión anterior queda guardado sin usarse (`src/components/Dock.astro` y `src/scripts/dock.ts`).
 - **Menú de comandos** (Ctrl/⌘ + K) para navegar, copiar el correo, descargar el CV, abrir redes y cambiar de idioma, con `<dialog>` y JS sin dependencias (`src/scripts/command-menu.ts`).
 - **Transiciones** entre secciones con View Transitions (`<ClientRouter />`).
 - **Accesible:** navegación por teclado, enlace para saltar al contenido, `prefers-reduced-motion` respetado y revisado con axe-core (WCAG 2.2 AA).
@@ -65,14 +65,14 @@ public/
 └── og/              Imágenes para compartir en redes (1200 × 630)
 src/
 ├── assets/projects/ Capturas de los proyectos (Astro las optimiza)
-├── components/      Encabezado, dock, menú de comandos, panel, tarjetas, etiquetas, SEO y fondo
+├── components/      Barra de navegación, menú de comandos, panel, tarjetas, etiquetas, SEO y fondo
 ├── content/         Proyectos y experiencia, en carpetas es/ y en/
 ├── data/            Perfil (profile.ts), secciones del CV (cv.ts) e íconos de tecnologías (tech.ts)
 ├── i18n/            Textos de la interfaz y rutas de cada idioma
 ├── layouts/         Layout base
 ├── lib/             Consultas de contenido, formato de fechas, SEO y transiciones
 ├── pages/           Rutas en español; en/ para inglés
-├── scripts/         Dock, menú de comandos y portapapeles
+├── scripts/         Menú de comandos, portapapeles y dock (guardado)
 ├── styles/          Estilos globales y tokens
 └── views/           Contenido de cada página, compartido entre idiomas
 ```

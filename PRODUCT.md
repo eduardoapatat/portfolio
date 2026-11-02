@@ -25,7 +25,7 @@ Portfolio personal de Eduardo Apata Tito, Desarrollador Fullstack. Reúne en un 
 
 ## Operating Context
 
-- El visitante navega con un dock fijo en la parte inferior: inicio, experiencia, proyectos, CV y enlaces externos (GitHub, LinkedIn).
+- El visitante navega con pestañas en la barra superior (inicio, proyectos, experiencia y CV) o con el menú de comandos (Ctrl/⌘ + K). GitHub y LinkedIn están en la tarjeta de perfil del inicio y en el menú.
 - Contacto por enlaces directos (email y LinkedIn). No hay formulario.
 - Sitio bilingüe, español e inglés, con selector de idioma.
 
@@ -34,16 +34,18 @@ Portfolio personal de Eduardo Apata Tito, Desarrollador Fullstack. Reúne en un 
 - Stack: Astro 7 con Tailwind CSS 4 (ya configurado en el repositorio).
 - Contenido de proyectos y experiencia mantenible sin tocar componentes (content collections).
 - CV como página HTML (mismo contenido y orden que `cv/CV.tex`) con descarga del PDF compilado. Sin teléfono en la web.
-- **Abierto:** hosting (no será Vercel; opciones: Netlify, Cloudflare Pages, GitHub Pages u otro).
+- Hosting: Cloudflare Workers (sitio estático) en `eduardoapata.cl`.
 - **Abierto:** versión en inglés del PDF del CV.
 
 ## Brand Commitments
 
 - **JetBrains Mono** es la tipografía de todo el sitio, incluido el nombre del encabezado.
 - Sin cursor personalizado (descartado por el usuario).
-- **Diseño vigente:** el dock, el encabezado, el panel, las tarjetas, la línea de tiempo y la hoja del CV quedan como están por ahora. El usuario cambiará algunas cosas más adelante; no se rediseña nada sin que lo pida.
-- **Pendiente:** el fondo. Hoy es un degradado provisional, aislado en `src/components/Background.astro` para reemplazarlo sin tocar el resto.
-- **Dirección visual fijada por el usuario: seguir de cerca tomasdinh.cz** (estructura, look y comportamiento: fondo oscuro degradado con estrellas, hero centrado, dock flotante con magnificación, panel central con scroll interno, tarjetas de proyecto con captura en marco de navegador, línea de tiempo por año, CV como hoja blanca). Se rechazaron direcciones alternativas generadas. Lo propio es el nombre/logotipo, el contenido y los textos; nunca se copian su logo, textos ni imágenes.
+- **Diseño vigente:** barra superior con pestañas, inicio en dos columnas (tarjeta de perfil + resumen), tarjetas, línea de tiempo y hoja del CV. No se rediseña nada sin que el usuario lo pida.
+- **Paleta:** azul marino con acento cian `#43c9ff`, en colores planos (un tono por tipo de elemento, sin degradados).
+- **Dock guardado:** `src/components/Dock.astro` y `src/scripts/dock.ts` siguen en el repo sin montarse; el usuario pidió conservarlos.
+- **Pendiente:** el fondo. Hoy es un color plano, aislado en `src/components/Background.astro` para reemplazarlo sin tocar el resto.
+- **Dirección visual fijada por el usuario:** la base vino de tomasdinh.cz (panel central con scroll interno, tarjetas de proyecto con captura en marco de navegador, línea de tiempo por año, CV como hoja blanca) y luego se combinó con santusht.online (barra de pestañas, tarjeta de perfil, etiquetas con punto, chips de tecnologías, menú de comandos). Se rechazaron direcciones alternativas generadas. Lo propio es el nombre/logotipo, el contenido y los textos; nunca se copian logos, textos ni imágenes de las referencias.
 
 ## Evidence on Hand
 
@@ -57,12 +59,12 @@ Portfolio personal de Eduardo Apata Tito, Desarrollador Fullstack. Reúne en un 
 ## Product Principles
 
 1. **Claridad en segundos:** en el primer viewport se entiende quién es, qué hace y hacia dónde ir.
-2. **Dos públicos, un camino:** el reclutador llega al CV y a la experiencia, y el cliente llega a los proyectos, ambos a un clic desde el dock.
+2. **Dos públicos, un camino:** el reclutador llega al CV y a la experiencia, y el cliente llega a los proyectos, ambos a un clic desde la barra superior.
 3. **Pruebas reales antes que adjetivos:** proyectos, experiencia y CV verificables pesan más que las frases.
 4. **Contacto siempre a mano:** email y LinkedIn alcanzables desde cualquier página.
 
 ## Accessibility & Inclusion
 
-- Dock y navegación operables con teclado, con etiquetas accesibles en los iconos.
+- Navegación y menú de comandos operables con teclado, con etiquetas accesibles en los íconos.
 - Respetar `prefers-reduced-motion` en animaciones y efectos.
 - Contenido equivalente en ambos idiomas, con `lang` correcto por página.

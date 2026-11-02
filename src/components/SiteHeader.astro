@@ -65,12 +65,9 @@ const tabs: { route: RouteKey; label: UiKey }[] = [
       data-command-menu-open
       aria-label={t('cmd.open')}
       aria-keyshortcuts="Control+K Meta+K"
-      class="hidden h-8 items-center gap-2 rounded-md border border-line px-2.5 text-xs text-fg-subtle transition-colors hover:border-button-line hover:text-fg md:flex"
+      class="hidden size-8 place-items-center rounded-md border border-line text-fg-subtle transition-colors hover:border-button-line hover:text-fg md:grid"
     >
       <Icon name="lucide:search" class="size-3.5" aria-hidden="true" />
-      <kbd data-command-shortcut class="font-mono">
-        Ctrl K
-      </kbd>
     </button>
     <LanguagePicker />
   </div>

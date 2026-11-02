@@ -109,13 +109,6 @@ function setupCommandMenu() {
     button.addEventListener('click', open);
   });
 
-  // En Apple el atajo se muestra como ⌘K; en el resto, Ctrl K.
-  if (/Mac|iPhone|iPad/.test(navigator.platform)) {
-    document.querySelectorAll('[data-command-shortcut]').forEach((kbd) => {
-      kbd.textContent = '⌘K';
-    });
-  }
-
   toggleMenu = () => (dialog.open ? dialog.close() : open());
 }
 

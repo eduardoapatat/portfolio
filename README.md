@@ -6,7 +6,7 @@ Portfolio personal de Eduardo Apata Tito, desarrollador fullstack. Reúne proyec
 
 **Sitio:** [eduardoapata.cl](https://eduardoapata.cl)
 
-Es un sitio estático hecho con Astro: cada sección tiene su propia URL; la tarjeta de perfil (a la izquierda) y la barra de navegación se quedan fijas y solo cambia el contenido de la derecha, con una transición corta. En celular la tarjeta aparece solo en el inicio.
+Es un sitio estático hecho con Astro: cada sección tiene su propia URL; la tarjeta de perfil con forma de celular (a la izquierda) y la barra de navegación se quedan fijas y solo cambia el contenido de la derecha, con una transición corta. En celular la tarjeta aparece solo en el inicio.
 
 ## Qué tiene el sitio
 

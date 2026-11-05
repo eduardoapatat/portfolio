@@ -1,18 +1,14 @@
-// Fondo en perspectiva: un pasillo de líneas (techo arriba, piso abajo) que se pierde en el centro
-// de la pantalla y estrellas en 3D. Al hacer scroll se avanza por el pasillo; sin scroll avanza muy lento.
+// Fondo de estrellas en 3D: siguen al cursor con suavidad (las cercanas se mueven más que las
+// lejanas) y avanzan hacia la pantalla al hacer scroll; sin scroll avanzan muy lento.
 // El canvas persiste entre páginas (transition:persist), así que este módulo se ejecuta una sola vez.
-// También mueve la linterna del cursor; su aspecto vive en Background.astro.
 
 const canvas = document.querySelector<HTMLCanvasElement>('[data-background-canvas]');
-const root = document.querySelector<HTMLElement>('[data-background]');
 
-// Profundidad en unidades de mundo: cerca = borde de la pantalla, lejos = cerca del horizonte.
-const NEAR = 1;
-const FAR = 2.4;
-const LINE_GAP = 0.065;
-const SCROLL_SPEED = 0.0003; // avance por píxel de scroll
-const IDLE_SPEED = 0.006; // avance por segundo sin scroll
-const STAR_COUNT = 240;
+const STAR_COUNT = 700;
+const SCROLL_SPEED = 0.00015; // avance por píxel de scroll
+const IDLE_SPEED = 0.003; // avance por segundo sin scroll
+const MOUSE_SHIFT = 40; // desplazamiento máximo (px) de las estrellas más cercanas
+const MOUSE_EASE = 0.06; // fracción del camino al cursor que se recorre en cada cuadro
 
 type Star = { x: number; y: number; z: number };
 
@@ -29,9 +25,10 @@ function createStars(): Star[] {
   }));
 }
 
-if (canvas && root) {
+if (canvas) {
   const ctx = canvas.getContext('2d');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
   const stars = createStars();
   let width = 0;
   let height = 0;
@@ -39,6 +36,9 @@ if (canvas && root) {
   let lastScroll = window.scrollY;
   let lastTime = 0;
   let frame = 0;
+  // Posición del cursor de -1 a 1 respecto al centro: la deseada y la que se dibuja (suavizada).
+  const mouse = { x: 0, y: 0 };
+  const eased = { x: 0, y: 0 };
 
   const resize = () => {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -54,28 +54,15 @@ if (canvas && root) {
     ctx.clearRect(0, 0, width, height);
     const cx = width / 2;
     const cy = height / 2;
-    const range = FAR - NEAR;
-
-    // Líneas del pasillo: a profundidad z quedan a (cy * NEAR / z) del horizonte, arriba y abajo.
-    const lines = Math.ceil(range / LINE_GAP);
-    for (let i = 0; i < lines; i++) {
-      const z = NEAR + ((((i * LINE_GAP - travel) % range) + range) % range);
-      const offset = (cy * NEAR) / z;
-      const depth = (z - NEAR) / range; // 0 cerca, 1 lejos
-      const alpha = 0.2 * (1 - depth) ** 1.4;
-      ctx.fillStyle = `rgb(255 255 255 / ${alpha.toFixed(3)})`;
-      ctx.fillRect(0, Math.round(cy - offset), width, 1);
-      ctx.fillRect(0, Math.round(cy + offset), width, 1);
-    }
-
-    // Estrellas: se acercan con el avance; al pasar de largo vuelven al fondo.
     const spread = Math.max(width, height) * 0.6;
+
     for (const star of stars) {
-      const z = ((((star.z - travel * 0.5) % 1) + 1) % 1) * 0.95 + 0.05;
-      const x = cx + (star.x * spread) / (z * 2);
-      const y = cy + (star.y * spread) / (z * 2);
-      if (x < 0 || x > width || y < 0 || y > height) continue;
+      // Al pasar de largo, cada estrella vuelve al fondo.
+      const z = ((((star.z - travel) % 1) + 1) % 1) * 0.95 + 0.05;
       const near = 1 - z;
+      const x = cx + (star.x * spread) / (z * 2) + eased.x * MOUSE_SHIFT * near;
+      const y = cy + (star.y * spread) / (z * 2) + eased.y * MOUSE_SHIFT * near;
+      if (x < 0 || x > width || y < 0 || y > height) continue;
       const size = near > 0.8 ? 2 : 1;
       const alpha = Math.min(0.3 + near * 0.8, 1) * Math.min(z * 8, 1);
       ctx.fillStyle = `rgb(255 255 255 / ${alpha.toFixed(3)})`;
@@ -83,12 +70,14 @@ if (canvas && root) {
     }
   };
 
-  // Con movimiento reducido el fondo queda quieto: se dibuja una vez y solo al redimensionar.
+  // Con movimiento reducido las estrellas quedan quietas: se dibujan una vez y al redimensionar.
   const tick = (time: number) => {
     frame = 0;
     const elapsed = lastTime ? Math.min(time - lastTime, 100) / 1000 : 0;
     lastTime = time;
     travel += elapsed * IDLE_SPEED;
+    eased.x += (mouse.x - eased.x) * MOUSE_EASE;
+    eased.y += (mouse.y - eased.y) * MOUSE_EASE;
     draw();
     if (!reducedMotion.matches && !document.hidden) frame = requestAnimationFrame(tick);
   };
@@ -108,8 +97,7 @@ if (canvas && root) {
     () => {
       const delta = window.scrollY - lastScroll;
       lastScroll = window.scrollY;
-      if (reducedMotion.matches) return;
-      travel += Math.abs(delta) * SCROLL_SPEED;
+      if (!reducedMotion.matches) travel += Math.abs(delta) * SCROLL_SPEED;
     },
     { passive: true },
   );
@@ -117,6 +105,23 @@ if (canvas && root) {
   // Al cambiar de página el scroll vuelve arriba: no cuenta como avance.
   document.addEventListener('astro:after-swap', () => {
     lastScroll = window.scrollY;
+  });
+
+  // Solo con mouse: en pantallas táctiles no hay cursor que seguir.
+  document.addEventListener(
+    'pointermove',
+    (event) => {
+      if (event.pointerType !== 'mouse' || !finePointer.matches) return;
+      mouse.x = (event.clientX / width) * 2 - 1;
+      mouse.y = (event.clientY / height) * 2 - 1;
+    },
+    { passive: true },
+  );
+
+  // Al salir de la ventana, las estrellas vuelven despacio a su lugar.
+  document.documentElement.addEventListener('mouseleave', () => {
+    mouse.x = 0;
+    mouse.y = 0;
   });
 
   window.addEventListener('resize', () => {
@@ -128,34 +133,5 @@ if (canvas && root) {
   reducedMotion.addEventListener('change', () => {
     draw();
     start();
-  });
-}
-
-// Linterna: muestra una cuadrícula plana alrededor del cursor. Solo con mouse.
-if (root && matchMedia('(hover: hover) and (pointer: fine)').matches) {
-  let frame = 0;
-  let x = 0;
-  let y = 0;
-
-  const render = () => {
-    frame = 0;
-    root.style.setProperty('--spot-x', `${x}px`);
-    root.style.setProperty('--spot-y', `${y}px`);
-  };
-
-  document.addEventListener(
-    'pointermove',
-    (event) => {
-      if (event.pointerType !== 'mouse') return;
-      x = event.clientX;
-      y = event.clientY;
-      root.toggleAttribute('data-spot', true);
-      if (!frame) frame = requestAnimationFrame(render);
-    },
-    { passive: true },
-  );
-
-  document.documentElement.addEventListener('mouseleave', () => {
-    root.toggleAttribute('data-spot', false);
   });
 }

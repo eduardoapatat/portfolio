@@ -1,50 +1,15 @@
 ---
-// Fondo: pasillo en perspectiva con estrellas (canvas) y una linterna que muestra una cuadrícula
-// plana alrededor del cursor. Persiste entre páginas (transition:persist).
+// Fondo de estrellas que siguen al cursor. Persiste entre páginas (transition:persist).
 // El dibujo y el movimiento viven en src/scripts/background.ts.
 ---
 
 <div
   aria-hidden="true"
   transition:persist="background"
-  data-background
   class="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-bg"
 >
   <canvas data-background-canvas class="absolute inset-0 size-full"></canvas>
-  <div class="bg-grid bg-spotlight absolute inset-0"></div>
 </div>
-
-<style>
-  .bg-grid {
-    --grid-line: rgb(255 255 255 / 0.12);
-    background-image:
-      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-    background-size: 40px 40px;
-    background-position: -1px -1px;
-  }
-
-  /* Cuadrícula visible solo en un círculo alrededor del cursor. */
-  .bg-spotlight {
-    opacity: 0;
-    transition: opacity 300ms ease-out;
-    mask-image: radial-gradient(
-      240px circle at var(--spot-x, -999px) var(--spot-y, -999px),
-      #000,
-      transparent
-    );
-  }
-
-  [data-spot] .bg-spotlight {
-    opacity: 1;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .bg-spotlight {
-      transition: none;
-    }
-  }
-</style>
 
 <script>
   import '@/scripts/background';

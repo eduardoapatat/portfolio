@@ -1,6 +1,7 @@
 ---
-// Fondo de plano: cuadrícula tenue, puntos dispersos y una linterna que ilumina la cuadrícula
-// alrededor del cursor. Persiste entre páginas (transition:persist), así que el script se enlaza una sola vez.
+// Fondo: pasillo en perspectiva con estrellas (canvas) y una linterna que muestra una cuadrícula
+// plana alrededor del cursor. Persiste entre páginas (transition:persist).
+// El dibujo y el movimiento viven en src/scripts/background.ts.
 ---
 
 <div
@@ -9,14 +10,13 @@
   data-background
   class="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-bg"
 >
-  <div class="bg-grid absolute inset-0"></div>
-  <canvas data-background-dots class="absolute inset-0 size-full"></canvas>
+  <canvas data-background-canvas class="absolute inset-0 size-full"></canvas>
   <div class="bg-grid bg-spotlight absolute inset-0"></div>
 </div>
 
 <style>
   .bg-grid {
-    --grid-line: rgb(255 255 255 / 0.045);
+    --grid-line: rgb(255 255 255 / 0.12);
     background-image:
       linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
       linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
@@ -24,9 +24,8 @@
     background-position: -1px -1px;
   }
 
-  /* Misma cuadrícula, más clara, visible solo en un círculo alrededor del cursor. */
+  /* Cuadrícula visible solo en un círculo alrededor del cursor. */
   .bg-spotlight {
-    --grid-line: rgb(255 255 255 / 0.16);
     opacity: 0;
     transition: opacity 300ms ease-out;
     mask-image: radial-gradient(
@@ -48,75 +47,5 @@
 </style>
 
 <script>
-  const root = document.querySelector<HTMLElement>('[data-background]');
-  const canvas = document.querySelector<HTMLCanvasElement>('[data-background-dots]');
-
-  // Puntos fijos: semilla constante para que no cambien de lugar al redimensionar la ventana.
-  function drawDots() {
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const { innerWidth: w, innerHeight: h } = window;
-    canvas.width = Math.round(w * dpr);
-    canvas.height = Math.round(h * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, w, h);
-
-    let seed = 7;
-    const random = () => {
-      seed = (seed * 16807) % 2147483647;
-      return seed / 2147483647;
-    };
-
-    // Densidad según el área de una pantalla grande, fija en coordenadas: más ventana, más puntos.
-    const area = 2560 * 1440;
-    const count = Math.round(area / 7000);
-    for (let i = 0; i < count; i++) {
-      const x = random() * 2560;
-      const y = random() * 1440;
-      const big = random() > 0.92;
-      const alpha = big ? 0.5 + random() * 0.3 : 0.12 + random() * 0.25;
-      if (x > w || y > h) continue;
-      ctx.fillStyle = `rgb(255 255 255 / ${alpha.toFixed(2)})`;
-      const size = big ? 2 : 1;
-      ctx.fillRect(Math.round(x), Math.round(y), size, size);
-    }
-  }
-
-  drawDots();
-  let resizeFrame = 0;
-  window.addEventListener('resize', () => {
-    cancelAnimationFrame(resizeFrame);
-    resizeFrame = requestAnimationFrame(drawDots);
-  });
-
-  // Linterna: solo con mouse (en pantallas táctiles no hay cursor que seguir).
-  if (root && matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    let frame = 0;
-    let x = 0;
-    let y = 0;
-
-    const render = () => {
-      frame = 0;
-      root.style.setProperty('--spot-x', `${x}px`);
-      root.style.setProperty('--spot-y', `${y}px`);
-    };
-
-    document.addEventListener(
-      'pointermove',
-      (event) => {
-        if (event.pointerType !== 'mouse') return;
-        x = event.clientX;
-        y = event.clientY;
-        root.toggleAttribute('data-spot', true);
-        if (!frame) frame = requestAnimationFrame(render);
-      },
-      { passive: true },
-    );
-
-    document.documentElement.addEventListener('mouseleave', () => {
-      root.toggleAttribute('data-spot', false);
-    });
-  }
+  import '@/scripts/background';
 </script>

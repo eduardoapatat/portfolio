@@ -24,7 +24,7 @@ const readme = repo && `${repo.replace(/\/$/, '')}#readme`;
 
 <!-- En pantallas grandes la captura (16:9) fija el alto de la tarjeta: el texto se ajusta a ese
      alto y, si la descripción no cabe, se desvanece; "Ver más" lleva al README del repositorio. -->
-<article class="grid grid-cols-[minmax(0,1fr)] overflow-hidden rounded-2xl border border-line lg:min-h-[22rem] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+<article class="grid grid-cols-[minmax(0,1fr)] overflow-hidden rounded-2xl border border-line bg-bg lg:min-h-[22rem] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
   <div class="relative">
     <div class="flex flex-col gap-3.5 p-6 lg:absolute lg:inset-0">
       <div class="flex flex-wrap items-center gap-2 text-xs">

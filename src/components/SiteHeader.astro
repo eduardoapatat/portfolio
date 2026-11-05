@@ -23,7 +23,7 @@ const tabs: { route: RouteKey; label: UiKey }[] = [
 <header
   transition:name="header"
   transition:animate="none"
-  class="sticky top-0 z-10 grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-3 bg-bg py-4 md:col-start-2 md:row-start-1 md:py-5"
+  class="sticky top-0 z-10 grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-3 border-b border-line bg-bg py-4 md:col-start-2 md:row-start-1 md:py-5"
 >
   <!-- En escritorio la tarjeta de perfil ya muestra el nombre: la marca solo aparece en celular. -->
   <a href={pathFor('home', lang)} class="flex items-center gap-3 justify-self-start md:hidden">

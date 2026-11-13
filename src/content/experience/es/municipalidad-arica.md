@@ -1,6 +1,6 @@
 ---
 company: Municipalidad de Arica
-role: Arquitecto de la Información
+role: Gestión y Optimización Web
 type: practica
 location: Arica, Chile
 start: 2026-01-01

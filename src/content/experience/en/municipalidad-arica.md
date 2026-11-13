@@ -1,6 +1,6 @@
 ---
 company: Municipality of Arica
-role: Information Architect
+role: Web Management and Optimization
 type: practica
 location: Arica, Chile
 start: 2026-01-01

@@ -6,8 +6,8 @@ export const profile = {
   name: 'Eduardo Apata Tito',
   role: { es: 'Desarrollador Fullstack', en: 'Fullstack Developer' } satisfies Localized,
   tagline: {
-    es: 'Construyo sistemas web de punta a punta para instituciones públicas, con Laravel y JavaScript moderno. Además, me sigo formando en redes y ciberseguridad.',
-    en: "I build end-to-end web systems for public institutions, with Laravel and modern JavaScript. I'm also training in networking and cybersecurity.",
+    es: 'Disfruto crear cosas con tecnología, experimentar y aprender construyendo proyectos. Desarrollo aplicaciones web con Laravel, PHP y JavaScript, mientras sigo explorando áreas como la infraestructura, las redes y la ciberseguridad.',
+    en: 'I enjoy building things with technology, experimenting, and learning through hands-on projects. I develop web applications using Laravel, PHP, and JavaScript, while continuing to explore areas such as infrastructure, networking, and cybersecurity.',
   } satisfies Localized,
   email: 'eduardotito.jose01@gmail.com',
   location: 'Arica, Chile',
@@ -18,5 +18,5 @@ export const profile = {
   // PDF compilado desde cv/CV.tex; sin versión en inglés, ese idioma enlaza al PDF en español.
   cvPdf: { es: '/cv/eduardo-apata-tito-cv-es.pdf' } as Partial<Localized>,
   // Stack del CV (cv/CV.tex, sección Tecnologías); los íconos salen de src/data/tech.ts.
-  stack: ['HTML', 'CSS', 'JavaScript', 'Astro', 'PHP', 'Laravel'],
+  stack: ['Laravel', 'PHP', 'Tailwind CSS', 'Astro', 'HTML', 'CSS', 'TypeScript'],
 };

@@ -72,13 +72,25 @@ const readme = repo && `${repo.replace(/\/$/, '')}#readme`;
   </div>
 
   <div class="border-t border-line bg-surface-raised p-4 md:p-6 lg:flex lg:items-center lg:border-t-0 lg:border-l">
-    <BrowserFrame
-      class="w-full"
-      image={image}
-      alt={imageAlt ?? title}
-      url={url}
-      emptyLabel={t('projects.noImage')}
-    />
+    {url ? (
+      <a href={url} target="_blank" rel="noopener noreferrer" class="block w-full cursor-pointer">
+        <BrowserFrame
+          class="w-full"
+          image={image}
+          alt={imageAlt ?? title}
+          url={url}
+          emptyLabel={t('projects.noImage')}
+        />
+      </a>
+    ) : (
+      <BrowserFrame
+        class="w-full"
+        image={image}
+        alt={imageAlt ?? title}
+        url={url}
+        emptyLabel={t('projects.noImage')}
+      />
+    )}
   </div>
 </article>
 

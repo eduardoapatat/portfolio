@@ -11,4 +11,4 @@ image: ../../../assets/projects/cupo-app.webp
 imageAlt: "The owner's home screen in Cupo, with today's occupancy, alerts and monthly revenue"
 ---
 
-App for **pilates, yoga and dance** studios that run on WhatsApp and spreadsheets: bookings with a **waitlist**, class pack sales, bank transfer or **Webpay** payments and cash register closing, with roles for owner, front desk, instructor and student. Critical rules, like **never overbooking a spot**, are enforced by PostgreSQL and tested with real concurrent processes.
+App for **pilates, yoga and dance** studios: bookings with a **waitlist**, class pack sales, **Webpay** payments and cash register, without ever overbooking a spot.

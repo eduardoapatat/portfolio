@@ -1,7 +1,7 @@
 ---
 title: Parque Centenario — Rediseño
 year: 2026
-category: Rediseño web
+categories: [sitio]
 summary: 'Rediseño conceptual del sitio del Parque Centenario de Arica, con reserva de quinchos y Lighthouse de 90 a 100.'
 status: prototipo
 tech: [Astro, TypeScript, Tailwind CSS]

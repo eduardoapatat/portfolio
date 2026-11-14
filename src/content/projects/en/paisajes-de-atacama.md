@@ -1,7 +1,7 @@
 ---
 title: Paisajes de Atacama
 year: 2026
-category: Website
+categories: [sitio]
 summary: 'A visual story of the Atacama Desert, with one chapter per landscape revealed on scroll.'
 status: produccion
 tech: [Astro, TypeScript, Tailwind CSS, GSAP, Vercel]

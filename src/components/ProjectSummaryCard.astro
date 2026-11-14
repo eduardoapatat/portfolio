@@ -15,7 +15,7 @@ type Props = {
 
 const { project, lang } = Astro.props;
 const t = useTranslations(lang);
-const { title, year, category, status, summary, tech, url, repo } = project;
+const { title, year, categories, status, summary, tech, url, repo } = project;
 ---
 
 <article class="flex flex-col gap-4 rounded-2xl border border-line bg-surface-raised p-5 md:p-6">
@@ -25,7 +25,7 @@ const { title, year, category, status, summary, tech, url, repo } = project;
       {status && <Badge tone={projectStatusTone[status]}>{t(`projects.status.${status}`)}</Badge>}
     </h3>
     <p class="shrink-0 text-xs text-fg-subtle">
-      {year} · {category}
+      {year} · {categories.map((category) => t(`projects.category.${category}`)).join(' · ')}
     </p>
   </div>
 

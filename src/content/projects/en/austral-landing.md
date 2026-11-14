@@ -1,7 +1,7 @@
 ---
 title: AUSTRAL
 year: 2026
-category: E-commerce landing
+categories: [landing, ecommerce]
 summary: 'Landing page prototype for a made-up outerwear brand, with a category filter and a bag.'
 status: prototipo
 tech: [Astro, TypeScript, Tailwind CSS, Lenis, Vercel]

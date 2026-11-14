@@ -16,7 +16,7 @@ type Props = {
 
 const { project, lang } = Astro.props;
 const t = useTranslations(lang);
-const { title, year, category, status, tech, url, repo, image, imageAlt } = project.data;
+const { title, year, categories, status, tech, url, repo, image, imageAlt } = project.data;
 const { Content } = await render(project);
 // GitHub abre el README con el ancla #readme.
 const readme = repo && `${repo.replace(/\/$/, '')}#readme`;
@@ -29,9 +29,11 @@ const readme = repo && `${repo.replace(/\/$/, '')}#readme`;
     <div class="flex flex-col gap-3.5 p-6 lg:absolute lg:inset-0">
       <div class="flex flex-wrap items-center gap-2 text-xs">
         <span class="text-fg-subtle">{year}</span>
-        <span class="rounded-full border border-line bg-surface-raised px-2.5 py-0.5 font-medium tracking-wide uppercase">
-          {category}
-        </span>
+        {categories.map((category) => (
+          <span class="rounded-full border border-line bg-surface-raised px-2.5 py-0.5 font-medium tracking-wide uppercase">
+            {t(`projects.category.${category}`)}
+          </span>
+        ))}
         {status && <Badge tone={projectStatusTone[status]}>{t(`projects.status.${status}`)}</Badge>}
       </div>
 

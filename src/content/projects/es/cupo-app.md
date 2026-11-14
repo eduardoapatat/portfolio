@@ -1,7 +1,7 @@
 ---
 title: Cupo
 year: 2026
-category: Aplicación web
+categories: [app]
 summary: 'Reservas, planes, pagos y caja para estudios pequeños de clases grupales, sin sobrevender un cupo.'
 status: prototipo
 tech: [Laravel, PHP, React, Inertia, TypeScript, Tailwind CSS, PostgreSQL]

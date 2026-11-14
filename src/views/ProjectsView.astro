@@ -2,6 +2,7 @@
 import ProjectCard from '@/components/ProjectCard.astro';
 import type { Lang } from '@/i18n/ui';
 import { useTranslations } from '@/i18n/utils';
+import { projectCategories } from '@/lib/categories';
 import { getProjects } from '@/lib/content';
 
 type Props = {
@@ -11,6 +12,11 @@ type Props = {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const projects = await getProjects(lang);
+
+// Solo las categorías que tienen proyectos, con su cantidad.
+const filters = projectCategories
+  .map((id) => ({ id, count: projects.filter((p) => p.data.categories.includes(id)).length }))
+  .filter(({ count }) => count > 0);
 ---
 
 <div class="py-6 md:py-10">
@@ -22,16 +28,120 @@ const projects = await getProjects(lang);
   </header>
 
   {projects.length > 0 ? (
-    <ul class="flex flex-col gap-8">
-      {projects.map((project) => (
-        <li>
-          <ProjectCard project={project} lang={lang} />
-        </li>
-      ))}
-    </ul>
+    <>
+      {filters.length > 1 && (
+        <div
+          data-project-filters
+          data-param={t('projects.filter.param')}
+          role="group"
+          aria-label={t('projects.filter')}
+          class="mb-8 flex flex-wrap gap-2"
+        >
+          <button type="button" class="filter-chip" data-filter="" aria-pressed="true">
+            {t('projects.filter.all')}
+            <span class="filter-count">{projects.length}</span>
+          </button>
+          {filters.map(({ id, count }) => (
+            <button type="button" class="filter-chip" data-filter={id} aria-pressed="false">
+              {t(`projects.filter.${id}`)}
+              <span class="filter-count">{count}</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      <ul class="flex flex-col gap-8">
+        {projects.map((project) => (
+          <li data-categories={project.data.categories.join(' ')}>
+            <ProjectCard project={project} lang={lang} />
+          </li>
+        ))}
+      </ul>
+    </>
   ) : (
     <p class="rounded-2xl border border-dashed border-line p-10 text-center text-fg-subtle">
       {t('projects.empty')}
     </p>
   )}
 </div>
+
+<style>
+  .filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--color-button-line);
+    border-radius: 9999px;
+    padding: 6px 14px;
+    font-size: 0.875rem;
+    color: var(--color-fg-muted);
+    cursor: pointer;
+    transition:
+      background-color 150ms ease-out,
+      color 150ms ease-out,
+      border-color 150ms ease-out;
+  }
+
+  .filter-count {
+    font-size: 0.75rem;
+    color: var(--color-fg-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .filter-chip[aria-pressed='true'] {
+    background: var(--color-fg);
+    border-color: var(--color-fg);
+    color: var(--color-bg);
+  }
+
+  .filter-chip[aria-pressed='true'] .filter-count {
+    color: inherit;
+    opacity: 0.6;
+  }
+
+  @media (hover: hover) {
+    .filter-chip[aria-pressed='false']:hover {
+      background: var(--color-surface-hover);
+      color: var(--color-fg);
+    }
+  }
+
+  .filter-chip:focus-visible {
+    outline: 2px solid var(--color-fg);
+    outline-offset: 2px;
+  }
+</style>
+
+<script>
+  // Filtra la lista por categoría y guarda la elegida en la URL (?categoria=app) para compartirla.
+  document.addEventListener('astro:page-load', () => {
+    const group = document.querySelector<HTMLElement>('[data-project-filters]');
+    if (!group) return;
+
+    const param = group.dataset.param ?? 'categoria';
+    const buttons = [...group.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+    const items = [...document.querySelectorAll<HTMLElement>('[data-categories]')];
+
+    const apply = (filter: string) => {
+      // Una categoría que no existe en los botones equivale a "Todos".
+      const active = buttons.some((b) => b.dataset.filter === filter) ? filter : '';
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === active)));
+      items.forEach((item) => {
+        item.hidden = active !== '' && !item.dataset.categories?.split(' ').includes(active);
+      });
+      return active;
+    };
+
+    apply(new URLSearchParams(location.search).get(param) ?? '');
+
+    buttons.forEach((button) =>
+      button.addEventListener('click', () => {
+        const active = apply(button.dataset.filter ?? '');
+        const url = new URL(location.href);
+        if (active) url.searchParams.set(param, active);
+        else url.searchParams.delete(param);
+        history.replaceState(history.state, '', url);
+      }),
+    );
+  });
+</script>

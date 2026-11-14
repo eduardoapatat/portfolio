@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { projectCategories } from './lib/categories';
 
 // Cada colección tiene una carpeta por idioma: src/content/<colección>/<es|en>/<archivo>.md
 // El id resultante es "<idioma>/<archivo>", y así se filtra por idioma en src/lib/content.ts.
@@ -11,7 +12,8 @@ const projects = defineCollection({
     z.object({
       title: z.string(),
       year: z.number().int(),
-      category: z.string(),
+      // Una o más de src/lib/categories.ts; la primera es la principal.
+      categories: z.array(z.enum(projectCategories)).min(1),
       // Una línea para la tarjeta compacta del inicio.
       summary: z.string().optional(),
       status: z.enum(['desarrollo', 'prototipo', 'produccion']).optional(),

@@ -1,7 +1,7 @@
 ---
 title: Cupo
 year: 2026
-category: Web app
+categories: [app]
 summary: 'Bookings, class packs, payments and cash register for small group-class studios, without ever overbooking a spot.'
 status: prototipo
 tech: [Laravel, PHP, React, Inertia, TypeScript, Tailwind CSS, PostgreSQL]

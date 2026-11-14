@@ -1,7 +1,7 @@
 ---
 title: Paisajes de Atacama
 year: 2026
-category: Sitio web
+categories: [sitio]
 summary: 'Relato visual del Desierto de Atacama, con un capítulo por paisaje que se revela al hacer scroll.'
 status: produccion
 tech: [Astro, TypeScript, Tailwind CSS, GSAP, Vercel]

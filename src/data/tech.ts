@@ -15,6 +15,9 @@ const tech: Record<string, TechIcon> = {
   PHP: { icon: 'simple-icons:php', color: '#777bb4' },
   Laravel: { icon: 'simple-icons:laravel', color: '#ff2d20' },
   GSAP: { icon: 'simple-icons:greensock', color: '#88ce02' },
+  React: { icon: 'simple-icons:react', color: '#61dafb' },
+  Inertia: { icon: 'simple-icons:inertia', color: '#9553e9' },
+  PostgreSQL: { icon: 'simple-icons:postgresql', color: '#4169e1' },
   Vercel: { icon: 'simple-icons:vercel', color: 'var(--color-fg)' }, // marca: negro
 };
 

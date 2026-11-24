@@ -4,11 +4,14 @@ import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import icon from 'astro-icon';
+import { loadEnv } from 'vite';
 import { routes } from './src/i18n/routes.ts';
 
-// URL pública del sitio (definir SITE_URL en el hosting). Sin ella no se generan
-// canónicas, Open Graph absolutos ni sitemap, pero el sitio compila igual.
-const site = process.env.SITE_URL;
+// URL pública del sitio: SITE_URL del entorno (hosting) o del .env (local).
+// Astro no carga los .env en este archivo, por eso se leen con loadEnv.
+// Sin ella no se generan canónicas, Open Graph absolutos ni sitemap, pero el sitio compila igual.
+const env = loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), '');
+const site = process.env.SITE_URL ?? env.SITE_URL;
 
 /**
  * Alternativas de idioma para el sitemap. Las rutas tienen slugs traducidos

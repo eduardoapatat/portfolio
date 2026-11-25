@@ -32,7 +32,7 @@ const nav = siteNav(lang);
           href={item.href}
           aria-current={item.route && item.route === currentRoute ? 'page' : undefined}
           {...(item.newTab && { target: '_blank', rel: 'noopener' })}
-          class="text-ink-muted no-underline decoration-2 underline-offset-4 hover:text-ink hover:underline aria-[current=page]:text-ink aria-[current=page]:underline"
+          class="inline-flex min-h-6 min-w-6 items-center text-ink-muted no-underline decoration-2 underline-offset-4 hover:text-ink hover:underline aria-[current=page]:text-ink aria-[current=page]:underline"
         >
           {item.label}
           {item.newTab && <span class="sr-only"> ({t('a11y.newTab')})</span>}

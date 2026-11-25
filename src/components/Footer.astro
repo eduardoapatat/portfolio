@@ -29,13 +29,13 @@ const columns: { label: string; links: NavItem[] }[] = [
     {columns.map((col) => (
       <div>
         <p class="mb-3.5 text-[11px] tracking-[0.1em] uppercase opacity-70">{col.label}</p>
-        <ul class="grid gap-2">
+        <ul class="grid gap-1">
           {col.links.map((link) => (
             <li>
               <a
                 href={link.href}
                 {...(link.newTab && { target: '_blank', rel: 'noopener' })}
-                class="no-underline hover:underline focus-visible:outline-sheet"
+                class="inline-flex min-h-6 min-w-6 items-center no-underline hover:underline focus-visible:outline-sheet"
               >
                 {link.label}
                 {link.newTab && <span class="sr-only"> ({t('a11y.newTab')})</span>}
@@ -50,7 +50,10 @@ const columns: { label: string; links: NavItem[] }[] = [
     <span>
       © {new Date().getFullYear()} {profile.name}
     </span>
-    <a href="#main-content" class="focus-visible:outline-sheet">
+    <a
+      href="#main-content"
+      class="-my-1 inline-flex min-h-6 items-center focus-visible:outline-sheet"
+    >
       {t('home.footer.top')}
     </a>
   </div>

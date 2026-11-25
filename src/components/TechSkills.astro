@@ -56,8 +56,8 @@ const lift =
       // La celda principal (full stack) lleva fichas más grandes.
       const size = { name: accent ? ('lg' as const) : ('md' as const) };
       const rootIcon = group.tree && techIcon(group.tree.root);
-      // Texto secundario: sobre fondo de color o invertido se atenúa con opacidad.
-      const muted = accent || group.key === 'ai' ? 'opacity-80' : 'text-ink-muted';
+      // Texto secundario. Sobre el azul va sin atenuar: el blanco al 80 % no llega a 4.5:1 (WCAG AA).
+      const muted = accent ? '' : group.key === 'ai' ? 'opacity-80' : 'text-ink-muted';
       return (
         <li
           class:list={[

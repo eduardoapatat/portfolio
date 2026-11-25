@@ -26,7 +26,7 @@ const { num, titleId, title, sub, more, as: Heading = 'h2' } = Astro.props;
     {more && (
       <a
         href={more.href}
-        class="mt-4 inline-block text-[11px] font-bold tracking-[0.1em] uppercase underline decoration-2 underline-offset-4"
+        class="mt-4 inline-flex min-h-6 items-center text-[11px] font-bold tracking-[0.1em] uppercase underline decoration-2 underline-offset-4"
       >
         {more.label}
       </a>

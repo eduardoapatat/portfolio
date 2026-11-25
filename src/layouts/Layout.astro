@@ -1,84 +1,83 @@
 ---
+// Layout único del sitio (diseño «hoja»): encabezado, pie y panel de idioma y tema.
 import '@/styles/global.css';
 import { Font } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
-import Background from '@/components/Background.astro';
-import CommandMenu from '@/components/CommandMenu.astro';
-import ProfileCard from '@/components/ProfileCard.astro';
 import Seo from '@/components/Seo.astro';
-import SiteHeader from '@/components/SiteHeader.astro';
+import Footer from '@/components/Footer.astro';
+import Header from '@/components/Header.astro';
+import Preferences from '@/components/Preferences.astro';
 import { profile } from '@/data/profile';
-import { getLang, getRouteKey, useTranslations } from '@/i18n/utils';
-import { contentTransition } from '@/lib/transitions';
+import { getLang, useTranslations } from '@/i18n/utils';
 
 type Props = {
+  /** Título de la página; se completa con el nombre. Sin título, nombre y rol (inicio). */
   title?: string;
   description?: string;
   noindex?: boolean;
+  type?: 'website' | 'profile';
 };
 
 const lang = getLang(Astro.url);
 const t = useTranslations(lang);
-const { title, description = t('site.description'), noindex } = Astro.props;
-// Sin título (inicio): "Nombre · Rol", para que el nombre encabece el resultado de búsqueda.
-const isHome = getRouteKey(Astro.url) === 'home';
+const {
+  title,
+  description = t('site.description'),
+  noindex = false,
+  type = 'website',
+} = Astro.props;
 const pageTitle = title ? `${title} · ${profile.name}` : `${profile.name} · ${profile.role[lang]}`;
 ---
 
-<html lang={lang} transition:name="root" transition:animate="none">
+<html
+  lang={lang}
+  transition:name="root"
+  transition:animate="none"
+  class="scroll-smooth scroll-pt-18 scrollbar-thin scrollbar-thumb-rule scrollbar-track-transparent motion-reduce:scroll-auto"
+>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#000000" />
-    <Seo title={pageTitle} description={description} noindex={noindex} />
+    <Seo title={pageTitle} description={description} type={type} noindex={noindex} />
     <slot name="head" />
     <Font cssVariable="--font-jetbrains-mono" preload />
+    <Font cssVariable="--font-barlow-condensed" preload />
+    <!-- Tema elegido con el botón "Tema"; sin elección sigue al sistema. Se reaplica tras cada navegación. -->
+    <script is:inline>
+      (() => {
+        const apply = () => {
+          try {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'light' || saved === 'dark')
+              document.documentElement.dataset.theme = saved;
+          } catch {
+            // Sin almacenamiento (modo privado): el tema sigue al sistema.
+          }
+        };
+        apply();
+        if (!window.__themeAfterSwap) {
+          window.__themeAfterSwap = true;
+          document.addEventListener('astro:after-swap', apply);
+        }
+      })();
+    </script>
     <ClientRouter />
   </head>
-  <body class="font-mono">
+  <body class="bg-sheet-grid font-mono text-[15px] leading-relaxed text-ink antialiased">
     <a
       href="#main-content"
-      class="sr-only rounded-md bg-accent text-sm font-medium text-bg focus-visible:not-sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-50 focus-visible:px-4 focus-visible:py-2"
+      class="sr-only bg-brand text-sm font-bold text-on-brand focus-visible:not-sr-only focus-visible:fixed focus-visible:top-3 focus-visible:left-4 focus-visible:z-50 focus-visible:px-3 focus-visible:py-2"
     >
       {t('a11y.skip')}
     </a>
-    <Background />
-    <!-- Escritorio: tarjeta de perfil a la izquierda en todas las filas; barra, contenido y pie a la derecha.
-         Celular: una columna (barra, tarjeta solo en el inicio, contenido y pie), en el orden del DOM. -->
-    <div class="mx-auto flex min-h-dvh w-full max-w-[1600px] flex-col px-4 md:grid md:grid-cols-[300px_minmax(0,1fr)] md:grid-rows-[auto_1fr_auto] md:gap-x-10 md:px-8 lg:grid-cols-[340px_minmax(0,1fr)] lg:gap-x-12 xl:grid-cols-[380px_minmax(0,1fr)] xl:gap-x-16 xl:px-12">
-      <SiteHeader />
-
-      <aside
-        transition:name="profile"
-        transition:animate="none"
-        class:list={[
-          // Escritorio: columna fija del alto de la ventana, con la tarjeta centrada (como la referencia).
-          // En pantallas bajas deja de ser fija y se desplaza con el resto.
-          'pt-2 md:col-start-1 md:row-span-3 md:row-start-1 md:flex md:flex-col md:self-start md:py-8 md:[@media(min-height:640px)]:sticky md:[@media(min-height:640px)]:top-0 md:[@media(min-height:640px)]:h-dvh md:[@media(min-height:640px)]:py-16',
-          !isHome && 'hidden',
-        ]}
-      >
-        <ProfileCard lang={lang} />
-      </aside>
-
-      <main
-        id="main-content"
-        transition:name="content"
-        transition:animate={contentTransition}
-        class="min-w-0 flex-1 md:col-start-2 md:row-start-2"
-      >
-        <slot />
-      </main>
-
-      <!-- La navegación vive en SiteHeader. El dock (src/components/Dock.astro) queda guardado:
-           para volver a usarlo, impórtalo y móntalo aquí. -->
-      <footer class="border-t border-line py-6 text-center text-xs text-fg-subtle md:col-start-2 md:row-start-3">
-        © {new Date().getFullYear()} {profile.name} · {t('footer.made')}
-      </footer>
-    </div>
-    <CommandMenu />
+    <Header lang={lang} />
+    <main id="main-content" class="mx-auto max-w-350 overflow-x-clip px-[clamp(16px,4vw,48px)]">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <Preferences lang={lang} />
   </body>
 </html>

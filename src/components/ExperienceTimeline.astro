@@ -1,8 +1,8 @@
 ---
 import { Image } from 'astro:assets';
-import SectionHead from '@/components/home/SectionHead.astro';
+import SectionHead from '@/components/SectionHead.astro';
 import type { Lang } from '@/i18n/ui';
-import { pathFor, useTranslations } from '@/i18n/utils';
+import { useTranslations } from '@/i18n/utils';
 import { getExperience } from '@/lib/content';
 import { formatPeriod } from '@/lib/format';
 
@@ -19,7 +19,6 @@ const experience = await getExperience(lang);
     titleId={`${id}-title`}
     title={t('home.experience.title')}
     sub={t('home.experience.sub')}
-    more={{ href: pathFor('experience', lang), label: t('home.experience.more') }}
   />
 
   <div class="tl relative pt-10 pb-2">

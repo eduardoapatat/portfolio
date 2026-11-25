@@ -31,6 +31,14 @@ function alternatesFor(url) {
 // https://astro.build/config
 export default defineConfig({
   site,
+  // Páginas que existieron en el diseño anterior: Experiencia pasó a ser una sección del inicio
+  // y el CV es solo el PDF.
+  redirects: {
+    '/experiencia': '/#experience',
+    '/en/experience': '/en/#experience',
+    '/cv': '/cv/eduardo-apata-tito-cv-es.pdf',
+    '/en/resume': '/cv/eduardo-apata-tito-cv-es.pdf',
+  },
   integrations: [
     icon(),
     sitemap({

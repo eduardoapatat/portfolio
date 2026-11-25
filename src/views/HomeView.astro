@@ -1,12 +1,12 @@
 ---
 // Inicio con el diseño "hoja": portada, experiencia, tecnologías, proyectos, formación y contacto.
-import Contact from '@/components/home/Contact.astro';
-import Education from '@/components/home/Education.astro';
-import ExperienceTimeline from '@/components/home/ExperienceTimeline.astro';
-import Hero from '@/components/home/Hero.astro';
-import ProjectRows from '@/components/home/ProjectRows.astro';
-import Record from '@/components/home/Record.astro';
-import TechSkills from '@/components/home/TechSkills.astro';
+import Contact from '@/components/Contact.astro';
+import Education from '@/components/Education.astro';
+import ExperienceTimeline from '@/components/ExperienceTimeline.astro';
+import Hero from '@/components/Hero.astro';
+import ProjectsSection from '@/components/ProjectsSection.astro';
+import Record from '@/components/Record.astro';
+import TechSkills from '@/components/TechSkills.astro';
 import type { Lang } from '@/i18n/ui';
 import { useTranslations } from '@/i18n/utils';
 
@@ -30,6 +30,6 @@ const num = (id: string) => String(sections.findIndex((s) => s.id === id) + 1).p
 <Record lang={lang} sections={sections} />
 <ExperienceTimeline lang={lang} id="experience" num={num('experience')} />
 <TechSkills lang={lang} id="technologies" num={num('technologies')} />
-<ProjectRows lang={lang} id="projects" num={num('projects')} />
+<ProjectsSection lang={lang} id="projects" num={num('projects')} />
 <Education lang={lang} id="education" num={num('education')} />
 <Contact lang={lang} id="contact" num={num('contact')} />

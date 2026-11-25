@@ -1,48 +1,12 @@
 @import 'tailwindcss';
 
-/* Tokens de color y tipografía: la estética se cambia desde aquí. */
+/* Tipografía: JetBrains Mono para el texto y Barlow Condensed para los títulos. */
 @theme {
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
-
-  /* Negro neutro con blanco y gris, colores planos: cada tipo de elemento usa un solo tono.
-     Los tonos equivalen a blanco con poca opacidad sobre negro, pero sin transparencias. */
-  --color-bg: #000000;
-  --color-surface: #050505;
-  --color-surface-raised: #050505;
-  --color-surface-hover: #121212;
-  --color-line: #1a1a1a;
-  --color-button-line: #2c2c2d;
-  --color-fg: #ffffff;
-  --color-fg-muted: #c2c2c4;
-  --color-fg-subtle: #909092;
-
-  /* Acento: acciones principales, foco y estado activo. Blanco: el color queda para los estados. */
-  --color-accent: #ffffff;
-  --color-accent-hover: #d4d4d6;
-  --color-accent-soft: #1a1a1a;
-  --color-warning: #fbbf24;
-  --color-success: #34d399;
-
-  /* Teclas (chips, pestaña activa, opción del menú): un gris un paso sobre el fondo. */
-  --color-dock-key: #0b0b0b;
-  --color-dock-key-line: #1f1f1f;
-  --color-dock-key-hover: #161616;
-  --color-dock-key-hover-line: #333334;
-
-  --color-cv-paper: #ffffff;
-  --color-cv-aside: #f8fafc;
-  --color-cv-ink: #0f172a;
-  --color-cv-muted: #475569;
-  --color-cv-line: #e2e8f0;
-  --color-cv-accent: #1d4ed8;
-
-  /* Diseño "hoja" del inicio: Barlow Condensed para títulos. */
   --font-display: var(--font-barlow-condensed), 'Arial Narrow', sans-serif;
-
-  /* Carrusel de tecnologías: avanza media pista (la lista va repetida). */
 }
 
-/* Colores del diseño "hoja": cambian solos entre claro y oscuro (light-dark + color-scheme). */
+/* Colores: cambian solos entre claro y oscuro (light-dark + color-scheme). */
 @theme inline {
   --color-sheet: var(--sheet);
   --color-ink: var(--ink);
@@ -72,36 +36,8 @@
 }
 
 @layer base {
+  /* Tema: sin data-theme sigue al sistema; el panel de preferencias fija claro u oscuro. */
   html {
-    color-scheme: dark;
-    background-color: var(--color-bg);
-    color: var(--color-fg);
-    -webkit-font-smoothing: antialiased;
-  }
-
-  a,
-  button {
-    touch-action: manipulation;
-  }
-
-  ::selection {
-    background-color: var(--color-accent);
-    color: var(--color-bg);
-  }
-
-  :focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 3px;
-    border-radius: 4px;
-  }
-
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-line) transparent;
-  }
-
-  /* Diseño "hoja" (por ahora solo el inicio, ver HomeLayout). Sin data-theme sigue al sistema. */
-  html[data-design='sheet'] {
     color-scheme: light dark;
     --sheet: light-dark(#edede8, #000000);
     --ink: light-dark(#0b0b0b, #ebebe7);
@@ -115,6 +51,7 @@
     --warn: light-dark(#8a5a00, #f2b33d);
     background-color: var(--sheet);
     color: var(--ink);
+    -webkit-font-smoothing: antialiased;
 
     &[data-theme='light'] {
       color-scheme: light;
@@ -122,27 +59,20 @@
     &[data-theme='dark'] {
       color-scheme: dark;
     }
-    & ::selection {
-      background-color: var(--brand);
-      color: var(--on-brand);
-    }
-    & :focus-visible {
-      outline-color: var(--ink);
-      border-radius: 0;
-    }
   }
-}
 
-/* Transición entre secciones (ver src/lib/transitions.ts). */
-@keyframes content-in {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
+  a,
+  button {
+    touch-action: manipulation;
   }
-}
 
-@keyframes content-out {
-  to {
-    opacity: 0;
+  ::selection {
+    background-color: var(--brand);
+    color: var(--on-brand);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
   }
 }

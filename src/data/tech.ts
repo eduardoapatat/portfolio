@@ -1,7 +1,7 @@
 // Ícono (simple-icons) y color de cada tecnología, por nombre: el que se escribe en `tech`
 // de los proyectos y en `profile.stack`. Sin entrada, la tecnología se muestra como texto.
-// Los colores son los de cada marca; cuando no alcanzan contraste 3:1 sobre la tecla
-// (--color-dock-key) se aclaran o se usa el color del texto.
+// Los colores son los de cada marca; cuando no contrastan sobre la ficha clara (--chip)
+// se usa la tinta (#0b0b0b).
 
 import type { Lang } from '@/i18n/ui';
 

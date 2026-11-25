@@ -1,0 +1,129 @@
+---
+// Una fila de proyecto: captura a la izquierda y datos a la derecha.
+// - summary (inicio): año, estado, título, resumen y tecnologías.
+// - full (página Proyectos): además categorías, descripción completa y enlaces.
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import Button from '@/components/Button.astro';
+import { techIcon } from '@/data/tech';
+import type { Lang } from '@/i18n/ui';
+import { useTranslations } from '@/i18n/utils';
+
+type Props = {
+  project: CollectionEntry<'projects'>;
+  index: number;
+  lang: Lang;
+  variant: 'summary' | 'full';
+};
+
+const { project, index, lang, variant } = Astro.props;
+const t = useTranslations(lang);
+const { title, year, categories, status, summary, tech, url, repo, image, imageAlt } = project.data;
+const full = variant === 'full';
+const Heading = full ? 'h2' : 'h3';
+const { Content } = full ? await render(project) : { Content: undefined };
+const pad = (n: number) => String(n).padStart(2, '0');
+// En el inicio la Fig. 01 es el monograma de la ficha técnica; en Proyectos se empieza en 01.
+const fig = pad(index + (full ? 1 : 2));
+const statusColor = {
+  produccion: 'text-ok',
+  prototipo: 'text-warn',
+  desarrollo: 'text-warn',
+} as const;
+// GitHub abre el README con el ancla #readme.
+const readme = repo && `${repo.replace(/\/$/, '')}#readme`;
+const links = full
+  ? [
+      url && { href: url, label: t('projects.demo'), icon: 'lucide:external-link' },
+      repo && { href: repo, label: t('projects.repo'), icon: 'lucide:github' },
+      readme && { href: readme, label: t('projects.readMore'), icon: 'lucide:book-open' },
+    ].filter((link) => !!link)
+  : [];
+---
+
+<article class="grid gap-[clamp(24px,4vw,56px)] min-[900px]:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
+  <figure>
+    {image && (
+      <Image
+        src={image}
+        alt={imageAlt ?? ''}
+        widths={[480, 800]}
+        sizes="(min-width: 900px) 40vw, 100vw"
+        loading={full && index === 0 ? 'eager' : 'lazy'}
+        fetchpriority={full && index === 0 ? 'high' : undefined}
+        class="block h-auto w-full border border-ink"
+      />
+    )}
+    <figcaption class="mt-2 text-[11px] tracking-[0.1em] text-ink-muted uppercase">
+      Fig. {fig} — {title}
+    </figcaption>
+  </figure>
+  <div>
+    <p class="mb-3 flex flex-wrap items-center gap-x-3.5 gap-y-1 text-[11px] tracking-[0.1em] text-ink-muted uppercase">
+      <span>{pad(index + 1)}</span>
+      <span>{year}</span>
+      {status && (
+        <span class={`flex items-center gap-1.5 ${statusColor[status]}`}>
+          <span class="size-1.75 rounded-full bg-current" aria-hidden="true" />
+          {t(`projects.status.${status}`)}
+        </span>
+      )}
+      {full &&
+        categories.map((category) => (
+          <span class="border border-ink px-2 py-0.5 text-ink">
+            {t(`projects.category.${category}`)}
+          </span>
+        ))}
+    </p>
+    <Heading class="font-display text-[clamp(1.9rem,3.6vw,2.6rem)] leading-[0.95] font-extrabold text-balance uppercase italic">
+      {title}
+    </Heading>
+    {full && Content ? (
+      <div class="mt-3.5 mb-5 max-w-[72ch] text-ink-muted [&_a]:underline [&_li]:relative [&_li]:pl-4 [&_li]:before:absolute [&_li]:before:top-[0.65em] [&_li]:before:left-0 [&_li]:before:h-0.5 [&_li]:before:w-1.75 [&_li]:before:bg-ink [&_p+p]:mt-3 [&_strong]:font-bold [&_strong]:text-ink [&_ul]:mt-3 [&_ul]:grid [&_ul]:gap-1.5">
+        <Content />
+      </div>
+    ) : (
+      <p class="mt-3.5 mb-4.5 max-w-[72ch] text-ink-muted">{summary}</p>
+    )}
+    <ul class="flex flex-wrap gap-2" aria-label={t('projects.tech')}>
+      {tech.map((name) => {
+        const icon = techIcon(name);
+        return (
+          <li class="flex items-center gap-1.5 border border-ink bg-chip px-2.5 py-1.25 text-xs font-medium text-[#0b0b0b]">
+            {icon && (
+              <Icon
+                name={icon.icon}
+                class="size-4"
+                style={`color:${icon.color}`}
+                aria-hidden="true"
+              />
+            )}
+            {name}
+          </li>
+        );
+      })}
+    </ul>
+    {links.length > 0 && (
+      <ul class="mt-6 flex flex-wrap gap-3">
+        {links.map((link) => (
+          <li>
+            <Button
+              href={link.href}
+              variant="ghost"
+              size="sm"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2"
+            >
+              <Icon name={link.icon} class="size-4" aria-hidden="true" />
+              {link.label}
+              <span class="sr-only"> ({t('a11y.newTab')})</span>
+            </Button>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</article>

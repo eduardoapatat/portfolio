@@ -72,11 +72,6 @@ function setupCommandMenu() {
       navigate(value);
     } else if (action === 'external') {
       window.open(value, '_blank', 'noopener,noreferrer');
-    } else if (action === 'download') {
-      const link = document.createElement('a');
-      link.href = value;
-      link.download = '';
-      link.click();
     }
   };
 

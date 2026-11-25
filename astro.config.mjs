@@ -54,6 +54,14 @@ export default defineConfig({
       styles: ['normal'],
       fallbacks: ['monospace'],
     },
+    {
+      provider: fontProviders.fontsource(),
+      name: 'Barlow Condensed',
+      cssVariable: '--font-barlow-condensed',
+      weights: [800, 900],
+      styles: ['italic'],
+      fallbacks: ['sans-serif'],
+    },
   ],
   vite: {
     plugins: [tailwindcss()],

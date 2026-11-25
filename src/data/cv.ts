@@ -21,7 +21,7 @@ export const cv = {
         en: 'Civil Engineering in Computer Science and Informatics',
       },
       status: { es: 'Titulado', en: 'Graduated' },
-      location: 'Arica, Chile',
+      location: 'Chile',
       start: new Date('2020-03-01'),
       end: new Date('2026-07-01'),
     },
@@ -29,20 +29,30 @@ export const cv = {
   certifications: [
     { name: 'CCNA: Introduction to Networks', issuer: 'Cisco', date: new Date('2023-07-01') },
   ],
-  skills: {
-    es: [
-      'Liderazgo de proyectos, desde la necesidad del usuario hasta la entrega.',
-      'Levantamiento de requerimientos, análisis de sistemas y comunicación con usuarios no técnicos.',
-      'Arquitectura de la información, accesibilidad web y gestión de contenidos.',
-      'Español nativo.',
-    ],
-    en: [
-      'Project leadership, from user need to delivery.',
-      'Requirements gathering, systems analysis and communication with non-technical users.',
-      'Information architecture, web accessibility and content management.',
-      'Native Spanish.',
-    ],
-  } satisfies Record<Lang, string[]>,
+  // Cada habilidad lleva su ícono (lucide) para el inicio.
+  skills: [
+    {
+      icon: 'lucide:flag',
+      text: {
+        es: 'Liderazgo de proyectos, desde la necesidad del usuario hasta la entrega.',
+        en: 'Project leadership, from user need to delivery.',
+      },
+    },
+    {
+      icon: 'lucide:messages-square',
+      text: {
+        es: 'Levantamiento de requerimientos, análisis de sistemas y comunicación con usuarios no técnicos.',
+        en: 'Requirements gathering, systems analysis and communication with non-technical users.',
+      },
+    },
+    {
+      icon: 'lucide:accessibility',
+      text: {
+        es: 'Arquitectura de la información, accesibilidad web y gestión de contenidos.',
+        en: 'Information architecture, web accessibility and content management.',
+      },
+    },
+  ] satisfies { icon: string; text: Localized }[],
   technologies: [
     {
       category: { es: 'Desarrollo web', en: 'Web development' },

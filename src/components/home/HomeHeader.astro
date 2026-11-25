@@ -1,0 +1,46 @@
+---
+import Button from '@/components/home/Button.astro';
+import { profile } from '@/data/profile';
+import type { Lang } from '@/i18n/ui';
+import { pathFor, useTranslations } from '@/i18n/utils';
+
+type Props = { lang: Lang };
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const nav = [
+  { label: t('nav.home'), href: pathFor('home', lang), current: true },
+  { label: t('nav.projects'), href: pathFor('projects', lang) },
+  { label: t('nav.experience'), href: pathFor('experience', lang) },
+  { label: t('nav.cv'), href: pathFor('cv', lang) },
+];
+---
+
+<!-- La barra ocupa todo el ancho; su contenido respeta el mismo contenedor que la página. -->
+<header class="sticky top-0 z-10 border-b border-rule bg-sheet">
+  <div class="mx-auto flex max-w-350 items-center gap-6 px-[clamp(16px,4vw,48px)] py-3.5">
+    <a
+      href={pathFor('home', lang)}
+      class="mr-auto font-display text-[1.6rem] leading-none font-black italic no-underline"
+    >
+      EA<span class="sr-only"> · {t('nav.home')}</span>
+    </a>
+    <nav
+      aria-label={t('nav.label')}
+      class="hidden gap-5.5 text-xs tracking-[0.08em] uppercase md:flex"
+    >
+      {nav.map((item) => (
+        <a
+          href={item.href}
+          aria-current={item.current ? 'page' : undefined}
+          class="text-ink-muted no-underline decoration-2 underline-offset-4 hover:text-ink hover:underline aria-[current=page]:text-ink aria-[current=page]:underline"
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+    <Button href={`mailto:${profile.email}`} size="sm">
+      {t('home.write')}
+    </Button>
+  </div>
+</header>

@@ -2,9 +2,10 @@
 company: Municipality of Arica
 role: Web Management and Optimization
 type: practica
-location: Arica, Chile
+location: Chile
 start: 2026-01-01
 end: 2026-03-01
+logo: ../../../assets/experience/municipalidad-arica.jpg
 ---
 
 - Reorganized the information hierarchy of several municipal websites, including the municipal institute's site.

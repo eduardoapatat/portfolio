@@ -11,7 +11,7 @@ type Command = {
   label: string;
   icon: string;
   hint: UiKey;
-  action: 'navigate' | 'external' | 'download' | 'copy';
+  action: 'navigate' | 'external' | 'copy';
   value: string;
   keywords?: string;
 };
@@ -47,9 +47,9 @@ const actions: Command[] = [
   },
   {
     label: `CV · ${cvPdf ? t('cv.download') : t('cv.downloadFallback')}`,
-    icon: 'lucide:download',
-    hint: 'cmd.hint.download',
-    action: 'download',
+    icon: 'lucide:file-text',
+    hint: 'cmd.hint.open',
+    action: 'external',
     value: cvPdf ?? profile.cvPdf.es ?? '',
     keywords: 'pdf resume',
   },

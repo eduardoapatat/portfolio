@@ -1,0 +1,36 @@
+---
+// Único botón del diseño "hoja": las variantes cambian color o tamaño, nunca el movimiento.
+// El ::before amplía el área de clic 6px: al presionar, el botón se mueve 5px y el clic
+// en el borde no se pierde (mousedown y mouseup caen sobre el mismo elemento).
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = HTMLAttributes<'a'> & {
+  href: string;
+  variant?: 'primary' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+};
+
+const { variant = 'primary', size = 'md', class: className, ...rest } = Astro.props;
+
+const sizes = {
+  sm: 'px-3 py-1.5 text-xs font-bold tracking-[0.06em] uppercase',
+  md: 'px-4.5 py-3 text-[13px] font-bold tracking-[0.06em] uppercase',
+  lg: 'max-w-full px-5.5 py-3.5 font-display text-[clamp(1.15rem,2.4vw,1.6rem)] leading-tight font-extrabold italic wrap-anywhere',
+};
+const variants = {
+  primary: 'bg-brand text-on-brand',
+  ghost: 'bg-sheet text-ink',
+};
+---
+
+<a
+  class:list={[
+    'relative inline-block border-2 border-ink no-underline shadow-hard before:absolute before:-inset-1.5 transition-[translate,box-shadow] duration-160 ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:-translate-0.5 hover:shadow-hard-6 active:translate-0.75 active:shadow-hard-1 motion-reduce:transition-none',
+    sizes[size],
+    variants[variant],
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+</a>

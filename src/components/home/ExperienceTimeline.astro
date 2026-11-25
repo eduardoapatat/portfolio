@@ -1,0 +1,144 @@
+---
+import { Image } from 'astro:assets';
+import SectionHead from '@/components/home/SectionHead.astro';
+import type { Lang } from '@/i18n/ui';
+import { pathFor, useTranslations } from '@/i18n/utils';
+import { getExperience } from '@/lib/content';
+import { formatPeriod } from '@/lib/format';
+
+type Props = { lang: Lang; id: string; num: string };
+
+const { lang, id, num } = Astro.props;
+const t = useTranslations(lang);
+const experience = await getExperience(lang);
+---
+
+<section id={id} aria-labelledby={`${id}-title`} class="pt-[clamp(56px,9vw,112px)]">
+  <SectionHead
+    num={num}
+    titleId={`${id}-title`}
+    title={t('home.experience.title')}
+    sub={t('home.experience.sub')}
+    more={{ href: pathFor('experience', lang), label: t('home.experience.more') }}
+  />
+
+  <div class="tl relative pt-10 pb-2">
+    <!-- Riel y relleno (decorativos) -->
+    <span
+      class="absolute top-10 bottom-0 left-1.75 w-0.5 bg-ink min-[900px]:left-[243px]"
+      aria-hidden="true"
+    ></span>
+    <span
+      class="tl-fill absolute top-10 bottom-0 left-1.5 hidden w-1 origin-top bg-brand min-[900px]:left-[242px]"
+      aria-hidden="true"
+    ></span>
+
+    <ol>
+      {experience.map((e) => (
+        <li class="tl-item relative grid gap-y-2 pb-12 pl-10 min-[900px]:grid-cols-[220px_minmax(0,1fr)] min-[900px]:gap-x-16 min-[900px]:pl-0">
+          <span
+            class="tl-dot absolute top-1 left-0 z-1 size-4 border-2 border-ink bg-brand shadow-hard-2 min-[900px]:left-59"
+            aria-hidden="true"
+          />
+          <p class="flex flex-wrap gap-x-3.5 gap-y-1 text-[11px] tracking-[0.1em] text-ink-muted uppercase min-[900px]:grid min-[900px]:content-start min-[900px]:text-right">
+            <span class="tl-period text-[13px] font-bold text-ink">
+              {formatPeriod(lang, e.data.start, e.data.end)}
+            </span>
+            {e.data.location && <span>{e.data.location}</span>}
+          </p>
+          <!-- Con logo, la ficha se ordena con áreas de grilla:
+               · móvil: logo chico junto a la etiqueta y, debajo, institución, cargo y logros en una
+                 sola columna (al lado del logo quedaría una columna demasiado angosta);
+               · desde 640px: logo a la izquierda y todo lo demás alineado en la segunda columna. -->
+          <div
+            class:list={[
+              'max-w-[88ch]',
+              e.data.logo &&
+                "grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-3 [grid-template-areas:'logo_tag'_'head_head'_'body_body'] sm:gap-x-6 sm:gap-y-2 sm:[grid-template-areas:'logo_tag'_'logo_head'_'._body']",
+            ]}
+          >
+            {e.data.logo && (
+              <span class="size-12 shrink-0 self-center overflow-hidden border-2 border-ink shadow-hard-2 [grid-area:logo] sm:size-24 sm:self-start sm:shadow-hard-3">
+                <Image
+                  src={e.data.logo}
+                  alt=""
+                  width={192}
+                  class="size-full object-cover"
+                  loading="lazy"
+                />
+              </span>
+            )}
+            {e.data.type && (
+              <span
+                class:list={[
+                  'inline-block justify-self-start self-center border border-ink px-2 py-0.5 text-[11px] tracking-[0.1em] uppercase sm:self-start',
+                  e.data.logo ? '[grid-area:tag]' : 'mb-3',
+                ]}
+              >
+                {t(`experience.type.${e.data.type}`)}
+              </span>
+            )}
+            <div class={e.data.logo ? '[grid-area:head]' : undefined}>
+              <h3 class="font-display text-[clamp(1.9rem,3.6vw,2.6rem)] leading-[0.95] font-extrabold text-balance uppercase italic">
+                {e.data.company}
+              </h3>
+              <p class="mt-2 text-xs font-bold tracking-[0.06em] uppercase">{e.data.role}</p>
+            </div>
+            <div
+              class:list={[
+                '[&_li]:relative [&_li]:pl-4 [&_li]:text-sm [&_li]:text-ink-muted [&_li]:before:absolute [&_li]:before:top-[0.65em] [&_li]:before:left-0 [&_li]:before:h-0.5 [&_li]:before:w-1.75 [&_li]:before:bg-ink [&_ul]:mt-3.5 [&_ul]:grid [&_ul]:gap-2',
+                e.data.logo && '[grid-area:body]',
+              ]}
+              set:html={e.rendered?.html}
+            />
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  /* Línea de tiempo ligada al scroll (decorativa: sin soporte o con movimiento reducido queda estática). */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .tl {
+        view-timeline: --tl;
+      }
+      .tl-fill {
+        display: block;
+        animation: rail-fill auto linear both;
+        animation-timeline: --tl;
+        animation-range: cover 15% cover 75%;
+      }
+      .tl-item {
+        view-timeline: --item;
+      }
+      .tl-dot {
+        animation: dot-on auto linear both;
+        animation-timeline: --item;
+        animation-range: cover 22% cover 38%;
+      }
+      .tl-period {
+        animation: period-on auto linear both;
+        animation-timeline: --item;
+        animation-range: cover 22% cover 38%;
+      }
+    }
+  }
+  @keyframes rail-fill {
+    from {
+      transform: scaleY(0);
+    }
+  }
+  @keyframes dot-on {
+    from {
+      background-color: var(--color-sheet);
+    }
+  }
+  @keyframes period-on {
+    from {
+      color: var(--color-ink-muted);
+    }
+  }
+</style>

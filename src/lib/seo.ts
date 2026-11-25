@@ -26,7 +26,6 @@ export function profilePageSchema(lang: Lang, url?: string) {
       ...(url && { url }),
       address: {
         '@type': 'PostalAddress',
-        addressLocality: profile.address.locality,
         addressCountry: profile.address.countryCode,
       },
       sameAs: [profile.github, profile.linkedin],

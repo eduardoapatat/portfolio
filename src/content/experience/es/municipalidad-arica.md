@@ -2,9 +2,10 @@
 company: Municipalidad de Arica
 role: Gestión y Optimización Web
 type: practica
-location: Arica, Chile
+location: Chile
 start: 2026-01-01
 end: 2026-03-01
+logo: ../../../assets/experience/municipalidad-arica.jpg
 ---
 
 - Reorganicé la jerarquía de la información de varios sitios web municipales, incluido el del instituto municipal.

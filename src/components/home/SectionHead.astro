@@ -1,0 +1,33 @@
+---
+// Encabezado de sección del inicio: número, título grande, subtítulo y enlace opcional.
+type Props = {
+  num: string;
+  titleId: string;
+  title: string;
+  sub: string;
+  more?: { href: string; label: string };
+};
+
+const { num, titleId, title, sub, more } = Astro.props;
+---
+
+<header class="grid gap-1 border-b-2 border-ink pb-7 sm:grid-cols-[56px_minmax(0,1fr)] sm:gap-4">
+  <span class="pt-0 text-[11px] tracking-[0.1em] text-ink-muted uppercase sm:pt-2.5">{num}</span>
+  <div>
+    <h2
+      id={titleId}
+      class="font-display text-[clamp(2.6rem,6.5vw,4.75rem)] leading-[0.86] font-black tracking-[-0.01em] text-balance uppercase italic"
+    >
+      {title}
+    </h2>
+    <p class="mt-4 max-w-[72ch] text-ink-muted">{sub}</p>
+    {more && (
+      <a
+        href={more.href}
+        class="mt-4 inline-block text-[11px] font-bold tracking-[0.1em] uppercase underline decoration-2 underline-offset-4"
+      >
+        {more.label}
+      </a>
+    )}
+  </div>
+</header>

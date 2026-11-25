@@ -39,9 +39,11 @@ Portfolio personal de Eduardo Apata Tito, Desarrollador Fullstack. Reúne en un 
 
 ## Brand Commitments
 
-- **JetBrains Mono** es la tipografía de todo el sitio, incluido el nombre del encabezado.
+- **JetBrains Mono** es la tipografía del texto en todo el sitio. En el inicio nuevo, los títulos y el nombre van en **Barlow Condensed** itálica (800/900).
 - Sin cursor personalizado (descartado por el usuario).
-- **Diseño vigente:** tarjeta de perfil con forma de celular (barra de estado y barra de Safari que abre el menú de comandos), fija a la izquierda en todas las páginas (en celular solo en el inicio), barra superior con pestañas y la sección actual a la derecha, directo sobre el fondo y sin panel; inicio con resumen de cada sección, tarjetas, línea de tiempo y hoja del CV. No se rediseña nada sin que el usuario lo pida.
+- **Inicio nuevo (diseño "hoja", rama `rediseno`):** hoja técnica inspirada en vrushali.in (línea de hoja, ficha técnica con monograma, cifras e índice, secciones numeradas, capturas "Fig.") con acentos de pmanifestoo (títulos condensados enormes, botones con sombra dura). Orden: portada → experiencia (línea de tiempo vertical, institución como título) → tecnologías y habilidades (carrusel recto con íconos y botón de pausa) → proyectos → formación → contacto. Todo recto: nada girado. Un solo botón (`src/components/home/Button.astro`) con el mismo movimiento en todas partes. Paleta: papel `#edede8` / negro `#000` según el tema (botón "Tema" o el del sistema), tinta negra/blanca y acento azul eléctrico `#2f5bff`; verde y ámbar siguen para los estados. Tokens en `src/styles/global.css` (`sheet`, `ink`, `brand`…).
+- **Resto del sitio (Proyectos, Experiencia, CV):** sigue en el diseño anterior hasta migrarlo:
+- **Diseño anterior:** tarjeta de perfil con forma de celular (barra de estado y barra de Safari que abre el menú de comandos), fija a la izquierda en todas las páginas (en celular solo en el inicio), barra superior con pestañas y la sección actual a la derecha, directo sobre el fondo y sin panel; inicio con resumen de cada sección, tarjetas, línea de tiempo y hoja del CV. No se rediseña nada sin que el usuario lo pida.
 - **Paleta:** negro neutro (`#000`), texto blanco y gris `#909092`, como santusht.online, en colores planos (un tono por tipo de elemento, sin degradados ni transparencias). El color queda solo para los estados (verde y ámbar).
 - **Dock guardado:** `src/components/Dock.astro` y `src/scripts/dock.ts` siguen en el repo sin montarse; el usuario pidió conservarlos.
 - **Pendiente:** el fondo. Hoy es un color plano, aislado en `src/components/Background.astro` para reemplazarlo sin tocar el resto.

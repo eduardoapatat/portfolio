@@ -4,7 +4,7 @@ year: 2026
 categories: [landing, ecommerce]
 summary: 'Prototipo de landing para una marca inventada de ropa de abrigo, con filtro por categoría y bolsa.'
 status: prototipo
-tech: [Astro, TypeScript, Tailwind CSS, Lenis, Vercel]
+tech: [Astro, TypeScript, Tailwind CSS, Vercel]
 url: https://austral-landing-six.vercel.app
 repo: https://github.com/eduardoapatat/austral-landing
 order: 2

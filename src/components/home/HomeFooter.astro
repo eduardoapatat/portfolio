@@ -1,0 +1,70 @@
+---
+import { profile } from '@/data/profile';
+import type { Lang } from '@/i18n/ui';
+import { pathFor, useTranslations } from '@/i18n/utils';
+
+type Props = { lang: Lang };
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const columns = [
+  {
+    label: t('home.footer.nav'),
+    links: [
+      { label: t('nav.home'), href: pathFor('home', lang) },
+      { label: t('nav.projects'), href: pathFor('projects', lang) },
+      { label: t('nav.experience'), href: pathFor('experience', lang) },
+      { label: t('nav.cv'), href: pathFor('cv', lang) },
+    ],
+  },
+  {
+    label: t('home.footer.work'),
+    links: [
+      { label: t('home.projects.more'), href: pathFor('projects', lang) },
+      ...(profile.cvPdf.es
+        ? [{ label: t('home.footer.cvPdf'), href: profile.cvPdf.es, newTab: true }]
+        : []),
+    ],
+  },
+  {
+    label: t('home.footer.elsewhere'),
+    links: [
+      { label: t('nav.github'), href: profile.github },
+      { label: t('nav.linkedin'), href: profile.linkedin },
+      { label: 'Email', href: `mailto:${profile.email}` },
+    ],
+  },
+];
+---
+
+<footer class="bg-ink px-[clamp(16px,4vw,48px)] pt-12 pb-24 text-sheet">
+  <div class="mx-auto grid max-w-350 grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-8">
+    {columns.map((col) => (
+      <div>
+        <p class="mb-3.5 text-[11px] tracking-[0.1em] uppercase opacity-70">{col.label}</p>
+        <ul class="grid gap-2">
+          {col.links.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                {...('newTab' in link && { target: '_blank', rel: 'noopener' })}
+                class="no-underline hover:underline focus-visible:outline-sheet"
+              >
+                {link.label}
+                {'newTab' in link && <span class="sr-only"> ({t('a11y.newTab')})</span>}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+  <div class="mx-auto mt-10 flex max-w-350 justify-between gap-4 border-t border-current pt-5 text-[11px] tracking-[0.1em] uppercase">
+    <span>
+      © {new Date().getFullYear()} {profile.name}
+    </span>
+    <a href="#main-content" class="focus-visible:outline-sheet">
+      {t('home.footer.top')}
+    </a>
+  </div>
+</footer>

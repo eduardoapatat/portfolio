@@ -29,16 +29,19 @@ const projects = defineCollection({
 
 const experience = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/experience' }),
-  schema: z.object({
-    company: z.string(),
-    role: z.string(),
-    // Tipo de puesto: se muestra como etiqueta junto a la empresa.
-    type: z.enum(['practica', 'ayudantia', 'empleo', 'freelance']).optional(),
-    location: z.string().optional(),
-    start: z.coerce.date(),
-    // Sin fecha de término = trabajo actual.
-    end: z.coerce.date().optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      company: z.string(),
+      role: z.string(),
+      // Tipo de puesto: se muestra como etiqueta junto a la empresa.
+      type: z.enum(['practica', 'ayudantia', 'empleo', 'freelance']).optional(),
+      location: z.string().optional(),
+      start: z.coerce.date(),
+      // Sin fecha de término = trabajo actual.
+      end: z.coerce.date().optional(),
+      // Logo cuadrado de la institución (src/assets/experience), con su propio fondo.
+      logo: image().optional(),
+    }),
 });
 
 export const collections = { projects, experience };

@@ -1,0 +1,123 @@
+---
+// Botón fijo abajo a la derecha que despliega hacia arriba las preferencias: idioma y tema.
+// Usa el popover nativo: se cierra con Esc o con un clic afuera, y devuelve el foco al botón.
+import { Icon } from 'astro-icon/components';
+import { languages, type Lang } from '@/i18n/ui';
+import { alternatePath, useTranslations } from '@/i18n/utils';
+
+type Props = { lang: Lang };
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const langs = Object.keys(languages) as Lang[];
+const themes = [
+  { value: 'light', label: t('home.theme.light'), icon: 'lucide:sun' },
+  { value: 'dark', label: t('home.theme.dark'), icon: 'lucide:moon' },
+  { value: 'system', label: t('home.theme.system'), icon: 'lucide:monitor' },
+];
+// Fila de opción: casilla fija para el ícono, texto y marca de la opción activa al final.
+const option =
+  'flex w-full cursor-pointer items-center gap-3 px-4 py-2.5 text-left text-sm text-ink no-underline hover:bg-brand hover:text-on-brand';
+const check =
+  'ml-auto size-4 opacity-0 group-aria-[current=true]/opt:opacity-100 group-aria-pressed/opt:opacity-100';
+---
+
+<button
+  type="button"
+  commandfor="prefs-panel"
+  command="toggle-popover"
+  aria-label={t('home.prefs')}
+  data-prefs-trigger
+  class="fixed right-[clamp(12px,3vw,32px)] bottom-[clamp(12px,3vw,32px)] z-20 grid size-12 cursor-pointer before:absolute before:-inset-1.5 place-items-center border-2 border-ink bg-brand text-on-brand shadow-hard outline-2 outline-sheet transition-[translate,box-shadow] duration-160 ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:-translate-0.5 hover:shadow-hard-6 active:translate-0.75 active:shadow-hard-1 motion-reduce:transition-none"
+>
+  <Icon name="lucide:settings-2" class="size-5.5" aria-hidden="true" />
+</button>
+<div
+  id="prefs-panel"
+  popover
+  aria-label={t('home.prefs')}
+  class="fixed inset-auto right-[clamp(12px,3vw,32px)] bottom-[calc(clamp(12px,3vw,32px)+64px)] m-0 w-60 translate-y-2 border-2 border-ink bg-sheet p-0 text-ink opacity-0 shadow-hard-6 outline-2 outline-sheet transition-[opacity,translate,display,overlay] transition-discrete duration-200 ease-out open:translate-y-0 open:opacity-100 motion-reduce:translate-y-0 starting:open:translate-y-2 starting:open:opacity-0 motion-reduce:starting:open:translate-y-0"
+>
+  <nav aria-label={t('lang.label')} class="py-2">
+    <p class="px-4 pt-1 pb-2 text-[11px] tracking-[0.1em] text-ink-muted uppercase">
+      {t('lang.label')}
+    </p>
+    <ul>
+      {langs.map((code) => (
+        <li>
+          <a
+            href={alternatePath(Astro.url, code)}
+            hreflang={code}
+            lang={code}
+            aria-current={code === lang ? 'true' : undefined}
+            class={`group/opt ${option}`}
+          >
+            <span class="w-5 text-xs font-bold uppercase">{code}</span>
+            {languages[code]}
+            <Icon name="lucide:check" class={check} aria-hidden="true" />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+  <div role="group" aria-label={t('home.theme')} class="border-t-2 border-ink py-2">
+    <p
+      class="px-4 pt-1 pb-2 text-[11px] tracking-[0.1em] text-ink-muted uppercase"
+      aria-hidden="true"
+    >
+      {t('home.theme')}
+    </p>
+    {themes.map((theme) => (
+      <button
+        type="button"
+        data-theme-option={theme.value}
+        aria-pressed="false"
+        class={`group/opt ${option}`}
+      >
+        <Icon name={theme.icon} class="size-4.5 w-5" aria-hidden="true" />
+        {theme.label}
+        <Icon name="lucide:check" class={check} aria-hidden="true" />
+      </button>
+    ))}
+  </div>
+</div>
+
+<script>
+  // Tema: claro, oscuro o el del sistema (sin data-theme). Se recuerda en localStorage.
+  document.addEventListener('astro:page-load', () => {
+    const root = document.documentElement;
+    const options = [...document.querySelectorAll<HTMLButtonElement>('[data-theme-option]')];
+    const sync = () => {
+      const current = root.dataset.theme ?? 'system';
+      options.forEach((o) =>
+        o.setAttribute('aria-pressed', String(o.dataset.themeOption === current)),
+      );
+    };
+    sync();
+    options.forEach((option) =>
+      option.addEventListener('click', () => {
+        const value = option.dataset.themeOption;
+        try {
+          if (value === 'light' || value === 'dark') {
+            root.dataset.theme = value;
+            localStorage.setItem('theme', value);
+          } else {
+            delete root.dataset.theme;
+            localStorage.removeItem('theme');
+          }
+        } catch {
+          // Sin almacenamiento: el cambio dura hasta recargar.
+        }
+        sync();
+      }),
+    );
+
+    // Navegadores sin comandos de invocación (commandfor): abrir el panel a mano.
+    if (!('command' in HTMLButtonElement.prototype)) {
+      const panel = document.getElementById('prefs-panel');
+      document
+        .querySelector('[data-prefs-trigger]')
+        ?.addEventListener('click', () => panel?.togglePopover());
+    }
+  });
+</script>

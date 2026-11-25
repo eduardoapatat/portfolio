@@ -40,9 +40,10 @@ const contacts = [
       {t('cv.title')}
     </h1>
     {pdf && (
-      <a href={pdf} download class="cv-download">
-        <Icon name="lucide:download" class="size-4" aria-hidden="true" />
+      <a href={pdf} target="_blank" rel="noopener" class="cv-download">
+        <Icon name="lucide:file-text" class="size-4" aria-hidden="true" />
         {ownPdf ? t('cv.download') : t('cv.downloadFallback')}
+        <span class="sr-only"> ({t('a11y.newTab')})</span>
       </a>
     )}
   </header>
@@ -146,8 +147,8 @@ const contacts = [
       <section>
         <h3 class="cv-heading">{t('cv.skills')}</h3>
         <ul class="cv-list flex flex-col gap-1.5 text-sm leading-relaxed">
-          {cv.skills[lang].map((skill) => (
-            <li>{skill}</li>
+          {cv.skills.map((skill) => (
+            <li>{skill.text[lang]}</li>
           ))}
         </ul>
       </section>

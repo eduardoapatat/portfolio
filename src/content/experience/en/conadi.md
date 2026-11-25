@@ -2,9 +2,10 @@
 company: National Corporation for Indigenous Development (CONADI)
 role: Systems Analyst
 type: practica
-location: Arica, Chile
+location: Chile
 start: 2025-01-01
 end: 2025-02-01
+logo: ../../../assets/experience/conadi.jpg
 ---
 
 - Gathered requirements and designed a document management system prototype tailored to the user's workflow.

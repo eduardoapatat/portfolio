@@ -1,6 +1,6 @@
 # Eduardo Apata Tito · Portfolio
 
-[![Portada del portfolio: la barra de navegación, la tarjeta de perfil de Eduardo Apata Tito y el resumen de experiencia](public/og/og-es.png)](https://eduardoapata.cl)
+[![Portada del portfolio: el inicio con el nombre de Eduardo Apata Tito, su rol y la ficha técnica con el monograma EA](public/og/og.png)](https://eduardoapata.cl)
 
 Portfolio personal de Eduardo Apata Tito, desarrollador fullstack. Reúne proyectos, experiencia y CV, en español e inglés.
 

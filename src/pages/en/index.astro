@@ -8,7 +8,7 @@ const t = useTranslations('en');
 const schema = profilePageSchema('en', Astro.site && new URL('/en/', Astro.site).href);
 ---
 
-<Layout description={t('meta.home')}>
+<Layout description={t('meta.home')} type="profile">
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(schema)} />
   <HomeView lang="en" />
 </Layout>

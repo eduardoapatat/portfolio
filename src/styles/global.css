@@ -1,48 +1,64 @@
 @import 'tailwindcss';
 
-/* Tokens de color y tipografía: la estética se cambia desde aquí. */
+/* Tipografía: JetBrains Mono para el texto y Barlow Condensed para los títulos. */
 @theme {
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-display: var(--font-barlow-condensed), 'Arial Narrow', sans-serif;
+}
 
-  /* Negro neutro con blanco y gris, colores planos: cada tipo de elemento usa un solo tono.
-     Los tonos equivalen a blanco con poca opacidad sobre negro, pero sin transparencias. */
-  --color-bg: #000000;
-  --color-surface: #050505;
-  --color-surface-raised: #050505;
-  --color-surface-hover: #121212;
-  --color-line: #1a1a1a;
-  --color-button-line: #2c2c2d;
-  --color-fg: #ffffff;
-  --color-fg-muted: #c2c2c4;
-  --color-fg-subtle: #909092;
+/* Colores: cambian solos entre claro y oscuro (light-dark + color-scheme). */
+@theme inline {
+  --color-sheet: var(--sheet);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-rule: var(--rule);
+  --color-grid: var(--grid);
+  --color-chip: var(--chip);
+  --color-brand: var(--brand);
+  --color-on-brand: var(--on-brand);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+}
 
-  /* Acento: acciones principales, foco y estado activo. Blanco: el color queda para los estados. */
-  --color-accent: #ffffff;
-  --color-accent-hover: #d4d4d6;
-  --color-accent-soft: #1a1a1a;
-  --color-warning: #fbbf24;
-  --color-success: #34d399;
+/* Sombra dura (sin desenfoque): `shadow-hard` = 4px, `shadow-hard-6` = 6px. Color con `[--hard:…]`. */
+@utility shadow-hard-* {
+  box-shadow: calc(--value(integer, --default(4)) * 1px) calc(--value(integer, --default(4)) * 1px)
+    0 var(--hard, var(--color-ink));
+}
 
-  /* Teclas (chips, pestaña activa, opción del menú): un gris un paso sobre el fondo. */
-  --color-dock-key: #0b0b0b;
-  --color-dock-key-line: #1f1f1f;
-  --color-dock-key-hover: #161616;
-  --color-dock-key-hover-line: #333334;
-
-  --color-cv-paper: #ffffff;
-  --color-cv-aside: #f8fafc;
-  --color-cv-ink: #0f172a;
-  --color-cv-muted: #475569;
-  --color-cv-line: #e2e8f0;
-  --color-cv-accent: #1d4ed8;
+/* Grilla de fondo de la hoja. */
+@utility bg-sheet-grid {
+  background-color: var(--color-sheet);
+  background-image:
+    linear-gradient(var(--color-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 
 @layer base {
+  /* Tema: sin data-theme sigue al sistema; el panel de preferencias fija claro u oscuro. */
   html {
-    color-scheme: dark;
-    background-color: var(--color-bg);
-    color: var(--color-fg);
+    color-scheme: light dark;
+    --sheet: light-dark(#edede8, #000000);
+    --ink: light-dark(#0b0b0b, #ebebe7);
+    --ink-muted: light-dark(#55554f, #909092);
+    --rule: light-dark(#c9c9c2, #2a2a2a);
+    --grid: light-dark(#e0e0da, #121212);
+    --chip: light-dark(#ffffff, #f3f3ef);
+    --brand: #2f5bff;
+    --on-brand: #ffffff;
+    --ok: light-dark(#157a3c, #3ccb6f);
+    --warn: light-dark(#8a5a00, #f2b33d);
+    background-color: var(--sheet);
+    color: var(--ink);
     -webkit-font-smoothing: antialiased;
+
+    &[data-theme='light'] {
+      color-scheme: light;
+    }
+    &[data-theme='dark'] {
+      color-scheme: dark;
+    }
   }
 
   a,
@@ -51,32 +67,12 @@
   }
 
   ::selection {
-    background-color: var(--color-accent);
-    color: var(--color-bg);
+    background-color: var(--brand);
+    color: var(--on-brand);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--ink);
     outline-offset: 3px;
-    border-radius: 4px;
-  }
-
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-line) transparent;
-  }
-}
-
-/* Transición entre secciones (ver src/lib/transitions.ts). */
-@keyframes content-in {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-}
-
-@keyframes content-out {
-  to {
-    opacity: 0;
   }
 }

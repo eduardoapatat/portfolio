@@ -1,0 +1,59 @@
+---
+import SectionHead from '@/components/SectionHead.astro';
+import { cv } from '@/data/cv';
+import type { Lang } from '@/i18n/ui';
+import { useTranslations } from '@/i18n/utils';
+import { formatPeriod } from '@/lib/format';
+
+type Props = { lang: Lang; id: string; num: string };
+
+const { lang, id, num } = Astro.props;
+const t = useTranslations(lang);
+
+const items = [
+  ...cv.education.map((e) => ({
+    when: formatPeriod(lang, e.start, e.end),
+    tag: e.status[lang],
+    ok: true,
+    title: e.degree[lang],
+    detail: `${e.institution[lang]} · ${e.location}`,
+  })),
+  ...cv.certifications.map((c) => ({
+    when: String(c.date.getFullYear()),
+    tag: t('home.education.cert'),
+    ok: false,
+    title: c.name,
+    detail: c.issuer,
+  })),
+];
+---
+
+<section id={id} aria-labelledby={`${id}-title`} class="pt-[clamp(56px,9vw,112px)]">
+  <SectionHead
+    num={num}
+    titleId={`${id}-title`}
+    title={t('home.education.title')}
+    sub={t('home.education.sub')}
+  />
+  <ul class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))]">
+    {items.map((item) => (
+      <li class="border-b border-rule py-8 pr-6 not-first:max-[660px]:pr-0 min-[661px]:not-first:border-l min-[661px]:not-first:pl-6">
+        <p class="mb-3.5 flex flex-wrap items-center gap-x-3.5 gap-y-2 text-[11px] tracking-[0.1em] text-ink-muted uppercase">
+          <span>{item.when}</span>
+          <span
+            class:list={[
+              'border px-2 py-0.5',
+              item.ok ? 'border-ok text-ok' : 'border-ink text-ink',
+            ]}
+          >
+            {item.tag}
+          </span>
+        </p>
+        <h3 class="font-display text-[clamp(1.9rem,3.6vw,2.6rem)] leading-[0.95] font-extrabold text-balance uppercase italic">
+          {item.title}
+        </h3>
+        <p class="mt-2 text-xs font-bold tracking-[0.06em] uppercase">{item.detail}</p>
+      </li>
+    ))}
+  </ul>
+</section>

@@ -1,0 +1,30 @@
+---
+import Button from '@/components/Button.astro';
+import { profile } from '@/data/profile';
+import type { Lang } from '@/i18n/ui';
+import { useTranslations } from '@/i18n/utils';
+
+type Props = { lang: Lang; id: string; num: string };
+
+const { lang, id, num } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id={id} aria-labelledby={`${id}-title`} class="py-[clamp(80px,12vw,140px)] text-center">
+  <span class="mb-4 block text-[11px] tracking-[0.1em] text-ink-muted uppercase">{num}</span>
+  <h2
+    id={`${id}-title`}
+    class="font-display text-[clamp(3.5rem,11vw,8rem)] leading-[0.86] font-black tracking-[-0.01em] uppercase italic"
+  >
+    {t('home.contact.title')}
+  </h2>
+  <p class="mx-auto mt-7 max-w-[72ch] text-ink-muted">{t('home.contact.sub')}</p>
+  <div class="mt-9 flex flex-wrap justify-center gap-6">
+    <Button href={`mailto:${profile.email}`} size="lg">
+      {profile.email}
+    </Button>
+    <Button href={profile.linkedin} size="lg" variant="ghost">
+      {t('nav.linkedin')}
+    </Button>
+  </div>
+</section>

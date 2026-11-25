@@ -1,0 +1,31 @@
+---
+import ProjectRow from '@/components/ProjectRow.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import type { Lang } from '@/i18n/ui';
+import { pathFor, useTranslations } from '@/i18n/utils';
+import { getProjects } from '@/lib/content';
+
+type Props = { lang: Lang; id: string; num: string };
+
+const { lang, id, num } = Astro.props;
+const t = useTranslations(lang);
+const projects = await getProjects(lang);
+---
+
+<section id={id} aria-labelledby={`${id}-title`} class="pt-[clamp(56px,9vw,112px)]">
+  <SectionHead
+    num={num}
+    titleId={`${id}-title`}
+    title={t('home.projects.title')}
+    sub={t('home.projects.sub')}
+    more={{ href: pathFor('projects', lang), label: t('home.projects.more') }}
+  />
+
+  <ol>
+    {projects.map((project, index) => (
+      <li class="border-b border-rule py-10">
+        <ProjectRow project={project} index={index} lang={lang} variant="summary" />
+      </li>
+    ))}
+  </ol>
+</section>

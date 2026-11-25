@@ -1,6 +1,4 @@
 ---
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
 import { profile } from '@/data/profile';
 import { defaultLang, languages, type Lang } from '@/i18n/ui';
 import { alternatePath, getLang } from '@/i18n/utils';
@@ -31,11 +29,8 @@ const xDefault = alternates.find(({ code }) => code === defaultLang);
 
 const ogLocale: Record<Lang, string> = { es: 'es_CL', en: 'en_US' };
 
-// Imagen OG estática: public/og/og-<idioma>.png; si falta la del idioma, se usa la del idioma por defecto.
-const ogFile = (code: Lang) => `/og/og-${code}.png`;
-const hasOg = (code: Lang) => existsSync(join(process.cwd(), 'public', ogFile(code)));
-const ogPath = hasOg(lang) ? ogFile(lang) : hasOg(defaultLang) ? ogFile(defaultLang) : undefined;
-const ogImage = ogPath && absolute(ogPath);
+// Una sola imagen OG para ambos idiomas (captura del inicio en español).
+const ogImage = absolute('/og/og.png');
 const ogAlt = `${profile.name} · ${profile.role[lang]}`;
 
 const siteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;

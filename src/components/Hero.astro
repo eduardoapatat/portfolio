@@ -1,0 +1,57 @@
+---
+import Button from '@/components/Button.astro';
+import SpecCard from '@/components/SpecCard.astro';
+import { profile } from '@/data/profile';
+import type { Lang } from '@/i18n/ui';
+import { useTranslations } from '@/i18n/utils';
+
+type Props = { lang: Lang };
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const [firstName, ...lastNames] = profile.name.split(' ');
+---
+
+<div class="flex justify-between gap-4 border-b border-rule py-3.5 text-[11px] tracking-[0.1em] text-ink-muted uppercase">
+  <span>{t('home.sheet')}</span>
+  <span class="hidden sm:inline">
+    {profile.name} · {profile.location}
+  </span>
+</div>
+
+<section
+  aria-labelledby="home-name"
+  class="grid gap-[clamp(32px,5vw,72px)] py-[clamp(40px,7vh,88px)] min-[900px]:grid-cols-[minmax(0,1fr)_minmax(280px,360px)]"
+>
+  <div>
+    <h1
+      id="home-name"
+      class="font-display text-[clamp(4.25rem,12vw,10rem)] leading-[0.86] font-black tracking-[-0.01em] uppercase italic"
+    >
+      <span class="block">{firstName}</span>
+      <span class="block">{lastNames.join(' ')}.</span>
+    </h1>
+    <p class="mt-7 mb-3.5 flex flex-wrap items-baseline gap-x-3.5 gap-y-1 font-display text-[clamp(1.6rem,3vw,2.4rem)] leading-none font-extrabold uppercase italic">
+      <span class="text-brand">{profile.role[lang]}</span>
+      <span class="text-ink-muted" aria-hidden="true">
+        /
+      </span>
+      <span>{t('home.roleLine')}</span>
+    </p>
+    <p class="mb-7 max-w-[68ch] text-ink-muted">{t('home.lede')}</p>
+    <div class="flex flex-wrap gap-4">
+      <Button href={`mailto:${profile.email}`}>{t('home.cta.talk')}</Button>
+      <Button href="#projects" variant="ghost">
+        {t('home.cta.work')}
+      </Button>
+    </div>
+    {profile.available && (
+      <p class="mt-6 flex items-center gap-2 text-xs tracking-[0.08em] uppercase">
+        <span class="size-2 shrink-0 rounded-full bg-ok" aria-hidden="true" />
+        {t('home.availability')}
+      </p>
+    )}
+  </div>
+
+  <SpecCard lang={lang} />
+</section>

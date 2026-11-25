@@ -1,0 +1,35 @@
+---
+// Encabezado de sección: número, título grande, subtítulo y enlace opcional.
+// Con `as="h1"` sirve de título de página.
+type Props = {
+  num: string;
+  titleId: string;
+  title: string;
+  sub: string;
+  more?: { href: string; label: string };
+  as?: 'h1' | 'h2';
+};
+
+const { num, titleId, title, sub, more, as: Heading = 'h2' } = Astro.props;
+---
+
+<header class="grid gap-1 border-b-2 border-ink pb-7 sm:grid-cols-[56px_minmax(0,1fr)] sm:gap-4">
+  <span class="pt-0 text-[11px] tracking-[0.1em] text-ink-muted uppercase sm:pt-2.5">{num}</span>
+  <div>
+    <Heading
+      id={titleId}
+      class="font-display text-[clamp(2.6rem,6.5vw,4.75rem)] leading-[0.86] font-black tracking-[-0.01em] text-balance uppercase italic"
+    >
+      {title}
+    </Heading>
+    <p class="mt-4 max-w-[72ch] text-ink-muted">{sub}</p>
+    {more && (
+      <a
+        href={more.href}
+        class="mt-4 inline-block text-[11px] font-bold tracking-[0.1em] uppercase underline decoration-2 underline-offset-4"
+      >
+        {more.label}
+      </a>
+    )}
+  </div>
+</header>

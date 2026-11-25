@@ -1,0 +1,47 @@
+---
+import { profile } from '@/data/profile';
+import type { Lang } from '@/i18n/ui';
+import { useTranslations } from '@/i18n/utils';
+
+type Props = { lang: Lang };
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const rows = [
+  { label: t('home.spec.role'), value: profile.role[lang] },
+  { label: t('home.spec.profession'), value: profile.profession[lang] },
+  { label: t('home.spec.currently'), value: profile.currently[lang] },
+  { label: t('home.spec.location'), value: profile.location },
+];
+---
+
+<aside
+  aria-label={t('home.spec.label')}
+  class="self-end border border-ink bg-sheet max-[899px]:self-stretch"
+>
+  <div
+    class="grid aspect-4/3 place-items-center border-b border-ink bg-brand font-display text-[clamp(5rem,10vw,7.5rem)] leading-none font-black text-on-brand italic"
+    aria-hidden="true"
+  >
+    EA
+  </div>
+  <p class="border-b border-rule px-3.5 py-2.5 text-[11px] tracking-[0.1em] text-ink-muted uppercase">
+    {t('home.spec.fig')}
+  </p>
+  <dl>
+    {rows.map((row) => (
+      <div class="grid grid-cols-[84px_1fr] gap-3 border-b border-rule px-3.5 py-2.75 text-[13px]">
+        <dt class="pt-0.5 text-[11px] tracking-[0.08em] text-ink-muted uppercase">{row.label}</dt>
+        <dd>{row.value}</dd>
+      </div>
+    ))}
+    {profile.available && (
+      <div class="grid grid-cols-[84px_1fr] gap-3 px-3.5 py-2.75 text-[13px]">
+        <dt class="pt-0.5 text-[11px] tracking-[0.08em] text-ink-muted uppercase">
+          {t('home.spec.status')}
+        </dt>
+        <dd class="text-ok">{t('home.spec.available')}</dd>
+      </div>
+    )}
+  </dl>
+</aside>

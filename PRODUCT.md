@@ -25,27 +25,28 @@ Portfolio personal de Eduardo Apata Tito, Desarrollador Fullstack. Reúne en un 
 
 ## Operating Context
 
-- El visitante navega con pestañas en la barra superior (inicio, proyectos, experiencia y CV) o con el menú de comandos (Ctrl/⌘ + K). GitHub y LinkedIn están en la tarjeta de perfil y en el menú.
+- El visitante navega con el encabezado y el pie (Inicio, Proyectos, Experiencia y CV). Experiencia es una sección del inicio (`/#experience`) y CV abre el PDF en otra pestaña. GitHub y LinkedIn están en el pie y en Contacto.
 - Contacto por enlaces directos (email y LinkedIn). No hay formulario.
-- Sitio bilingüe, español e inglés, con selector de idioma.
+- Sitio bilingüe, español e inglés; idioma y tema en el panel fijo abajo a la derecha.
 
 ## Capabilities and Constraints
 
 - Stack: Astro 7 con Tailwind CSS 4 (ya configurado en el repositorio).
 - Contenido de proyectos y experiencia mantenible sin tocar componentes (content collections).
-- CV como página HTML (mismo contenido y orden que `cv/CV.tex`) con descarga del PDF compilado. Sin teléfono en la web.
+- CV solo como PDF compilado de `cv/CV.tex` (no hay página HTML). Sin teléfono en la web.
 - Hosting: Cloudflare Workers (sitio estático) en `eduardoapata.cl`.
 - **Abierto:** versión en inglés del PDF del CV.
 
 ## Brand Commitments
 
-- **JetBrains Mono** es la tipografía de todo el sitio, incluido el nombre del encabezado.
+- **JetBrains Mono** para el texto y **Barlow Condensed** itálica (800/900) para títulos y el nombre.
 - Sin cursor personalizado (descartado por el usuario).
-- **Diseño vigente:** tarjeta de perfil con forma de celular (barra de estado y barra de Safari que abre el menú de comandos), fija a la izquierda en todas las páginas (en celular solo en el inicio), barra superior con pestañas y la sección actual a la derecha, directo sobre el fondo y sin panel; inicio con resumen de cada sección, tarjetas, línea de tiempo y hoja del CV. No se rediseña nada sin que el usuario lo pida.
-- **Paleta:** negro neutro (`#000`), texto blanco y gris `#909092`, como santusht.online, en colores planos (un tono por tipo de elemento, sin degradados ni transparencias). El color queda solo para los estados (verde y ámbar).
-- **Dock guardado:** `src/components/Dock.astro` y `src/scripts/dock.ts` siguen en el repo sin montarse; el usuario pidió conservarlos.
-- **Pendiente:** el fondo. Hoy es un color plano, aislado en `src/components/Background.astro` para reemplazarlo sin tocar el resto.
-- **Dirección visual fijada por el usuario:** la base vino de tomasdinh.cz (tarjetas de proyecto con captura en marco de navegador, línea de tiempo por año, CV como hoja blanca) y luego se combinó con santusht.online (tarjeta de perfil fija al lado del contenido, barra de pestañas, etiquetas con punto, chips de tecnologías, menú de comandos). Se rechazaron direcciones alternativas generadas. Lo propio es el nombre/logotipo, el contenido y los textos; nunca se copian logos, textos ni imágenes de las referencias.
+- **Diseño «hoja» (todo el sitio):** hoja técnica inspirada en vrushali.in (línea de hoja, ficha técnica con monograma, cifras e índice, secciones numeradas, capturas «Fig.») con acentos neo-brutalistas de pmanifestoo (títulos condensados enormes, bordes negros y sombra dura). Todo recto: nada girado.
+- **Inicio:** portada → experiencia (línea de tiempo con logos) → tecnologías (bento en mosaico; full stack destacado en azul con el kit de Laravel desplegable) y habilidades → proyectos → formación → contacto.
+- **Páginas:** inicio, Proyectos (filtro por categoría, descripción completa y enlaces) y 404. Experiencia y CV no tienen página propia (redirecciones en `astro.config.mjs`).
+- **Un solo botón** (`src/components/Button.astro`) con el mismo movimiento en todas partes.
+- **Paleta:** papel `#edede8` / negro `#000` según el tema (panel de preferencias o el del sistema), tinta casi negra / gris claro y acento azul eléctrico `#2f5bff`; verde y ámbar para los estados. Tokens en `src/styles/global.css` (`sheet`, `ink`, `brand`…).
+- Lo propio es el nombre/logotipo, el contenido y los textos; nunca se copian logos, textos ni imágenes de las referencias.
 
 ## Evidence on Hand
 
@@ -53,7 +54,7 @@ Portfolio personal de Eduardo Apata Tito, Desarrollador Fullstack. Reúne en un 
 - Experiencia laboral, educación, certificaciones y habilidades: `cv/CV.tex` (experiencia en `src/content/experience`, el resto en `src/data/cv.ts`).
 - CV en PDF (español): `public/cv/eduardo-apata-tito-cv-es.pdf`.
 - Perfiles: GitHub `eduardoapatat`, LinkedIn `eapatatito` (en `src/data/profile.ts`).
-- Foto: el PDF del CV no lleva foto. Mejora futura: foto en la página del CV (no en el PDF).
+- Foto: el PDF del CV no lleva foto.
 - No inventar proyectos, empresas, métricas, testimonios ni logros que no estén en el material entregado.
 
 ## Product Principles

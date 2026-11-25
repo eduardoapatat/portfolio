@@ -5,14 +5,6 @@ import type { Lang } from '@/i18n/ui';
 type Localized = Record<Lang, string>;
 
 export const cv = {
-  headline: {
-    es: 'Ingeniero Civil en Computación e Informática · Interés en redes y ciberseguridad',
-    en: 'Computer and Informatics Engineer · Interested in networking and cybersecurity',
-  } satisfies Localized,
-  summary: {
-    es: 'Desarrollador fullstack e Ingeniero Civil en Computación e Informática. Construyo sistemas web con Laravel y JavaScript, con experiencia en el sector público en análisis de sistemas y arquitectura de la información. Me sigo formando en redes y ciberseguridad (Cisco CCNA) y comunico soluciones técnicas a usuarios no técnicos.',
-    en: 'Fullstack developer and Computer and Informatics Engineer. I build web systems with Laravel and JavaScript, with public-sector experience in systems analysis and information architecture. I am also training in networking and cybersecurity (Cisco CCNA) and communicate technical solutions to non-technical users.',
-  } satisfies Localized,
   education: [
     {
       institution: { es: 'Universidad de Tarapacá', en: 'University of Tarapacá' },
@@ -21,7 +13,7 @@ export const cv = {
         en: 'Civil Engineering in Computer Science and Informatics',
       },
       status: { es: 'Titulado', en: 'Graduated' },
-      location: 'Arica, Chile',
+      location: 'Chile',
       start: new Date('2020-03-01'),
       end: new Date('2026-07-01'),
     },
@@ -29,35 +21,28 @@ export const cv = {
   certifications: [
     { name: 'CCNA: Introduction to Networks', issuer: 'Cisco', date: new Date('2023-07-01') },
   ],
-  skills: {
-    es: [
-      'Liderazgo de proyectos, desde la necesidad del usuario hasta la entrega.',
-      'Levantamiento de requerimientos, análisis de sistemas y comunicación con usuarios no técnicos.',
-      'Arquitectura de la información, accesibilidad web y gestión de contenidos.',
-      'Español nativo.',
-    ],
-    en: [
-      'Project leadership, from user need to delivery.',
-      'Requirements gathering, systems analysis and communication with non-technical users.',
-      'Information architecture, web accessibility and content management.',
-      'Native Spanish.',
-    ],
-  } satisfies Record<Lang, string[]>,
-  technologies: [
+  // Cada habilidad lleva su ícono (lucide) para el inicio.
+  skills: [
     {
-      category: { es: 'Desarrollo web', en: 'Web development' },
-      items: ['Laravel', 'PHP', 'Tailwind CSS', 'Astro', 'HTML', 'CSS', 'TypeScript'],
-    },
-    {
-      category: { es: 'Datos y BI', en: 'Data & BI' },
-      items: {
-        es: ['Modelado dimensional', 'Data warehouses', 'ETL', 'Dashboards'],
-        en: ['Dimensional modeling', 'Data warehouses', 'ETL', 'Dashboards'],
+      icon: 'lucide:flag',
+      text: {
+        es: 'Liderazgo de proyectos, desde la necesidad del usuario hasta la entrega.',
+        en: 'Project leadership, from user need to delivery.',
       },
     },
     {
-      category: { es: 'Redes', en: 'Networking' },
-      items: ['Cisco CCNA'],
+      icon: 'lucide:messages-square',
+      text: {
+        es: 'Levantamiento de requerimientos, análisis de sistemas y comunicación con usuarios no técnicos.',
+        en: 'Requirements gathering, systems analysis and communication with non-technical users.',
+      },
     },
-  ] satisfies { category: Localized; items: string[] | Record<Lang, string[]> }[],
+    {
+      icon: 'lucide:accessibility',
+      text: {
+        es: 'Arquitectura de la información, accesibilidad web y gestión de contenidos.',
+        en: 'Information architecture, web accessibility and content management.',
+      },
+    },
+  ] satisfies { icon: string; text: Localized }[],
 };

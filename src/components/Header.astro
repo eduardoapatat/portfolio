@@ -1,0 +1,108 @@
+---
+import { Icon } from 'astro-icon/components';
+import Button from '@/components/Button.astro';
+import { profile } from '@/data/profile';
+import type { Lang } from '@/i18n/ui';
+import { getRouteKey, pathFor, useTranslations } from '@/i18n/utils';
+import { siteNav } from '@/lib/nav';
+
+type Props = { lang: Lang };
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const currentRoute = getRouteKey(Astro.url);
+const nav = siteNav(lang);
+---
+
+<!-- La barra ocupa todo el ancho; su contenido respeta el mismo contenedor que la página. -->
+<header class="sticky top-0 z-10 border-b border-rule bg-sheet">
+  <div class="mx-auto flex max-w-350 items-center gap-6 px-[clamp(16px,4vw,48px)] py-3.5">
+    <a
+      href={pathFor('home', lang)}
+      class="mr-auto font-display text-[1.6rem] leading-none font-black italic no-underline"
+    >
+      EA<span class="sr-only"> · {t('nav.home')}</span>
+    </a>
+    <nav
+      aria-label={t('nav.label')}
+      class="hidden gap-5.5 text-xs tracking-[0.08em] uppercase md:flex"
+    >
+      {nav.map((item) => (
+        <a
+          href={item.href}
+          aria-current={item.route && item.route === currentRoute ? 'page' : undefined}
+          {...(item.newTab && { target: '_blank', rel: 'noopener' })}
+          class="text-ink-muted no-underline decoration-2 underline-offset-4 hover:text-ink hover:underline aria-[current=page]:text-ink aria-[current=page]:underline"
+        >
+          {item.label}
+          {item.newTab && <span class="sr-only"> ({t('a11y.newTab')})</span>}
+        </a>
+      ))}
+    </nav>
+    <Button href={`mailto:${profile.email}`} size="sm">
+      {t('home.write')}
+    </Button>
+    <!-- Menú en móvil: mismo estilo en ambos temas (papel y tinta del modo claro). -->
+    <button
+      type="button"
+      commandfor="nav-panel"
+      command="toggle-popover"
+      aria-label={t('nav.menu')}
+      data-nav-trigger
+      class="relative grid size-9 cursor-pointer place-items-center border-2 border-ink bg-sheet text-ink shadow-hard-2 transition-[translate,box-shadow] duration-160 ease-[cubic-bezier(0.2,0.8,0.2,1)] before:absolute before:-inset-1.5 hover:-translate-0.5 hover:shadow-hard-4 active:translate-0.5 active:shadow-hard-1 motion-reduce:transition-none md:hidden"
+    >
+      <Icon name="lucide:menu" class="size-5" aria-hidden="true" />
+    </button>
+  </div>
+</header>
+<nav
+  id="nav-panel"
+  popover
+  aria-label={t('nav.label')}
+  class="fixed inset-x-[clamp(16px,4vw,48px)] top-[68px] m-0 w-auto -translate-y-2 border-2 border-ink bg-sheet p-0 text-ink opacity-0 shadow-hard-6 outline-2 outline-[#ebebe7] scheme-light transition-[opacity,translate,display,overlay] transition-discrete duration-200 ease-out open:translate-y-0 open:opacity-100 motion-reduce:translate-y-0 starting:open:-translate-y-2 starting:open:opacity-0 motion-reduce:starting:open:translate-y-0 md:hidden"
+>
+  <ul>
+    {nav.map((item, i) => (
+      <li class="border-b border-rule last:border-b-0">
+        <a
+          href={item.href}
+          aria-current={item.route && item.route === currentRoute ? 'page' : undefined}
+          {...(item.newTab && { target: '_blank', rel: 'noopener' })}
+          class="flex items-baseline gap-4 px-5 py-4 no-underline hover:bg-brand hover:text-on-brand aria-[current=page]:bg-ink aria-[current=page]:text-sheet"
+        >
+          <span class="text-[11px] tracking-[0.1em] opacity-70">
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <span class="font-display text-[2rem] leading-none font-extrabold uppercase italic">
+            {item.label}
+          </span>
+          {item.newTab && (
+            <Icon
+              name="lucide:arrow-up-right"
+              class="ml-auto size-5 self-center"
+              aria-hidden="true"
+            />
+          )}
+          {item.newTab && <span class="sr-only"> ({t('a11y.newTab')})</span>}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const panel = document.getElementById('nav-panel');
+    if (!panel) return;
+    // Al elegir un destino el menú se cierra (también para el ancla de Experiencia en la misma página).
+    panel
+      .querySelectorAll('a')
+      .forEach((link) => link.addEventListener('click', () => panel.hidePopover()));
+    // Navegadores sin comandos de invocación (commandfor): abrir el panel a mano.
+    if (!('command' in HTMLButtonElement.prototype)) {
+      document
+        .querySelector('[data-nav-trigger]')
+        ?.addEventListener('click', () => panel.togglePopover());
+    }
+  });
+</script>

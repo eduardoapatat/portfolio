@@ -1,0 +1,38 @@
+---
+// Ficha de tecnología del bento: ícono de marca (o de lucide) y nombre, sobre fondo claro.
+// Es un <span>: quien la usa la envuelve en su <li> (lista simple o nodo del árbol).
+import { Icon } from 'astro-icon/components';
+import { techIcon } from '@/data/tech';
+
+type Props = {
+  name: string;
+  /** Ícono de lucide para lo que no es una marca registrada en tech.ts. */
+  icon?: string;
+  size?: 'md' | 'lg';
+};
+
+const { name, icon, size = 'md' } = Astro.props;
+const brand = icon ? undefined : techIcon(name);
+const sizes = {
+  md: { chip: 'gap-2 px-2.5 py-1.5 text-[13px] shadow-hard-2', icon: 'size-4.5' },
+  lg: { chip: 'gap-3 px-4 py-3 text-base shadow-hard-3', icon: 'size-6' },
+};
+---
+
+<span
+  class:list={[
+    'inline-flex items-center border-2 border-[#0b0b0b] bg-chip font-bold whitespace-nowrap text-[#0b0b0b] [--hard:#0b0b0b]',
+    sizes[size].chip,
+  ]}
+>
+  {icon && <Icon name={icon} class={sizes[size].icon} aria-hidden="true" />}
+  {brand && (
+    <Icon
+      name={brand.icon}
+      class={sizes[size].icon}
+      style={`color:${brand.color}`}
+      aria-hidden="true"
+    />
+  )}
+  {name}
+</span>

@@ -1,41 +1,74 @@
 ---
 // En una 404 no se puede deducir el idioma desde la URL: el mensaje va en ambos idiomas.
-import Layout from '@/layouts/Layout.astro';
+import Button from '@/components/Button.astro';
 import { pathFor, useTranslations } from '@/i18n/utils';
-import { contentTransition } from '@/lib/transitions';
+import Layout from '@/layouts/Layout.astro';
 
 const es = useTranslations('es');
 const en = useTranslations('en');
 ---
 
 <Layout title="404" description={es('notFound.message')} noindex>
-  <section
-    transition:name="hero"
-    transition:animate={contentTransition}
-    class="flex flex-col items-center py-16 text-center md:py-24"
-  >
-    <h1 class="text-7xl font-bold tracking-tight md:text-8xl">404</h1>
-    <p class="mt-6 text-fg-muted md:text-lg">{es('notFound.message')}</p>
-    <p lang="en" class="mt-1 text-fg-subtle md:text-lg">
-      {en('notFound.message')}
-    </p>
+  <div class="flex justify-between gap-4 border-b border-rule py-3.5 text-[11px] tracking-[0.1em] text-ink-muted uppercase">
+    <span>{es('notFound.sheet')}</span>
+    <span lang="en" class="hidden sm:inline">
+      {en('notFound.sheet')}
+    </span>
+  </div>
 
-    <div class="mt-9 flex flex-wrap justify-center gap-3">
-      <a
-        href={pathFor('home', 'es')}
-        hreflang="es"
-        class="rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-bg transition-colors hover:bg-accent-hover"
-      >
-        {es('notFound.back')}
-      </a>
-      <a
-        href={pathFor('home', 'en')}
-        hreflang="en"
-        lang="en"
-        class="rounded-lg border border-button-line px-5 py-2.5 text-sm font-medium transition-colors hover:border-fg-subtle hover:bg-surface-raised"
-      >
-        {en('notFound.back')}
-      </a>
+  <section class="grid items-end gap-[clamp(32px,6vw,80px)] py-[clamp(48px,9vw,112px)] min-[900px]:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+    <div>
+      <h1 class="font-display text-[clamp(7rem,26vw,18rem)] leading-[0.8] font-black tracking-[-0.02em] italic">
+        404<span class="text-brand">.</span>
+      </h1>
+      <p class="mt-8 max-w-[48ch] text-lg">{es('notFound.message')}</p>
+      <p lang="en" class="mt-1 max-w-[48ch] text-ink-muted">
+        {en('notFound.message')}
+      </p>
+      <div class="mt-9 flex flex-wrap gap-4">
+        <Button href={pathFor('home', 'es')} hreflang="es">
+          {es('notFound.back')}
+        </Button>
+        <Button href={pathFor('home', 'en')} hreflang="en" lang="en" variant="ghost">
+          {en('notFound.back')}
+        </Button>
+      </div>
     </div>
+
+    <!-- Ficha del error, como la ficha técnica del inicio. La ruta la completa el script. -->
+    <dl class="border-2 border-ink bg-sheet text-sm shadow-hard-6">
+      <div class="border-b-2 border-ink bg-brand px-4 py-3 text-[11px] tracking-[0.1em] text-on-brand uppercase">
+        {es('notFound.card')}
+      </div>
+      <div class="grid grid-cols-[110px_minmax(0,1fr)] gap-3 border-b border-rule px-4 py-3">
+        <dt class="text-[11px] tracking-[0.08em] text-ink-muted uppercase">
+          {es('notFound.code')}
+        </dt>
+        <dd class="font-bold">404</dd>
+      </div>
+      <div class="grid grid-cols-[110px_minmax(0,1fr)] gap-3 border-b border-rule px-4 py-3">
+        <dt class="text-[11px] tracking-[0.08em] text-ink-muted uppercase">
+          {es('notFound.path')}
+        </dt>
+        <dd>
+          <code data-missing-path class="wrap-anywhere">
+            —
+          </code>
+        </dd>
+      </div>
+      <div class="grid grid-cols-[110px_minmax(0,1fr)] gap-3 px-4 py-3">
+        <dt class="text-[11px] tracking-[0.08em] text-ink-muted uppercase">
+          {es('notFound.status')}
+        </dt>
+        <dd class="font-bold text-warn">{es('notFound.statusValue')}</dd>
+      </div>
+    </dl>
   </section>
 </Layout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const path = document.querySelector('[data-missing-path]');
+    if (path) path.textContent = decodeURIComponent(location.pathname);
+  });
+</script>

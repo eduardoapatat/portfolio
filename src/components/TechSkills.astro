@@ -1,0 +1,289 @@
+---
+import { Icon } from 'astro-icon/components';
+import SectionHead from '@/components/SectionHead.astro';
+import TechChip from '@/components/TechChip.astro';
+import { cv } from '@/data/cv';
+import { profile } from '@/data/profile';
+import { techGroups, techIcon, ungroupedTech, type TechGroup } from '@/data/tech';
+import type { Lang } from '@/i18n/ui';
+import { useTranslations } from '@/i18n/utils';
+import { getProjects } from '@/lib/content';
+
+type Props = { lang: Lang; id: string; num: string };
+
+const { lang, id, num } = Astro.props;
+const t = useTranslations(lang);
+const projects = await getProjects(lang);
+
+// Toda tecnología del CV o de un proyecto debe estar en algún grupo del bento.
+const missing = ungroupedTech([...profile.stack, ...projects.flatMap((p) => p.data.tech)]);
+if (missing.length > 0) {
+  throw new Error(
+    `Tecnologías sin grupo en el bento: ${missing.join(', ')}. Agrégalas a techGroups en src/data/tech.ts.`,
+  );
+}
+
+// Bento en mosaico (celdas de distinto tamaño, una idea por celda). Desde 1280px, 4 columnas:
+//   full stack 2×2 (azul) | backend alta | IA (invertida)
+//                         |              | herramientas
+//   frontend (ancha)                     | infraestructura y despliegue
+const layout: Record<TechGroup['key'], string> = {
+  fullstack: 'col-span-2 xl:row-span-2',
+  backend: 'col-span-2 md:col-span-1 md:row-span-2',
+  tools: 'col-span-2 md:col-span-1',
+  ai: 'col-span-2 md:col-span-1',
+  frontend: 'col-span-2',
+  infra: 'col-span-2',
+};
+// Celdas chicas: título más chico y sin descripción. IA va invertida para dar contraste.
+const small = new Set<TechGroup['key']>(['tools', 'ai']);
+// Mismo movimiento que los botones: se levanta y la sombra crece.
+const lift =
+  'border-2 border-ink shadow-hard-6 transition-[translate,box-shadow] duration-160 ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:-translate-0.5 hover:shadow-hard-8 motion-reduce:transition-none';
+---
+
+<section id={id} aria-labelledby={`${id}-title`} class="pt-[clamp(56px,9vw,112px)]">
+  <SectionHead
+    num={num}
+    titleId={`${id}-title`}
+    title={t('home.tech.title')}
+    sub={t('home.tech.sub')}
+  />
+
+  <ul aria-label={t('home.tech.list')} class="mt-10 grid grid-cols-2 gap-5 xl:grid-cols-4">
+    {techGroups.map((group, i) => {
+      const accent = group.key === 'fullstack';
+      // La celda principal (full stack) lleva fichas más grandes.
+      const size = { name: accent ? ('lg' as const) : ('md' as const) };
+      const rootIcon = group.tree && techIcon(group.tree.root);
+      // Texto secundario: sobre fondo de color o invertido se atenúa con opacidad.
+      const muted = accent || group.key === 'ai' ? 'opacity-80' : 'text-ink-muted';
+      return (
+        <li
+          class:list={[
+            'flex min-w-0 flex-col p-5 lg:p-6',
+            lift,
+            accent
+              ? 'bg-brand text-on-brand'
+              : group.key === 'ai'
+                ? 'bg-ink text-sheet'
+                : 'bg-sheet text-ink',
+            layout[group.key],
+          ]}
+        >
+          <div class="flex items-baseline justify-between gap-4">
+            <h3
+              class:list={[
+                'font-display leading-[0.9] font-extrabold uppercase italic',
+                accent
+                  ? 'text-[clamp(2.2rem,4.4vw,3.6rem)]'
+                  : small.has(group.key)
+                    ? 'text-[clamp(1.4rem,2vw,1.7rem)]'
+                    : 'text-[clamp(1.6rem,2.6vw,2.2rem)]',
+              ]}
+            >
+              {group.title[lang]}
+            </h3>
+            <span class:list={['text-[11px] tracking-[0.1em]', muted]}>
+              {num}.{i + 1}
+            </span>
+          </div>
+          {group.description && (
+            <p class:list={['mt-2 max-w-[52ch] text-sm', muted]}>{group.description[lang]}</p>
+          )}
+          {/* Con árbol, una copia invisible del árbol abierto fija el alto: cerrado, las fichas
+              quedan abajo; al abrir, suben para mostrar el árbol sin cambiar el alto de la fila. */}
+          <div class="mt-auto grid pt-4">
+            {(group.tree ? [true, false] : [false]).map((ghost) => (
+              <div
+                class:list={[
+                  'flex flex-wrap items-start gap-2 [grid-area:1/1]',
+                  ghost ? 'invisible' : 'self-end',
+                ]}
+                aria-hidden={ghost ? 'true' : undefined}
+                inert={ghost}
+              >
+                {group.tree && (
+                  // Kit desplegable: se ve como una ficha más, con un borde que gira para destacarla.
+                  // Al abrirla muestra el árbol (puente y ramas).
+                  <details class="tree group/kit" open={ghost}>
+                    <summary class="kit flex cursor-pointer list-none p-[3px] text-[#0b0b0b] shadow-hard-3 [--hard:#0b0b0b] [&::-webkit-details-marker]:hidden">
+                      <span class="flex items-center gap-3 bg-chip px-4 py-2.5 text-base font-bold whitespace-nowrap">
+                        {rootIcon && (
+                          <Icon
+                            name={rootIcon.icon}
+                            class="size-6"
+                            style={`color:${rootIcon.color}`}
+                            aria-hidden="true"
+                          />
+                        )}
+                        {group.tree.root}
+                        <Icon
+                          name="lucide:plus"
+                          class="size-4.5 group-open/kit:hidden"
+                          aria-hidden="true"
+                        />
+                        <Icon
+                          name="lucide:minus"
+                          class="hidden size-4.5 group-open/kit:block"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </summary>
+                    <ul>
+                      {group.tree.via ? (
+                        <li>
+                          <TechChip name={group.tree.via} size={size.name} />
+                          <ul>
+                            {group.tree.branches.map((name) => (
+                              <li>
+                                <TechChip name={name} size={size.name} />
+                              </li>
+                            ))}
+                          </ul>
+                        </li>
+                      ) : (
+                        group.tree.branches.map((name) => (
+                          <li>
+                            <TechChip name={name} size={size.name} />
+                          </li>
+                        ))
+                      )}
+                    </ul>
+                  </details>
+                )}
+                <ul class="flex flex-wrap gap-2">
+                  {group.items.map((name) => (
+                    <li class="flex">
+                      <TechChip name={name} size={size.name} />
+                    </li>
+                  ))}
+                  {group.extra?.map((item) => (
+                    <li class="flex">
+                      <TechChip name={item.text[lang]} icon={item.icon} size={size.name} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </li>
+      );
+    })}
+  </ul>
+
+  <ul
+    aria-label={t('home.tech.skills')}
+    class="mt-10 grid border-y border-rule min-[900px]:auto-cols-fr min-[900px]:grid-flow-col"
+  >
+    {cv.skills.map((skill) => (
+      <li class="skill group/skill grid content-start gap-4 border-rule py-6 not-first:border-t min-[900px]:px-6 min-[900px]:first:pl-0 min-[900px]:not-first:border-t-0 min-[900px]:not-first:border-l">
+        <span
+          class="grid size-13 place-items-center border-2 border-ink bg-brand text-on-brand shadow-hard-3 transition-[translate,box-shadow] duration-200 ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover/skill:-translate-0.5 group-hover/skill:shadow-hard-5 motion-reduce:transition-none"
+          aria-hidden="true"
+        >
+          <Icon name={skill.icon} class="skill-icon size-6.5" />
+        </span>
+        <p class="text-sm">{skill.text[lang]}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  /* Árbol de la celda full stack: cada nivel cuelga de una línea vertical y cada nodo se une
+     con un tramo horizontal a la altura de su ficha (--mid). El último corta la vertical. */
+  .tree ul {
+    --mid: 1.55rem;
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    margin-left: 1.25rem;
+  }
+  .tree ul li {
+    position: relative;
+    padding-left: 1.75rem;
+  }
+  .tree ul li::before,
+  .tree ul li::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    background: currentColor;
+  }
+  .tree ul li::before {
+    top: -0.75rem;
+    bottom: 0;
+    width: 2px;
+  }
+  .tree ul li:last-child::before {
+    bottom: auto;
+    height: calc(var(--mid) + 0.75rem + 1px);
+  }
+  .tree ul li::after {
+    top: var(--mid);
+    width: 1.5rem;
+    height: 2px;
+  }
+
+  /* Borde que gira alrededor del kit: un degradado cónico cuyo ángulo se anima. */
+  @property --kit-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+  }
+  .kit {
+    background: conic-gradient(from var(--kit-angle), #ff2d20, #0b0b0b 25% 75%, #ff2d20);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .kit {
+      animation: kit-spin 2.4s linear infinite;
+    }
+  }
+  @keyframes kit-spin {
+    to {
+      --kit-angle: 360deg;
+    }
+  }
+
+  /* Despliegue: el árbol crece de alto 0 a su alto real (y al revés al cerrar). Como el bloque
+     está alineado abajo, las fichas suben acompañando el movimiento. Sin soporte de
+     interpolate-size abre al instante. */
+  @supports (interpolate-size: allow-keywords) {
+    @media (prefers-reduced-motion: no-preference) {
+      .tree {
+        interpolate-size: allow-keywords;
+      }
+      .tree::details-content {
+        block-size: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition:
+          block-size 380ms cubic-bezier(0.2, 0.8, 0.2, 1),
+          opacity 260ms ease-out,
+          content-visibility 380ms allow-discrete;
+      }
+      .tree[open]::details-content {
+        block-size: auto;
+        opacity: 1;
+      }
+      /* Margen para que el recorte durante la animación no corte la sombra de las fichas. */
+      .tree > ul {
+        padding: 0 4px 4px 0;
+      }
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .skill:hover .skill-icon {
+      animation: nudge 600ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+  }
+  @keyframes nudge {
+    30% {
+      transform: rotate(-12deg) scale(1.1);
+    }
+    60% {
+      transform: rotate(8deg) scale(1.05);
+    }
+  }
+</style>

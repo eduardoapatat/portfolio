@@ -47,6 +47,8 @@ const tech = {
   Express: { icon: 'simple-icons:express', color: '#0b0b0b' },
   // Logotipo oficial de Transbank (transbankdevelopers.cl/brand-assets), solo "webpay.".
   Webpay: { icon: 'webpay', color: '#6d2077', wordmark: true },
+  'Mercado Pago': { icon: 'simple-icons:mercadopago', color: '#00b1ea' },
+  Stripe: { icon: 'simple-icons:stripe', color: '#635bff' },
 } satisfies Record<string, TechIcon>;
 
 export type TechName = keyof typeof tech;
@@ -55,12 +57,11 @@ export function techIcon(name: string): TechIcon | undefined {
   return (tech as Record<string, TechIcon>)[name];
 }
 
-// Bento de tecnologías del inicio (en este orden: full stack es la celda destacada). `items` solo acepta nombres registrados arriba (con ícono);
+// Bento de tecnologías del inicio: este orden es el de lectura y el de la grilla en tablet y móvil (la posición en escritorio está en TechSkills.astro). `items` solo acepta nombres registrados arriba (con ícono);
 // `extra` es para áreas que no son una tecnología con marca (llevan ícono de lucide).
 export type TechGroup = {
-  key: 'frontend' | 'backend' | 'fullstack' | 'tools' | 'ai' | 'infra';
+  key: 'frontend' | 'backend' | 'database' | 'fullstack' | 'tools' | 'ai' | 'payments' | 'infra';
   title: Localized;
-  description?: Localized;
   items: TechName[];
   extra?: { icon: string; text: Localized }[];
   /** Árbol opcional: una base (kit) que, a través de un puente, se ramifica en varias opciones. */
@@ -71,39 +72,12 @@ export const techGroups: TechGroup[] = [
   {
     key: 'fullstack',
     title: { es: 'Full stack', en: 'Full stack' },
-    description: {
-      es: 'Aplicaciones completas, del modelo de datos a la interfaz.',
-      en: 'Complete applications, from the data model to the interface.',
-    },
     tree: { root: 'Laravel Starter Kits', via: 'Inertia', branches: ['React', 'Vue'] },
     items: ['Nuxt'],
   },
   {
-    key: 'backend',
-    title: { es: 'Backend', en: 'Backend' },
-    description: {
-      es: 'Lógica de negocio, APIs y bases de datos relacionales.',
-      en: 'Business logic, APIs and relational databases.',
-    },
-    items: ['PHP', 'Laravel', 'Node.js', 'Express', 'PostgreSQL', 'SQLite', 'Webpay'],
-  },
-  {
-    key: 'ai',
-    title: { es: 'Agentes de IA', en: 'AI agents' },
-    items: ['Claude Code', 'Codex'],
-  },
-  {
-    key: 'tools',
-    title: { es: 'Herramientas', en: 'Tools' },
-    items: ['Git', 'GitHub', 'pnpm', 'Composer', 'Vite', 'VS Code'],
-  },
-  {
     key: 'frontend',
     title: { es: 'Frontend', en: 'Frontend' },
-    description: {
-      es: 'Interfaces accesibles y rápidas, con movimiento cuidado.',
-      en: 'Accessible, fast interfaces with careful motion.',
-    },
     items: [
       'HTML',
       'CSS',
@@ -117,13 +91,34 @@ export const techGroups: TechGroup[] = [
     ],
   },
   {
+    key: 'backend',
+    title: { es: 'Backend', en: 'Backend' },
+    items: ['PHP', 'Laravel', 'Node.js', 'Express'],
+  },
+  {
+    key: 'ai',
+    title: { es: 'Agentes de IA', en: 'AI agents' },
+    items: ['Claude Code', 'Codex'],
+  },
+  {
+    key: 'database',
+    title: { es: 'Base de datos', en: 'Databases' },
+    items: ['PostgreSQL', 'SQLite'],
+  },
+  {
+    key: 'payments',
+    title: { es: 'Pagos', en: 'Payments' },
+    items: ['Webpay'],
+  },
+  {
     key: 'infra',
-    title: { es: 'Infraestructura y despliegue', en: 'Infrastructure & deployment' },
-    description: {
-      es: 'Servidores Linux, contenedores, integración continua y publicación de los proyectos.',
-      en: 'Linux servers, containers, continuous integration and shipping projects.',
-    },
+    title: { es: 'Infraestructura', en: 'Infrastructure' },
     items: ['Linux', 'Docker', 'GitHub Actions', 'Vercel', 'Cloudflare'],
+  },
+  {
+    key: 'tools',
+    title: { es: 'Herramientas', en: 'Tools' },
+    items: ['Git', 'GitHub', 'pnpm', 'Composer', 'Vite', 'VS Code'],
   },
 ];
 

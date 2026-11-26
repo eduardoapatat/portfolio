@@ -23,20 +23,44 @@ if (missing.length > 0) {
   );
 }
 
-// Bento en mosaico (celdas de distinto tamaño, una idea por celda). Desde 1280px, 4 columnas:
-//   full stack 2×2 (azul) | backend alta | IA (invertida)
-//                         |              | herramientas
-//   frontend (ancha)                     | infraestructura y despliegue
-const layout: Record<TechGroup['key'], string> = {
-  fullstack: 'col-span-2 xl:row-span-2',
-  backend: 'col-span-2 md:col-span-1 md:row-span-2',
-  tools: 'col-span-2 md:col-span-1',
-  ai: 'col-span-2 md:col-span-1',
-  frontend: 'col-span-2',
-  infra: 'col-span-2',
+// Bento tipo masonry: desde 1280px, 3 columnas y filas finas de 20px (más 20px de separación),
+// así cada tarjeta tiene su propio alto y los bordes no coinciden entre columnas.
+// Jerarquía por tamaño: full stack (ancha, azul) > frontend y backend (altas) > el resto.
+//   col 1           | col 2          | col 3
+//   full stack (2 columnas)          | frontend
+//   backend         | IA             |
+//                   | base de datos  | infraestructura
+//                   | pagos          | herramientas
+// Posición en escritorio: `col` (1-3), `row` (fila de inicio), `h` (alto en filas: una tarjeta
+// de h filas mide 40·h − 20 px) y `w` (columnas, 1 por defecto). Cada columna debe sumar 23 filas.
+type Area = { col: number; row: number; h: number; w?: number };
+const area: Record<TechGroup['key'], Area> = {
+  fullstack: { col: 1, row: 1, h: 10, w: 2 },
+  frontend: { col: 3, row: 1, h: 11 },
+  backend: { col: 1, row: 11, h: 13 },
+  ai: { col: 2, row: 11, h: 4 },
+  database: { col: 2, row: 15, h: 5 },
+  payments: { col: 2, row: 20, h: 4 },
+  infra: { col: 3, row: 12, h: 6 },
+  tools: { col: 3, row: 18, h: 6 },
 };
-// Celdas chicas: título más chico y sin descripción. IA va invertida para dar contraste.
-const small = new Set<TechGroup['key']>(['tools', 'ai']);
+const gridArea = ({ col, row, h, w = 1 }: Area) => `--area:${row} / ${col} / span ${h} / span ${w}`;
+// Tablet (768-1279px), 2 columnas: frontend y backend, IA y base de datos, y pagos e
+// infraestructura van en pares; full stack y herramientas a todo el ancho. Móvil: una columna.
+const layout: Record<TechGroup['key'], string> = {
+  fullstack: 'col-span-2',
+  frontend: 'col-span-2 md:col-span-1',
+  backend: 'col-span-2 md:col-span-1',
+  ai: 'col-span-2 md:col-span-1',
+  database: 'col-span-2 md:col-span-1',
+  payments: 'col-span-2 md:col-span-1',
+  infra: 'col-span-2 md:col-span-1',
+  tools: 'col-span-2',
+};
+// Frontend y backend: segundo nivel, título y fichas grandes (full stack lleva el título mayor).
+const big = new Set<TechGroup['key']>(['frontend', 'backend']);
+// Celdas chicas: título más chico. IA va invertida para dar contraste.
+const small = new Set<TechGroup['key']>(['ai', 'payments', 'database']);
 // Mismo movimiento que los botones: se levanta y la sombra crece.
 const lift =
   'border-2 border-ink shadow-hard-6 transition-[translate,box-shadow] duration-160 ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:-translate-0.5 hover:shadow-hard-8 motion-reduce:transition-none';
@@ -50,11 +74,14 @@ const lift =
     sub={t('home.tech.sub')}
   />
 
-  <ul aria-label={t('home.tech.list')} class="mt-10 grid grid-cols-2 gap-5 xl:grid-cols-4">
+  <ul
+    aria-label={t('home.tech.list')}
+    class="mt-10 grid grid-cols-2 gap-5 xl:auto-rows-[20px] xl:grid-cols-3"
+  >
     {techGroups.map((group, i) => {
       const accent = group.key === 'fullstack';
-      // La celda principal (full stack) lleva fichas más grandes.
-      const size = { name: accent ? ('lg' as const) : ('md' as const) };
+      // Full stack y las celdas grandes llevan fichas más grandes.
+      const size = { name: accent || big.has(group.key) ? ('lg' as const) : ('md' as const) };
       const rootIcon = group.tree && techIcon(group.tree.root);
       // Texto secundario. Sobre el azul va sin atenuar: el blanco al 80 % no llega a 4.5:1 (WCAG AA).
       const muted = accent ? '' : group.key === 'ai' ? 'opacity-80' : 'text-ink-muted';
@@ -69,7 +96,9 @@ const lift =
                 ? 'bg-ink text-sheet'
                 : 'bg-sheet text-ink',
             layout[group.key],
+            'xl:[grid-area:var(--area)]',
           ]}
+          style={gridArea(area[group.key])}
         >
           <div class="flex items-baseline justify-between gap-4">
             <h3
@@ -77,9 +106,11 @@ const lift =
                 'font-display leading-[0.9] font-extrabold uppercase italic',
                 accent
                   ? 'text-[clamp(2.2rem,4.4vw,3.6rem)]'
-                  : small.has(group.key)
-                    ? 'text-[clamp(1.4rem,2vw,1.7rem)]'
-                    : 'text-[clamp(1.6rem,2.6vw,2.2rem)]',
+                  : big.has(group.key)
+                    ? 'text-[clamp(1.9rem,3vw,2.6rem)]'
+                    : small.has(group.key)
+                      ? 'text-[clamp(1.4rem,2vw,1.7rem)]'
+                      : 'text-[clamp(1.6rem,2.6vw,2.2rem)]',
               ]}
             >
               {group.title[lang]}
@@ -88,9 +119,6 @@ const lift =
               {num}.{i + 1}
             </span>
           </div>
-          {group.description && (
-            <p class:list={['mt-2 max-w-[52ch] text-sm', muted]}>{group.description[lang]}</p>
-          )}
           {/* Con árbol, una copia invisible del árbol abierto fija el alto: cerrado, las fichas
               quedan abajo; al abrir, suben para mostrar el árbol sin cambiar el alto de la fila. */}
           <div class="mt-auto grid pt-4">

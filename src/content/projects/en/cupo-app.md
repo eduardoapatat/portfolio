@@ -4,7 +4,7 @@ year: 2026
 categories: [app]
 summary: 'Bookings, class packs, payments and cash register for small group-class studios, without ever overbooking a spot.'
 status: prototipo
-tech: [Laravel, PHP, React, Inertia, TypeScript, Tailwind CSS, PostgreSQL]
+tech: [Laravel, PHP, React, Inertia, TypeScript, Tailwind CSS, PostgreSQL, Webpay]
 repo: https://github.com/eduardoapatat/cupo-app
 order: 3
 image: ../../../assets/projects/cupo-app.webp

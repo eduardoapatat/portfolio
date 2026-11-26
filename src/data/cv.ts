@@ -40,8 +40,8 @@ export const cv = {
     {
       icon: 'lucide:accessibility',
       text: {
-        es: 'Arquitectura de la información, accesibilidad web y gestión de contenidos.',
-        en: 'Information architecture, web accessibility and content management.',
+        es: 'Ordenar sitios web para que la información se encuentre fácil, con contenido claro y accesible.',
+        en: 'Organizing websites so information is easy to find, with clear and accessible content.',
       },
     },
   ] satisfies { icon: string; text: Localized }[],

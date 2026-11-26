@@ -95,12 +95,12 @@ const links = full
             {icon && (
               <Icon
                 name={icon.icon}
-                class="size-4"
+                class={icon.wordmark ? 'h-4 w-auto' : 'size-4'}
                 style={`color:${icon.color}`}
                 aria-hidden="true"
               />
             )}
-            {name}
+            {icon?.wordmark ? <span class="sr-only">{name}</span> : name}
           </li>
         );
       })}

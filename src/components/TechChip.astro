@@ -14,8 +14,12 @@ type Props = {
 const { name, icon, size = 'md' } = Astro.props;
 const brand = icon ? undefined : techIcon(name);
 const sizes = {
-  md: { chip: 'gap-2 px-2.5 py-1.5 text-[13px] shadow-hard-2', icon: 'size-4.5' },
-  lg: { chip: 'gap-3 px-4 py-3 text-base shadow-hard-3', icon: 'size-6' },
+  md: {
+    chip: 'gap-2 px-2.5 py-1.5 text-[13px] shadow-hard-2',
+    icon: 'size-4.5',
+    wordmark: 'h-4.5 w-auto',
+  },
+  lg: { chip: 'gap-3 px-4 py-3 text-base shadow-hard-3', icon: 'size-6', wordmark: 'h-6 w-auto' },
 };
 ---
 
@@ -29,10 +33,10 @@ const sizes = {
   {brand && (
     <Icon
       name={brand.icon}
-      class={sizes[size].icon}
+      class={brand.wordmark ? sizes[size].wordmark : sizes[size].icon}
       style={`color:${brand.color}`}
       aria-hidden="true"
     />
   )}
-  {name}
+  {brand?.wordmark ? <span class="sr-only">{name}</span> : name}
 </span>

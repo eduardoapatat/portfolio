@@ -5,7 +5,12 @@
 
 import type { Lang } from '@/i18n/ui';
 
-export type TechIcon = { icon: string; color: string };
+/**
+ * `wordmark`: el ícono es el logotipo de la marca (src/icons), con sus propios colores, y
+ * reemplaza al nombre, que queda solo para lectores de pantalla. Para marcas sin símbolo
+ * cuadrado (Webpay).
+ */
+export type TechIcon = { icon: string; color: string; wordmark?: boolean };
 type Localized = Record<Lang, string>;
 
 const tech = {
@@ -40,6 +45,8 @@ const tech = {
   Codex: { icon: 'simple-icons:openai', color: '#0b0b0b' },
   'Node.js': { icon: 'simple-icons:nodedotjs', color: '#5fa04e' },
   Express: { icon: 'simple-icons:express', color: '#0b0b0b' },
+  // Logotipo oficial de Transbank (transbankdevelopers.cl/brand-assets), solo "webpay.".
+  Webpay: { icon: 'webpay', color: '#6d2077', wordmark: true },
 } satisfies Record<string, TechIcon>;
 
 export type TechName = keyof typeof tech;
@@ -78,7 +85,7 @@ export const techGroups: TechGroup[] = [
       es: 'Lógica de negocio, APIs y bases de datos relacionales.',
       en: 'Business logic, APIs and relational databases.',
     },
-    items: ['PHP', 'Laravel', 'Node.js', 'Express', 'PostgreSQL', 'SQLite'],
+    items: ['PHP', 'Laravel', 'Node.js', 'Express', 'PostgreSQL', 'SQLite', 'Webpay'],
   },
   {
     key: 'ai',

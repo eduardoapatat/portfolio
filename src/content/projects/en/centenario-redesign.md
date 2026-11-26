@@ -3,7 +3,6 @@ title: Parque Centenario — Redesign
 year: 2026
 categories: [sitio]
 summary: 'Concept redesign of the Parque Centenario site in Arica, with picnic area booking and Lighthouse scores of 90 to 100.'
-status: prototipo
 tech: [Astro, TypeScript, Tailwind CSS]
 repo: https://github.com/eduardoapatat/centenario-redesign
 order: 4

@@ -3,7 +3,6 @@ title: AUSTRAL
 year: 2026
 categories: [landing, ecommerce]
 summary: 'Landing page prototype for a made-up outerwear brand, with a category filter and a bag.'
-status: prototipo
 tech: [Astro, TypeScript, Tailwind CSS, Vercel]
 url: https://austral-landing-six.vercel.app
 repo: https://github.com/eduardoapatat/austral-landing

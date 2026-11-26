@@ -3,7 +3,6 @@ title: Paisajes de Atacama
 year: 2026
 categories: [sitio]
 summary: 'Relato visual del Desierto de Atacama, con un capítulo por paisaje que se revela al hacer scroll.'
-status: produccion
 tech: [Astro, TypeScript, Tailwind CSS, GSAP, Vercel]
 url: https://paisajes-de-atacama.vercel.app
 repo: https://github.com/eduardoapatat/paisajes-de-atacama

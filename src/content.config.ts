@@ -16,7 +16,6 @@ const projects = defineCollection({
       categories: z.array(z.enum(projectCategories)).min(1),
       // Una línea para la tarjeta compacta del inicio.
       summary: z.string().optional(),
-      status: z.enum(['desarrollo', 'prototipo', 'produccion']).optional(),
       tech: z.array(z.string()).default([]),
       url: z.url().optional(),
       repo: z.url().optional(),
